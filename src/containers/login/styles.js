@@ -21,6 +21,10 @@ const styles = {
     textDecoration: "underline",
     cursor: "pointer",
   },
+  modalIcon: {
+    color: (props) => props.palette.primary.main,
+    width: "100px",
+  },
 };
 
 export default styles;

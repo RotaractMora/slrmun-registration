@@ -7,7 +7,7 @@ import { makeStyles, useTheme, TextField, Typography } from "@material-ui/core";
 import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
 import styles from "./styles";
 
-import Model from "../../UI/model/Model";
+import Modal from "../../UI/modal/Modal";
 
 const useStyles = makeStyles(styles);
 
@@ -52,7 +52,15 @@ const Login = () => {
         >
           Forgot password?
         </Typography>
-        <Model icon={<ContactPhoneIcon />} heading={"heading"} body={"body"} />
+        <Modal
+          icon={
+            <ContactPhoneIcon className={classes.modalIcon} fontSize="large" />
+          }
+          heading={"Contact Admin"}
+          body={
+            "Please contact the administration of Sri Lanka Rotaract Model United Nations through the contacts available in the website."
+          }
+        />
       </div>
     </div>
   );
