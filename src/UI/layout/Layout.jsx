@@ -13,7 +13,7 @@ const Layout = () => {
   const theme = useTheme();
   const classes = useStyles(theme);
 
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   return (
     <div className={classes.root}>
