@@ -6,12 +6,12 @@ import styles from "./styles";
 
 const useStyles = makeStyles(styles);
 
-const Modal = ({ icon, heading, body }) => {
+const Modal = ({ icon, heading, body, close }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
   return (
-    <div className={classes.root}>
-      <div className={classes.container}>
+    <div className={classes.root} onClick={close}>
+      <div className={classes.container} onClick={(e) => e.stopPropagation()}>
         {icon ? icon : null}
         {heading ? (
           <Typography variant="h3" className={classes.h3}>
@@ -23,7 +23,12 @@ const Modal = ({ icon, heading, body }) => {
             {body}
           </Typography>
         ) : null}
-        <Button className={classes.button} color="primary" variant="contained">
+        <Button
+          className={classes.button}
+          color="primary"
+          variant="contained"
+          onClick={close}
+        >
           Close
         </Button>
       </div>

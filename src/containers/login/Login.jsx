@@ -17,6 +17,7 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <div className={classes.root}>
@@ -48,19 +49,25 @@ const Login = () => {
         <Typography
           variant="caption"
           className={classes.link}
-          //   onClick={}
+          onClick={() => setShowModal(true)}
         >
           Forgot password?
         </Typography>
-        <Modal
-          icon={
-            <ContactPhoneIcon className={classes.modalIcon} fontSize="large" />
-          }
-          heading={"Contact Admin"}
-          body={
-            "Please contact the administration of Sri Lanka Rotaract Model United Nations through the contacts available in the website."
-          }
-        />
+        {showModal ? (
+          <Modal
+            icon={
+              <ContactPhoneIcon
+                className={classes.modalIcon}
+                fontSize="large"
+              />
+            }
+            heading={"Contact Admin"}
+            body={
+              "Please contact the administration of Sri Lanka Rotaract Model United Nations through the contacts available in the website."
+            }
+            close={() => setShowModal(false)}
+          />
+        ) : null}
       </div>
     </div>
   );
