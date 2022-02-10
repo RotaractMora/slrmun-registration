@@ -21,6 +21,9 @@ const styles = {
     textDecoration: "underline",
     cursor: "pointer",
   },
+  button: {
+    margin: "20px auto",
+  },
   modalIcon: {
     color: (props) => props.palette.primary.main,
     width: "100px",

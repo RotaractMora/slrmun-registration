@@ -15,7 +15,7 @@ import styles from "./styles";
 
 const useStyles = makeStyles(styles);
 
-const Details = ({ userData, setUserData }) => {
+const UserDetailsForm = ({ userData, setUserData }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
   return (
@@ -231,4 +231,4 @@ const Details = ({ userData, setUserData }) => {
   );
 };
 
-export default Details;
+export default UserDetailsForm;

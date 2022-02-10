@@ -4,7 +4,7 @@ import { makeStyles, useTheme } from "@material-ui/core";
 import styles from "./styles";
 
 import DefaultUserIcon from "../../assets/images/default-user-icon.png";
-import Details from "./details/Details";
+import UserDetailsForm from "../../components/user-details-form/UserDetailsForm";
 import ButtonPanel from "../../UI/button-panel/ButtonPanel";
 
 import { fetchedUserData } from "./fetchedData";
@@ -42,7 +42,7 @@ const UserProfile = () => {
   return (
     <div className={classes.root}>
       <img className={classes.profile_img} src={DefaultUserIcon} />
-      <Details userData={userData} setUserData={setUserData} />
+      <UserDetailsForm userData={userData} setUserData={setUserData} />
       <ButtonPanel enabled={enableButtons} onSave={save} onCancel={cancel} />
     </div>
   );

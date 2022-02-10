@@ -3,7 +3,13 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { USER_REGISTRATION } from "../../constants/routes";
 
-import { makeStyles, useTheme, TextField, Typography } from "@material-ui/core";
+import {
+  makeStyles,
+  useTheme,
+  TextField,
+  Typography,
+  Button,
+} from "@material-ui/core";
 import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
 import styles from "./styles";
 
@@ -41,6 +47,10 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+
+        <Button variant="contained" color="primary" className={classes.button}>
+          Log in
+        </Button>
 
         <Typography variant="body2">
           <Link to={USER_REGISTRATION}>Register</Link> now
