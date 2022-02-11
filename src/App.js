@@ -7,7 +7,9 @@ import theme_config from "./UI/Theme";
 import "./App.css";
 
 function App() {
-  const theme = createTheme(theme_config);
+  const base_theme = createTheme();
+  const styles = theme_config(base_theme);
+  const theme = createTheme(styles);
   return (
     <Router>
       <ThemeProvider theme={theme}>

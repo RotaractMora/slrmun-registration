@@ -15,7 +15,7 @@ const Registration = () => {
   return (
     <div className={classes.root}>
       <div className={classes.container}>
-        <Typography variant="h2" className={classes.h2}>
+        <Typography variant="h1" className={classes.h1}>
           Registration
         </Typography>
         <UserDetailsForm userData={userData} setUserData={setUserData} />

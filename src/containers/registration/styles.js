@@ -13,8 +13,7 @@ const styles = {
     boxShadow: "0px 0px 5px gray",
     textAlign: "center",
   },
-  h2: {
-    color: (props) => props.palette.primary.main,
+  h1: {
     marginBottom: "30px",
   },
   button: {

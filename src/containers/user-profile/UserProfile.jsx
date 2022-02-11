@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { makeStyles, useTheme } from "@material-ui/core";
+import { makeStyles, Typography, useTheme } from "@material-ui/core";
 import styles from "./styles";
 
 import DefaultUserIcon from "../../assets/images/default-user-icon.png";
@@ -41,9 +41,14 @@ const UserProfile = () => {
 
   return (
     <div className={classes.root}>
-      <img className={classes.profile_img} src={DefaultUserIcon} />
-      <UserDetailsForm userData={userData} setUserData={setUserData} />
-      <ButtonPanel enabled={enableButtons} onSave={save} onCancel={cancel} />
+      <Typography variant="h1" className={classes.h1}>
+        Profile
+      </Typography>
+      <div className={classes.container}>
+        <img className={classes.profile_img} src={DefaultUserIcon} />
+        <UserDetailsForm userData={userData} setUserData={setUserData} />
+        <ButtonPanel enabled={enableButtons} onSave={save} onCancel={cancel} />
+      </div>
     </div>
   );
 };

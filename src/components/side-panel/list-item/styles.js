@@ -8,6 +8,12 @@ const styles = {
       backgroundColor: (props) => props.palette.grey["300"],
     },
   },
+  active_list_item: {
+    backgroundColor: "white",
+    "& $list_item_bar": {
+      backgroundColor: (props) => props.palette.primary.main,
+    },
+  },
   list_item_bar: {
     borderLeft: (props) => "1px solid " + props.palette.primary.main,
     height: "50px",

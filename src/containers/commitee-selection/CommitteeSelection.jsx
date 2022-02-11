@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-import { makeStyles, useTheme } from "@material-ui/core";
+import { makeStyles, useTheme, Typography } from "@material-ui/core";
 import styles from "./styles";
 
 import {
@@ -58,17 +58,22 @@ const CommitteeSelection = () => {
 
   return (
     <div className={classes.root}>
-      <DropDownSection
-        fetchedCountryId={fetchedCountryId}
-        fetchedCommitteeId={fetchedCommitteeId}
-        fetchedCountryList={fetchedCountryList}
-        fetchedCommitteeList={fetchedCommitteeList}
-        selectedCommitteeId={selectedCommitteeId}
-        setSelectedCommitteeId={(value) => setSelectedCommitteeId(value)}
-        selectedCountryId={selectedCountryId}
-        setSelectedCountryId={(value) => setSelectedCountryId(value)}
-      />
-      <ButtonPanel enabled={enableButtons} onSave={save} onCancel={cancel} />
+      <Typography variant="h1" className={classes.h1}>
+        Committee Selection
+      </Typography>
+      <div className={classes.container}>
+        <DropDownSection
+          fetchedCountryId={fetchedCountryId}
+          fetchedCommitteeId={fetchedCommitteeId}
+          fetchedCountryList={fetchedCountryList}
+          fetchedCommitteeList={fetchedCommitteeList}
+          selectedCommitteeId={selectedCommitteeId}
+          setSelectedCommitteeId={(value) => setSelectedCommitteeId(value)}
+          selectedCountryId={selectedCountryId}
+          setSelectedCountryId={(value) => setSelectedCountryId(value)}
+        />
+        <ButtonPanel enabled={enableButtons} onSave={save} onCancel={cancel} />
+      </div>
     </div>
   );
 };
