@@ -17,7 +17,9 @@ const DropDownSection = ({
 }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
-  // console.log("fetchedCountryList :", fetchedCountryList);
+
+  // console.log(selectedCommitteeId);
+
   return (
     <div>
       <div className={classes.selectionContainer}>
@@ -27,7 +29,10 @@ const DropDownSection = ({
         <DropDown
           list={fetchedCommitteeList}
           selectedId={selectedCommitteeId}
-          setSelectedId={(key) => setSelectedCommitteeId(key)}
+          setSelectedId={(key) => {
+            setSelectedCountryId(null);
+            setSelectedCommitteeId(key);
+          }}
         />
       </div>
       <div className={classes.selectionContainer}>

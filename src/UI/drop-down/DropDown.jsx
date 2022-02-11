@@ -6,73 +6,32 @@ import styles from "./styles";
 import ListItem from "./list-item/ListItem";
 import { useEffect } from "react";
 
+import { DEFAULT_FLAG } from "../../constants/routes";
+
 const useStyles = makeStyles(styles);
 
 const DropDown = ({ list, selectedId, setSelectedId }) => {
+  // styling
   const theme = useTheme();
   const classes = useStyles(theme);
+  let listClass = classes.list;
 
+  //states
   const [expanded, setExpanded] = useState(false);
-  let selectedObj = {};
-  if (list) {
-    selectedObj = list[selectedId];
-  }
-  let temp_img_url = "/images/country-flags/default-flag.jpg";
-  let temp_text = "None";
-  const [selectedImageUrl, setSelectedImageUrl] = useState(temp_img_url);
-  const [selectedText, setSelectedText] = useState(temp_text);
+  const [selectedObj, setSelectedObj] = useState({});
+  const [visibleList, setVisibleList] = useState({});
 
-  // re-rendering for the committee selection
-  if (selectedObj && selectedText === "None" && selectedId !== undefined) {
-    if (selectedObj.imageUrl !== undefined) {
-      setSelectedImageUrl(selectedObj.imageUrl);
-    }
-    setSelectedText(selectedObj.text);
-  }
-  // re-rendering for the country selection. Mokada wenne kiyala nan danne naa xD
-  if (
-    list &&
-    selectedText === undefined &&
-    selectedObj &&
-    selectedId !== undefined
-  ) {
-    if (selectedObj.imageUrl !== undefined) {
-      setSelectedImageUrl(selectedObj.imageUrl);
-    }
-    setSelectedText(selectedObj.text);
-  }
+  // console.log(selectedId);
 
-  const [visibleList, setVisibleList] = useState(list);
-  useEffect(() => {
-    setVisibleList(list);
-  }, [list]);
-
+  // handler functions
   const handleListItemClick = (key, available) => {
     if (available) {
       setSelectedId(key);
-      setImageAndText(key);
+      setSelectedObj(list[key]);
       setExpanded(false);
     }
   };
-
-  const setImageAndText = (key) => {
-    if (list) {
-      let selectedObj = list[selectedId];
-      if (key) {
-        selectedObj = list[key];
-      }
-      if (selectedObj) {
-        setSelectedText(selectedObj.text);
-        setSelectedImageUrl(selectedObj.imageUrl);
-      }
-    }
-  };
-
   const handleSelectedTileClick = () => {
-    if (expanded) {
-      setImageAndText();
-      setVisibleList(list);
-    }
     setExpanded(!expanded);
   };
 
@@ -81,7 +40,6 @@ const DropDown = ({ list, selectedId, setSelectedId }) => {
       event.stopPropagation();
     }
   };
-
   const updateVisibleList = (starting_value) => {
     const localVisibleList = {};
     for (const key in list) {
@@ -96,17 +54,24 @@ const DropDown = ({ list, selectedId, setSelectedId }) => {
     }
     setVisibleList(localVisibleList);
   };
-
   const handleChangeText = (event) => {
-    setSelectedText(event.target.value);
-    updateVisibleList(event.target.value);
+    const input_text = event.target.value;
+    setSelectedObj({ ...selectedObj, text: input_text });
+    updateVisibleList(input_text);
   };
 
+  // state update
   useEffect(() => {
-    setImageAndText();
+    if (list) {
+      setVisibleList(list);
+      setSelectedObj(list[selectedId]);
+    }
+  }, [list]);
+  useEffect(() => {
+    if (list) setSelectedObj(list[selectedId]);
   }, [selectedId]);
 
-  let listClass = classes.list;
+  // styling
   if (expanded) {
     listClass = [classes.list, classes.visible].join(" ");
   }
@@ -116,11 +81,23 @@ const DropDown = ({ list, selectedId, setSelectedId }) => {
       <div className={classes.selectedTile} onClick={handleSelectedTileClick}>
         <img
           className={[classes.image, classes.selectedImage].join(" ")}
-          src={selectedImageUrl}
+          src={
+            selectedObj
+              ? selectedObj.imageUrl
+                ? selectedObj.imageUrl
+                : DEFAULT_FLAG
+              : DEFAULT_FLAG
+          }
         />
         <TextField
           disabled={!expanded}
-          value={selectedText}
+          value={
+            selectedObj
+              ? selectedObj.text
+                ? selectedObj.text
+                : "None"
+              : "None"
+          }
           InputProps={{ disableUnderline: true }}
           onClick={handleTextBoxClick}
           onChange={handleChangeText}

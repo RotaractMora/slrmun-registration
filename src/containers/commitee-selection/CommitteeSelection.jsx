@@ -26,15 +26,20 @@ const CommitteeSelection = () => {
   const [selectedCountryList, setSelectedCountryList] = useState({});
   const [selectedCommitteeId, setSelectedCommitteeId] = useState(null);
   const [selectedCountryId, setSelectedCountryId] = useState(null);
+  const [fetchedCommitteeId, setFetchedCommitteeId] = useState(null);
+  const [fetchedCountryId, setFetchedCountryId] = useState(null);
   const [enableButtons, setEnableButtons] = useState(false);
+
+  console.log(selectedCommitteeId);
 
   // fetch data
   const db = getDatabase(app);
   const auth = getAuth(app);
   const current_uid = auth.currentUser.uid;
   const userRef = ref(db, "users/" + current_uid);
+  const committeesRef = ref(db, "committees");
   const fetchData = () => {
-    const committeesRef = ref(db, "committees");
+    // update the commitee and country list
     onValue(committeesRef, (snapshot) => {
       const data = snapshot.val();
 
@@ -50,7 +55,7 @@ const CommitteeSelection = () => {
         // completes the committee object
         local_committee_obj[committee_key] = {
           text: committee_obj.name,
-          imageUrl: "/images/committee-logos/default-logo.jpg",
+          imageUrl: committee_obj.imageUrl,
           available: true,
         };
 
@@ -59,13 +64,13 @@ const CommitteeSelection = () => {
           if (
             Object.hasOwnProperty.call(committee_obj.countries, country_key)
           ) {
-            const country = committee_obj.countries[country_key];
+            const country_obj = committee_obj.countries[country_key];
             if (local_country_obj[committee_key] === undefined)
               local_country_obj[committee_key] = {};
             local_country_obj[committee_key][country_key] = {
-              text: country.name,
-              available: country.availability,
-              imageUrl: "/images/country-flags/sri-lanka.jpg",
+              text: country_obj.name,
+              available: country_obj.availability,
+              imageUrl: country_obj.imageUrl,
             };
           }
         }
@@ -75,20 +80,13 @@ const CommitteeSelection = () => {
       setFetchedCommitteeList(local_committee_obj);
     });
 
+    // update the selected IDs
     onValue(userRef, (snapshot) => {
       const data = snapshot.val();
       setSelectedCommitteeId(data.committee_id);
       setSelectedCountryId(data.country_id);
     });
   };
-
-  let fetchedCommitteeId = null;
-  let fetchedCountryId = null;
-  onValue(userRef, (snapshot) => {
-    const data = snapshot.val();
-    fetchedCommitteeId = data.committee_id;
-    fetchedCountryId = data.country_id;
-  });
 
   // button panel functions
   const save = () => {
@@ -98,7 +96,7 @@ const CommitteeSelection = () => {
     });
   };
   const cancel = () => {
-    setSelectedCommitteeId(fetchedCommitteeId);
+    // setSelectedCommitteeId(fetchedCommitteeId);
     setSelectedCountryId(fetchedCountryId);
   };
 
