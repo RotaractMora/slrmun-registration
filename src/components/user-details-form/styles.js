@@ -1,6 +1,6 @@
 const styles = {
   inputPair: {
-    height: "80px",
+    minHeight: "80px",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
