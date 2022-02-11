@@ -6,6 +6,7 @@ import styles from "./styles";
 const useStyles = makeStyles(styles);
 
 const ButtonPanel = ({ enabled, onSave, onCancel }) => {
+  // console.log(enabled);
   const theme = useTheme();
   const classes = useStyles(theme);
   return (

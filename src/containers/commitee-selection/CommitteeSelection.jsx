@@ -30,8 +30,6 @@ const CommitteeSelection = () => {
   const [fetchedCountryId, setFetchedCountryId] = useState(null);
   const [enableButtons, setEnableButtons] = useState(false);
 
-  console.log(selectedCommitteeId);
-
   // fetch data
   const db = getDatabase(app);
   const auth = getAuth(app);
@@ -76,8 +74,8 @@ const CommitteeSelection = () => {
         }
       }
 
-      setFullCountryList(local_country_obj);
       setFetchedCommitteeList(local_committee_obj);
+      setFullCountryList(local_country_obj);
     });
 
     // update the selected IDs
@@ -85,34 +83,40 @@ const CommitteeSelection = () => {
       const data = snapshot.val();
       setSelectedCommitteeId(data.committee_id);
       setSelectedCountryId(data.country_id);
+      setFetchedCommitteeId(data.committee_id);
+      setFetchedCountryId(data.country_id);
     });
   };
 
   // button panel functions
   const save = () => {
+    const oldContryRef = ref(
+      db,
+      "committees/" + fetchedCommitteeId + "/countries/" + fetchedCountryId
+    );
+    const newContryRef = ref(
+      db,
+      "committees/" + selectedCommitteeId + "/countries/" + selectedCountryId
+    );
     update(userRef, {
       committee_id: selectedCommitteeId,
       country_id: selectedCountryId,
     });
+    update(oldContryRef, { availability: 1 });
+    update(newContryRef, { availability: 0 });
   };
   const cancel = () => {
-    // setSelectedCommitteeId(fetchedCommitteeId);
+    setSelectedCommitteeId(fetchedCommitteeId);
     setSelectedCountryId(fetchedCountryId);
   };
 
   // enability update function of the button panel
   const updateEnability = (fetchedArr, selectedArr) => {
-    let same = true;
-    for (let index = 0; index < fetchedArr.length; index++) {
-      if (fetchedArr[index] != selectedArr[index]) {
-        same = false;
-        break;
-      }
-    }
-    if (same) {
-      setEnableButtons(false);
-    } else {
-      setEnableButtons(true);
+    console.log(fetchedArr, selectedArr);
+    if (selectedCountryId) {
+      setEnableButtons(
+        JSON.stringify(fetchedArr) !== JSON.stringify(selectedArr)
+      );
     }
   };
 
@@ -127,7 +131,12 @@ const CommitteeSelection = () => {
       [fetchedCommitteeId, fetchedCountryId],
       [selectedCommitteeId, selectedCountryId]
     );
-  }, [selectedCommitteeId, selectedCountryId]);
+  }, [
+    selectedCommitteeId,
+    selectedCountryId,
+    fetchedCommitteeId,
+    fetchedCountryId,
+  ]);
 
   useEffect(() => {
     fetchData();

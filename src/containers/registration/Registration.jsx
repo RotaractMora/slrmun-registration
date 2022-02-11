@@ -96,6 +96,7 @@ const Registration = () => {
           rotaract_club,
           interactor,
           interact_club,
+          user_level: 0,
         });
 
         navigate(COMMITTEE_SELECTION);
