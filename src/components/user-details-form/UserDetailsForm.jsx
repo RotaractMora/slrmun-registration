@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   makeStyles,
@@ -15,33 +15,89 @@ import styles from "./styles";
 
 const useStyles = makeStyles(styles);
 
-const UserDetailsForm = ({ userData, setUserData, password, setPassword }) => {
+const UserDetailsForm = ({ userData, setUserData, getPassword }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
+  const [sriLankan, setSriLankan] = useState(false);
+
+  const isSriLankan = (text) => {
+    if (text) {
+      const lowered_text = text.toLowerCase().trim();
+      if (
+        lowered_text === "srilanka" ||
+        lowered_text === "sri lanka" ||
+        lowered_text === "sri lanka" ||
+        lowered_text === "sri lankan" ||
+        lowered_text === "sri lankan" ||
+        lowered_text === "sri-lankan"
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    if (isSriLankan(userData.residence_country)) {
+      setSriLankan(true);
+    } else {
+      setSriLankan(false);
+    }
+  }, [userData]);
+
   return (
     <div>
       <TextField
-        id="outlined-basic"
+        id="name"
         label="Name"
+        required
         fullWidth
         variant="outlined"
         margin="normal"
         value={userData.name}
         onChange={(e) => setUserData({ ...userData, name: e.target.value })}
       />
+      {getPassword ? (
+        <div className={classes.inputPair}>
+          <TextField
+            id="password"
+            label="Password"
+            required
+            InputProps={{
+              className: [classes.marginR, classes.input].join(" "),
+            }}
+            variant="outlined"
+            margin="normal"
+            value={userData.password}
+            type="password"
+            onChange={(e) =>
+              setUserData({ ...userData, password: e.target.value })
+            }
+          />
+          <TextField
+            id="confirm_password"
+            label="Confirm Password"
+            required
+            InputProps={{
+              className: [classes.marginL, classes.input].join(" "),
+            }}
+            variant="outlined"
+            margin="normal"
+            value={userData.confirm_password}
+            type="password"
+            onChange={(e) =>
+              setUserData({ ...userData, confirm_password: e.target.value })
+            }
+          />
+        </div>
+      ) : null}
       <TextField
-        id="outlined-basic"
-        label="Password"
-        fullWidth
-        variant="outlined"
-        margin="normal"
-        value={password}
-        type="password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <TextField
-        id="outlined-basic"
+        id="email"
         label="Email"
+        required
         fullWidth
         variant="outlined"
         margin="normal"
@@ -50,8 +106,9 @@ const UserDetailsForm = ({ userData, setUserData, password, setPassword }) => {
       />
       <div className={classes.inputPair}>
         <TextField
-          id="outlined-basic"
+          id="mobile_number"
           label="Mobile Number"
+          required
           InputProps={{
             className: [classes.marginR, classes.input].join(" "),
           }}
@@ -63,8 +120,9 @@ const UserDetailsForm = ({ userData, setUserData, password, setPassword }) => {
           }
         />
         <TextField
-          id="outlined-basic"
+          id="mun_experience"
           label="MUN Experience (years)"
+          required
           InputProps={{
             className: [classes.marginL, classes.input].join(" "),
           }}
@@ -77,67 +135,46 @@ const UserDetailsForm = ({ userData, setUserData, password, setPassword }) => {
           }
         />
       </div>
-      <FormControl>
-        <FormLabel id="demo-row-radio-buttons-group-label">
-          Current Status
-        </FormLabel>
-        <RadioGroup
-          row
-          aria-labelledby="demo-row-radio-buttons-group-label"
-          name="row-radio-buttons-group"
-          value={userData.current_status}
-        >
-          <FormControlLabel
-            value={0}
-            control={
-              <Radio
-                color="primary"
-                onClick={() =>
-                  setUserData({
-                    ...userData,
-                    current_status: 0,
-                  })
-                }
-              />
-            }
-            label="School Student"
-          />
-          <FormControlLabel
-            value={1}
-            control={
-              <Radio
-                color="primary"
-                onClick={() =>
-                  setUserData({
-                    ...userData,
-                    current_status: 1,
-                  })
-                }
-              />
-            }
-            label="Uniersity Student"
-          />
-          <FormControlLabel
-            value={2}
-            control={
-              <Radio
-                color="primary"
-                onClick={() =>
-                  setUserData({
-                    ...userData,
-                    current_status: 2,
-                  })
-                }
-              />
-            }
-            label="Employeed"
-          />
-        </RadioGroup>
-      </FormControl>
+      <div className={classes.root}>
+        <FormControl component="fieldset" className={classes.formControl}>
+          <FormLabel component="legend">Current Status</FormLabel>
+          <RadioGroup
+            aria-label="Current Status"
+            name="current_status"
+            row
+            className={classes.group}
+            value={userData.current_status}
+            onChange={(e) => {
+              setUserData({ ...userData, current_status: e.target.value });
+            }}
+          >
+            <FormControlLabel
+              value="0"
+              control={<Radio color="primary" />}
+              label="School Student"
+            />
+            <FormControlLabel
+              value="1"
+              control={<Radio color="primary" />}
+              label="University Student"
+            />
+            <FormControlLabel
+              value="2"
+              control={<Radio color="primary" />}
+              label="Employed"
+            />
+          </RadioGroup>
+        </FormControl>
+        <FormControl
+          component="fieldset"
+          className={classes.formControl}
+        ></FormControl>
+      </div>
       <div className={classes.inputPair}>
         <TextField
-          id="outlined-basic"
+          id="institute"
           label="Institute"
+          required
           InputProps={{
             className: [classes.marginR, classes.input].join(" "),
           }}
@@ -149,8 +186,9 @@ const UserDetailsForm = ({ userData, setUserData, password, setPassword }) => {
           }
         />
         <TextField
-          id="outlined-basic"
+          id="residence_country"
           label="Residence Country"
+          required
           InputProps={{
             className: [classes.marginL, classes.input].join(" "),
           }}
@@ -162,22 +200,25 @@ const UserDetailsForm = ({ userData, setUserData, password, setPassword }) => {
           }
         />
       </div>
-      <TextField
-        id="outlined-basic"
-        label="Residence Address"
-        fullWidth
-        variant="outlined"
-        margin="normal"
-        value={userData.residence_address}
-        onChange={(e) =>
-          setUserData({ ...userData, residence_address: e.target.value })
-        }
-      />
+      {sriLankan ? (
+        <TextField
+          id="residence_address"
+          label="Residence Address"
+          fullWidth
+          variant="outlined"
+          margin="normal"
+          value={userData.residence_address}
+          onChange={(e) =>
+            setUserData({ ...userData, residence_address: e.target.value })
+          }
+        />
+      ) : null}
       <div className={classes.inputPair}>
         <FormControlLabel
           control={
             <Checkbox
               color="primary"
+              id="rotaractor"
               checked={userData.rotaractor}
               onChange={(e) =>
                 setUserData({
@@ -191,7 +232,7 @@ const UserDetailsForm = ({ userData, setUserData, password, setPassword }) => {
         />
         {userData.rotaractor ? (
           <TextField
-            id="outlined-basic"
+            id="rotaract_club"
             label="Rotaract Club"
             InputProps={{
               className: [classes.marginL, classes.input].join(" "),
@@ -210,6 +251,7 @@ const UserDetailsForm = ({ userData, setUserData, password, setPassword }) => {
           control={
             <Checkbox
               color="primary"
+              id="interactor"
               checked={userData.interactor}
               onChange={(e) =>
                 setUserData({
@@ -223,7 +265,7 @@ const UserDetailsForm = ({ userData, setUserData, password, setPassword }) => {
         />
         {userData.interactor ? (
           <TextField
-            id="outlined-basic"
+            id="interact_club"
             label="Interact Club"
             InputProps={{
               className: [classes.marginL, classes.input].join(" "),

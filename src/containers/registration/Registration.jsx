@@ -4,8 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { COMMITTEE_SELECTION, USER_LOGIN } from "../../constants/routes";
 
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getDatabase, ref, set } from "firebase/database";
 import app from "../../auth/base";
-import { hashPassword } from "../../functions/authentication";
+import {
+  comparePasswords,
+  hashPassword,
+  validateEmail,
+  validatePassword,
+} from "../../functions/authentication";
 
 import { makeStyles, useTheme, Button, Typography } from "@material-ui/core";
 import styles from "./styles";
@@ -20,17 +26,78 @@ const Registration = () => {
 
   const navigate = useNavigate();
 
-  const [userData, setUserData] = useState({});
-  const [password, setPassword] = useState("");
+  const [userData, setUserData] = useState({
+    current_status: "0",
+    rotaractor: false,
+    interactor: false,
+  });
 
-  const handleRegister = (userData, password) => {
-    const auth = getAuth(app);
+  const db = getDatabase(app);
+  const auth = getAuth(app);
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+
+    const name = e.target.name.value;
+    const password = e.target.password.value;
     const hashedPassword = hashPassword(password);
+    const confirm_password = e.target.confirm_password.value;
+    const email = e.target.email.value;
+    const mobile_number = e.target.mobile_number.value;
+    const mun_experience = e.target.mun_experience.value;
+    const current_status = e.target.current_status.value;
+    const institute = e.target.institute.value;
+    const residence_country = e.target.residence_country.value;
+    const residence_address = e.target.residence_address
+      ? e.target.residence_address.value
+      : "";
+    const rotaractor = e.target.rotaractor.checked;
+    const rotaract_club = e.target.rotaract_club
+      ? e.target.rotaract_club.value
+      : "";
+    const interactor = e.target.interactor.checked;
+    const interact_club = e.target.interact_club
+      ? e.target.interact_club.value
+      : "";
+
+    if (!validateEmail(email)) {
+      alert("Invalid Email");
+      return;
+    }
+    if (!validatePassword(password)) {
+      alert("Password must be atleast six characters long");
+      return;
+    }
+    if (
+      !comparePasswords(password, confirm_password, userData, (data) =>
+        setUserData(data)
+      )
+    ) {
+      alert("Passwords are not the same");
+      return;
+    }
+
     createUserWithEmailAndPassword(auth, userData.email, hashedPassword)
       .then((userCredential) => {
         // Signed in
-        console.log(userCredential);
         const user = userCredential.user;
+        // Add to database
+        const userId = user.uid;
+        set(ref(db, "users/" + userId), {
+          name,
+          email,
+          mobile_number,
+          mun_experience,
+          current_status,
+          institute,
+          residence_country,
+          residence_address,
+          rotaractor,
+          rotaract_club,
+          interactor,
+          interact_club,
+        });
+
         navigate(COMMITTEE_SELECTION);
       })
       .catch((error) => {
@@ -46,28 +113,29 @@ const Registration = () => {
         <Typography variant="h1" className={classes.h1}>
           Registration
         </Typography>
-        <UserDetailsForm
-          userData={userData}
-          setUserData={setUserData}
-          password={password}
-          setPassword={(password) => setPassword(password)}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          onClick={() => handleRegister(userData, password)}
-        >
-          Register
-        </Button>
-        <Button
-          variant="outlined"
-          color="secondary"
-          className={classes.button}
-          onClick={() => navigate(USER_LOGIN)}
-        >
-          Log In
-        </Button>
+        <form onSubmit={(e) => handleRegister(e)}>
+          <UserDetailsForm
+            userData={userData}
+            setUserData={setUserData}
+            getPassword
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            type="submit"
+          >
+            Register
+          </Button>
+          <Button
+            variant="outlined"
+            color="secondary"
+            className={classes.button}
+            onClick={() => navigate(USER_LOGIN)}
+          >
+            Log In
+          </Button>
+        </form>
       </div>
     </div>
   );

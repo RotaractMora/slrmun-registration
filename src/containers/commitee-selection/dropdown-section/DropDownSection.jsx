@@ -17,6 +17,7 @@ const DropDownSection = ({
 }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
+  // console.log("fetchedCountryList :", fetchedCountryList);
   return (
     <div>
       <div className={classes.selectionContainer}>

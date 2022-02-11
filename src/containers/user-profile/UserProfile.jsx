@@ -27,9 +27,7 @@ const UserProfile = () => {
     }
   };
 
-  const save = () => {
-    console.log("Saved");
-  };
+  const save = () => {};
 
   const cancel = () => {
     setUserData(fetchedUserData);

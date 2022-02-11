@@ -4,6 +4,8 @@ import "firebase/auth";
 const app = firebase.initializeApp({
   apiKey: "AIzaSyDk6yKKttA-SF9vQeK3YFshKFQyMM_2ifk",
   authDomain: "slrmun-22.firebaseapp.com",
+  databaseURL:
+    "https://slrmun-22-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "slrmun-22",
   storageBucket: "slrmun-22.appspot.com",
   messagingSenderId: "132337541600",
