@@ -57,7 +57,7 @@ const UserDetailsForm = ({ userData, setUserData, getPassword }) => {
         fullWidth
         variant="outlined"
         margin="normal"
-        value={userData.name}
+        value={userData.name ? userData.name : ""}
         onChange={(e) => setUserData({ ...userData, name: e.target.value })}
       />
       {getPassword ? (
@@ -71,7 +71,7 @@ const UserDetailsForm = ({ userData, setUserData, getPassword }) => {
             }}
             variant="outlined"
             margin="normal"
-            value={userData.password}
+            value={userData.password ? userData.password : ""}
             type="password"
             onChange={(e) =>
               setUserData({ ...userData, password: e.target.value })
@@ -86,7 +86,7 @@ const UserDetailsForm = ({ userData, setUserData, getPassword }) => {
             }}
             variant="outlined"
             margin="normal"
-            value={userData.confirm_password}
+            value={userData.confirm_password ? userData.confirm_password : ""}
             type="password"
             onChange={(e) =>
               setUserData({ ...userData, confirm_password: e.target.value })
@@ -101,7 +101,7 @@ const UserDetailsForm = ({ userData, setUserData, getPassword }) => {
         fullWidth
         variant="outlined"
         margin="normal"
-        value={userData.email}
+        value={userData.email ? userData.email : ""}
         onChange={(e) => setUserData({ ...userData, email: e.target.value })}
       />
       <div className={classes.inputPair}>
@@ -114,7 +114,7 @@ const UserDetailsForm = ({ userData, setUserData, getPassword }) => {
           }}
           variant="outlined"
           margin="normal"
-          value={userData.mobile_number}
+          value={userData.mobile_number ? userData.mobile_number : ""}
           onChange={(e) =>
             setUserData({ ...userData, mobile_number: e.target.value })
           }
@@ -129,7 +129,9 @@ const UserDetailsForm = ({ userData, setUserData, getPassword }) => {
           type="number"
           variant="outlined"
           margin="normal"
-          value={userData.mun_experience}
+          value={
+            userData.mun_experience ? parseInt(userData.mun_experience) : 0
+          }
           onChange={(e) =>
             setUserData({ ...userData, mun_experience: e.target.value })
           }
@@ -143,7 +145,7 @@ const UserDetailsForm = ({ userData, setUserData, getPassword }) => {
             name="current_status"
             row
             className={classes.group}
-            value={userData.current_status}
+            value={userData.current_status ? userData.current_status : "0"}
             onChange={(e) => {
               setUserData({ ...userData, current_status: e.target.value });
             }}
@@ -165,10 +167,6 @@ const UserDetailsForm = ({ userData, setUserData, getPassword }) => {
             />
           </RadioGroup>
         </FormControl>
-        <FormControl
-          component="fieldset"
-          className={classes.formControl}
-        ></FormControl>
       </div>
       <div className={classes.inputPair}>
         <TextField
@@ -180,7 +178,7 @@ const UserDetailsForm = ({ userData, setUserData, getPassword }) => {
           }}
           variant="outlined"
           margin="normal"
-          value={userData.institute}
+          value={userData.institute ? userData.institute : ""}
           onChange={(e) =>
             setUserData({ ...userData, institute: e.target.value })
           }
@@ -194,7 +192,7 @@ const UserDetailsForm = ({ userData, setUserData, getPassword }) => {
           }}
           variant="outlined"
           margin="normal"
-          value={userData.residence_country}
+          value={userData.residence_country ? userData.residence_country : ""}
           onChange={(e) =>
             setUserData({ ...userData, residence_country: e.target.value })
           }
@@ -207,7 +205,7 @@ const UserDetailsForm = ({ userData, setUserData, getPassword }) => {
           fullWidth
           variant="outlined"
           margin="normal"
-          value={userData.residence_address}
+          value={userData.residence_address ? userData.residence_address : ""}
           onChange={(e) =>
             setUserData({ ...userData, residence_address: e.target.value })
           }
@@ -215,19 +213,14 @@ const UserDetailsForm = ({ userData, setUserData, getPassword }) => {
       ) : null}
       <div className={classes.inputPair}>
         <FormControlLabel
-          control={
-            <Checkbox
-              color="primary"
-              id="rotaractor"
-              checked={userData.rotaractor}
-              onChange={(e) =>
-                setUserData({
-                  ...userData,
-                  rotaractor: e.target.checked,
-                })
-              }
-            />
+          checked={userData.rotaractor ? userData.rotaractor : false}
+          onChange={(e) =>
+            setUserData({
+              ...userData,
+              rotaractor: e.target.checked,
+            })
           }
+          control={<Checkbox color="primary" id="rotaractor" />}
           label="I am a Rotaractor"
         />
         {userData.rotaractor ? (
@@ -239,7 +232,7 @@ const UserDetailsForm = ({ userData, setUserData, getPassword }) => {
             }}
             variant="outlined"
             margin="normal"
-            value={userData.rotaract_club}
+            value={userData.rotaract_club ? userData.rotaract_club : ""}
             onChange={(e) =>
               setUserData({ ...userData, rotaract_club: e.target.value })
             }
@@ -252,7 +245,7 @@ const UserDetailsForm = ({ userData, setUserData, getPassword }) => {
             <Checkbox
               color="primary"
               id="interactor"
-              checked={userData.interactor}
+              checked={userData.interactor ? userData.interactor : false}
               onChange={(e) =>
                 setUserData({
                   ...userData,
@@ -272,7 +265,7 @@ const UserDetailsForm = ({ userData, setUserData, getPassword }) => {
             }}
             variant="outlined"
             margin="normal"
-            value={userData.interact_club}
+            value={userData.interact_club ? userData.interact_club : ""}
             onChange={(e) =>
               setUserData({ ...userData, interact_club: e.target.value })
             }
