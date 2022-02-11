@@ -1,5 +1,6 @@
-import React from "react";
-import { useState } from "react";
+import React, { useContext } from "react";
+
+import { AuthContext } from "../../auth/Auth";
 
 import { makeStyles, useTheme } from "@material-ui/core";
 import styles from "./styles";
@@ -13,11 +14,11 @@ const Layout = () => {
   const theme = useTheme();
   const classes = useStyles(theme);
 
-  const [loggedIn, setLoggedIn] = useState(true);
+  const { currentUser } = useContext(AuthContext);
 
   return (
     <div className={classes.root}>
-      {loggedIn ? <LoggedIn /> : <UnLoggedIn />}
+      {currentUser ? <LoggedIn /> : <UnLoggedIn />}
     </div>
   );
 };

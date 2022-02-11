@@ -17,7 +17,8 @@ const styles = {
     marginBottom: "30px",
   },
   button: {
-    margin: "20px auto",
+    width: "100px",
+    margin: "20px 10px",
   },
   link: {
     color: "#0000FF",

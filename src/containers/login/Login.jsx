@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 
-import { Link } from "react-router-dom";
-import { USER_REGISTRATION } from "../../constants/routes";
+import { Link, useNavigate } from "react-router-dom";
+import { USER_REGISTRATION, COMMITTEE_SELECTION } from "../../constants/routes";
+
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import app from "../../auth/base";
+import { hashPassword } from "../../functions/authentication";
 
 import {
   makeStyles,
@@ -25,6 +29,23 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showModal, setShowModal] = useState(false);
 
+  const navigate = useNavigate();
+  const handleSignIn = (email, password) => {
+    const auth = getAuth(app);
+    const hashedPassword = hashPassword(password);
+    signInWithEmailAndPassword(auth, email, hashedPassword)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        navigate(COMMITTEE_SELECTION);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
+  };
+
   return (
     <div className={classes.root}>
       <div className={classes.container}>
@@ -43,12 +64,18 @@ const Login = () => {
           label="Password"
           variant="outlined"
           fullWidth
+          type="password"
           margin="normal"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <Button variant="contained" color="primary" className={classes.button}>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          onClick={() => handleSignIn(email, password)}
+        >
           Log in
         </Button>
 

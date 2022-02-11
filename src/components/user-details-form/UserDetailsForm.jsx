@@ -15,7 +15,7 @@ import styles from "./styles";
 
 const useStyles = makeStyles(styles);
 
-const UserDetailsForm = ({ userData, setUserData }) => {
+const UserDetailsForm = ({ userData, setUserData, password, setPassword }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
   return (
@@ -28,6 +28,16 @@ const UserDetailsForm = ({ userData, setUserData }) => {
         margin="normal"
         value={userData.name}
         onChange={(e) => setUserData({ ...userData, name: e.target.value })}
+      />
+      <TextField
+        id="outlined-basic"
+        label="Password"
+        fullWidth
+        variant="outlined"
+        margin="normal"
+        value={password}
+        type="password"
+        onChange={(e) => setPassword(e.target.value)}
       />
       <TextField
         id="outlined-basic"

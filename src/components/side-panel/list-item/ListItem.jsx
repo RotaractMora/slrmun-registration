@@ -7,7 +7,7 @@ import styles from "./styles";
 
 const useStyles = makeStyles(styles);
 
-const ListItem = ({ text, link, active }) => {
+const ListItem = ({ text, link, active, onClick }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
 
@@ -16,13 +16,18 @@ const ListItem = ({ text, link, active }) => {
     list_item_class = [classes.list_item, classes.active_list_item].join(" ");
   }
 
-  return (
+  return link ? (
     <Link to={link} style={{ textDecoration: "none" }}>
       <div className={list_item_class}>
         <div className={classes.list_item_bar}></div>
         <div className={classes.list_item_item}>{text}</div>
       </div>
     </Link>
+  ) : (
+    <div onClick={onClick} className={list_item_class}>
+      <div className={classes.list_item_bar}></div>
+      <div className={classes.list_item_item}>{text}</div>
+    </div>
   );
 };
 
