@@ -69,7 +69,6 @@ const CommitteeRegistrationStatus = () => {
   const theme = useTheme();
   const useStyles = makeStyles(styles(theme, registrationStatus));
   const classes = useStyles();
-  console.log(theme);
   let reg_class = classes["reg_stat_" + registrationStatus];
   const root_className = [classes.root, reg_class].join(" ");
 

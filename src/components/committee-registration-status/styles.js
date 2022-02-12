@@ -1,12 +1,7 @@
 const styles = (theme, stat) => {
+  // color selection
   let banner_color = theme.palette.error.main;
   let text_color = theme.palette.error.contrastText;
-  /* Banner colors:
-   * 4. Approved by the admin:
-   * 1. Payment made or registered for committee and country: theme.palette.orange.main
-   * 0. Just registered: theme.palette.error.main
-   */
-  console.log(stat);
   if (stat === 1 || stat === 2) {
     banner_color = theme.palette.orange.main;
     text_color = theme.palette.orange.contrastText;
