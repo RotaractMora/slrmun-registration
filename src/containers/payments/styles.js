@@ -15,6 +15,12 @@ const styles = {
   h1: {
     margin: "20px",
   },
+  breaker: {
+    height: "2px",
+    width: "100%",
+    backgroundColor: "gray",
+    margin: "30px auto",
+  },
 };
 
 export default styles;

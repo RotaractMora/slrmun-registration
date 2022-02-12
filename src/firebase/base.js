@@ -7,7 +7,7 @@ const app = firebase.initializeApp({
   databaseURL:
     "https://slrmun-22-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "slrmun-22",
-  storageBucket: "slrmun-22.appspot.com",
+  storageBucket: "gs://slrmun-22.appspot.com/",
   messagingSenderId: "132337541600",
   appId: "1:132337541600:web:943db57f77409341678b85",
 });

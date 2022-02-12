@@ -3,7 +3,7 @@ import { COMMITTEE_SELECTION } from "../constants/routes";
 
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
-import app from "../auth/base";
+import app from "../firebase/base";
 
 export const HandleSignIn = (email, password) => {
   const navigate = useNavigate();

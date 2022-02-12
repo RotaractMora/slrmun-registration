@@ -2,35 +2,33 @@ const styles = (theme) => {
   return {
     root: {
       position: "absolute",
-      backgroundColor: theme.palette.background.transparentBlack,
       top: 0,
       left: 0,
+      backgroundColor: theme.palette.background.transparentBlack,
       width: "100%",
       height: "100%",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      zIndex: 5,
     },
     container: {
       backgroundColor: "white",
-      maxWidth: "450px",
-      padding: "30px",
       borderRadius: "20px",
+      padding: "20px",
       boxShadow: theme.shadows[24],
+      textAlign: "center",
     },
-    h3: {
-      fontSize: "3rem",
-      color: theme.palette.primary.main,
-      padding: "10px",
+    drop_area: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      width: "70vw",
+      height: "50vh",
+      border: "3px dashed gray",
+      borderRadius: "10px",
+      padding: "20px",
     },
-    bodyText: {
-      padding: "10px 0px",
-      color: "gray",
-    },
-    button: {
-      margin: "10px 0px",
-    },
+    contents: {},
   };
 };
 

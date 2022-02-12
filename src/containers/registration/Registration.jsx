@@ -5,7 +5,7 @@ import { COMMITTEE_SELECTION, USER_LOGIN } from "../../constants/routes";
 
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
-import app from "../../auth/base";
+import app from "../../firebase/base";
 import {
   comparePasswords,
   hashPassword,

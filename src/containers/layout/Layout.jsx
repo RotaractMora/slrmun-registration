@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import { AuthContext } from "../../auth/Auth";
+import { AuthContext } from "../../firebase/Auth";
 
 import { makeStyles, useTheme } from "@material-ui/core";
 import styles from "./styles";

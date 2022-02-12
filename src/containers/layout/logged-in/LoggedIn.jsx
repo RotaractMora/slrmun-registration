@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 
 //firebase
-import app from "../../../auth/base";
+import app from "../../../firebase/base";
 import { getAuth } from "firebase/auth";
 import { getDatabase, onValue, ref } from "firebase/database";
+import { getStorage } from "firebase/storage";
 
 //routing
 import { Routes, Route } from "react-router-dom";
@@ -40,6 +41,7 @@ const LoggedIn = () => {
   //firebase
   const auth = getAuth(app);
   const db = getDatabase(app);
+  const storage = getStorage(app);
   const current_uid = auth.currentUser.uid;
   const userRef = ref(db, "users/" + current_uid);
   const fetch = () => {
@@ -71,7 +73,14 @@ const LoggedIn = () => {
           />
           <Route
             path={PAYMENTS}
-            element={<Payments fetchedUserData={userData} />}
+            element={
+              <Payments
+                fetchedUserData={userData}
+                firebaseAuth={auth}
+                firebaseDb={db}
+                firebaseStorage={storage}
+              />
+            }
           />
           {userData.user_level > 0 ? (
             <Route

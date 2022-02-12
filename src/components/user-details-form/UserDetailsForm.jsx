@@ -13,32 +13,14 @@ import {
 } from "@material-ui/core";
 import styles from "./styles";
 
+import { isSriLankan } from "../../functions/user";
+
 const useStyles = makeStyles(styles);
 
 const UserDetailsForm = ({ userData, setUserData, getPassword }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
   const [sriLankan, setSriLankan] = useState(false);
-
-  const isSriLankan = (text) => {
-    if (text) {
-      const lowered_text = text.toLowerCase().trim();
-      if (
-        lowered_text === "srilanka" ||
-        lowered_text === "sri lanka" ||
-        lowered_text === "sri lanka" ||
-        lowered_text === "sri lankan" ||
-        lowered_text === "sri lankan" ||
-        lowered_text === "sri-lankan"
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  };
 
   useEffect(() => {
     if (isSriLankan(userData.residence_country)) {

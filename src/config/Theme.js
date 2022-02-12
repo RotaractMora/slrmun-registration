@@ -9,6 +9,9 @@ const theme_config = (base_theme) => ({
     },
   },
   palette: {
+    background: {
+      transparentBlack: "#0004",
+    },
     orange: {
       main: "#ffa600",
       contrastText: "#fff",

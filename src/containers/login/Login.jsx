@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { USER_REGISTRATION, COMMITTEE_SELECTION } from "../../constants/routes";
 
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import app from "../../auth/base";
+import app from "../../firebase/base";
 import { hashPassword } from "../../functions/authentication";
 
 import {

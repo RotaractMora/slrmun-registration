@@ -6,7 +6,7 @@ import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 import theme_config from "./config/Theme";
 import "./App.css";
 
-import { AuthProvider } from "./auth/Auth";
+import { AuthProvider } from "./firebase/Auth";
 
 function App() {
   const base_theme = createTheme();

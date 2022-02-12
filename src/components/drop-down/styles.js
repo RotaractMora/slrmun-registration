@@ -20,7 +20,6 @@ const styles = {
     width: "130px",
   },
   text_field: {
-    backgroundColor: "red",
     width: "280px",
     maxWidth: "30vw",
     marginRight: "20px",
