@@ -52,11 +52,9 @@ const CommitteeRegistrationStatus = ({ fetchedUserData }) => {
   const theme = useTheme();
   const useStyles = makeStyles(styles(theme, registrationStatus));
   const classes = useStyles();
-  let reg_class = classes["reg_stat_" + registrationStatus];
-  const root_className = [classes.root, reg_class].join(" ");
 
   return (
-    <div className={root_className}>
+    <div className={classes.root}>
       <Typography variant="h2" className={classes.heading}>
         Committee Registration Status
       </Typography>

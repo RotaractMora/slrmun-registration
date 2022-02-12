@@ -17,6 +17,7 @@ const styles = (theme, stat) => {
       maxWidth: "450px",
       textAlign: "center",
       margin: "20px auto",
+      border: "1px solid " + banner_color,
     },
     heading: {
       padding: "10px",
@@ -25,12 +26,7 @@ const styles = (theme, stat) => {
     banner: {
       padding: "20px",
       color: text_color,
-    },
-    reg_stat_2: {
-      border: "1px solid " + banner_color,
-      "& $banner": {
-        backgroundColor: banner_color,
-      },
+      backgroundColor: banner_color,
     },
   };
 };

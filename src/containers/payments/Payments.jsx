@@ -27,7 +27,6 @@ const Payments = ({
   firebaseDb,
   firebaseStorage,
 }) => {
-  console.log(firebaseDb);
   const theme = useTheme();
   const classes = useStyles(theme);
 
