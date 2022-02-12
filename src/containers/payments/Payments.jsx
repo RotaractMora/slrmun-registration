@@ -6,6 +6,7 @@ import {
   ref as refStorageFunc,
   getDownloadURL,
   uploadBytesResumable,
+  deleteObject,
 } from "firebase/storage";
 
 import { makeStyles, useTheme, Typography, Button } from "@material-ui/core";
@@ -34,17 +35,18 @@ const Payments = ({
 
   // state
   const [showModal, setShowModal] = useState(false);
-  const [alertModalData, setAlertModalData] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
 
   const uploadFile = (image) => {
-    // firebase
     const current_uid = firebaseAuth.currentUser.uid;
-    const storageRef = refStorageFunc(
+    const upload_path =
+      "/images/payment-slips/" + current_uid + "/" + image.name;
+    const newImageRef = refStorageFunc(firebaseStorage, upload_path);
+    const oldImageRef = refStorageFunc(
       firebaseStorage,
-      "/images/payment-slips/" + current_uid + "/" + image.name
+      fetchedUserData.bank_slip_storage_path
     );
-    const uploadTask = uploadBytesResumable(storageRef, image);
+    const uploadTask = uploadBytesResumable(newImageRef, image);
     // Listen for state changes, errors, and completion of the upload.
     uploadTask.on(
       "state_changed",
@@ -76,13 +78,26 @@ const Payments = ({
         }
       },
       () => {
-        // Upload completed successfully, now we can get the download URL
+        // Upload completed successfully,
+        // delete the old image
+        deleteObject(oldImageRef)
+          .then(() => {
+            // File deleted successfully
+            console.log("deleted");
+          })
+          .catch((error) => {
+            // Uh-oh, an error occurred!
+          });
+        // now we can get the download URL
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           const userRef = refDatabaseFunction(
             firebaseDb,
             "users/" + current_uid
           );
-          update(userRef, { bank_slip: downloadURL });
+          update(userRef, {
+            bank_slip: downloadURL,
+            bank_slip_storage_path: upload_path,
+          });
           setShowModal(false);
           setUploadProgress(0);
         });
@@ -93,10 +108,10 @@ const Payments = ({
   // handlers
   const fileUploadHandler = (e) => {
     const image = e.target.files[0];
-
+    console.log(image.size / 1024 ** 2);
     // if the image file is too large (>1MB), compress the image and then upload
-    if (image.size / (1024 * 2) > 1) {
-      const quality = (1024 * 2) / image.size;
+    if (image.size / 1024 ** 2 > 1) {
+      const quality = 1024 ** 2 / image.size;
       new Compressor(image, {
         quality,
         success(result) {
