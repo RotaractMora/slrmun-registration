@@ -82,10 +82,13 @@ const CommitteeSelection = ({ fetchedUserData }) => {
 
   // button panel functions
   const save = () => {
-    const oldContryRef = ref(
-      db,
-      "committees/" + fetchedCommitteeId + "/countries/" + fetchedCountryId
-    );
+    let oldCountryRef = undefined;
+    if (fetchedCountryId) {
+      oldCountryRef = ref(
+        db,
+        "committees/" + fetchedCommitteeId + "/countries/" + fetchedCountryId
+      );
+    }
     const newContryRef = ref(
       db,
       "committees/" + selectedCommitteeId + "/countries/" + selectedCountryId
@@ -94,7 +97,9 @@ const CommitteeSelection = ({ fetchedUserData }) => {
       committee_id: selectedCommitteeId,
       country_id: selectedCountryId,
     });
-    update(oldContryRef, { availability: 1 });
+    if (oldCountryRef) {
+      update(oldCountryRef, { availability: 1 });
+    }
     update(newContryRef, { availability: 0 });
   };
   const cancel = () => {
