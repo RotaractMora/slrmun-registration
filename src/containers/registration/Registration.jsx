@@ -97,6 +97,7 @@ const Registration = () => {
           interactor,
           interact_club,
           user_level: 0,
+          admin_approved: 0,
         });
 
         navigate(COMMITTEE_SELECTION);

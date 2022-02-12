@@ -12,6 +12,7 @@ import { getAuth } from "firebase/auth";
 // components
 import DropDownSection from "./dropdown-section/DropDownSection";
 import ButtonPanel from "../../components/button-panel/ButtonPanel";
+import CommitteeRegistrationStatus from "../../components/committee-registration-status/CommitteeRegistrationStatus";
 
 const useStyles = makeStyles(styles);
 
@@ -112,7 +113,6 @@ const CommitteeSelection = () => {
 
   // enability update function of the button panel
   const updateEnability = (fetchedArr, selectedArr) => {
-    console.log(fetchedArr, selectedArr);
     if (selectedCountryId) {
       setEnableButtons(
         JSON.stringify(fetchedArr) !== JSON.stringify(selectedArr)
@@ -148,6 +148,7 @@ const CommitteeSelection = () => {
         Committee Selection
       </Typography>
       <div className={classes.container}>
+        <CommitteeRegistrationStatus />
         <DropDownSection
           fetchedCountryId={fetchedCountryId}
           fetchedCommitteeId={fetchedCommitteeId}

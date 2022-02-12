@@ -8,6 +8,16 @@ const theme_config = (base_theme) => ({
       fontSize: "1.5rem",
     },
   },
+  palette: {
+    orange: {
+      main: "#ffa600",
+      contrastText: "#fff",
+    },
+    yellow: {
+      main: "#ffee00",
+      contrastText: "#000",
+    },
+  },
 });
 
 export default theme_config;
