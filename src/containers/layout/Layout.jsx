@@ -40,13 +40,13 @@ const Layout = () => {
       console.log("is a user");
       renderElement = <LoggedIn firebaseAuth={auth} />;
     } else {
-      renderElement = <Navigate to="/" />;
+      renderElement = <Navigate to={COMMITTEE_SELECTION} />;
     }
   } else {
     if ([USER_LOGIN, USER_REGISTRATION].includes(location.pathname)) {
       renderElement = <UnLoggedIn />;
     } else {
-      renderElement = <Navigate to="/login" />;
+      renderElement = <Navigate to={USER_LOGIN} />;
     }
   }
   return <div className={classes.root}>{renderElement}</div>;

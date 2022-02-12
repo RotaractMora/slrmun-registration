@@ -3,6 +3,9 @@ const theme_config = (base_theme) => ({
     h1: {
       fontSize: "4rem",
       color: base_theme.palette.primary.main,
+      "@media screen and (max-width: 768px)": {
+        fontSize: "2rem",
+      },
     },
     h2: {
       fontSize: "1.5rem",
