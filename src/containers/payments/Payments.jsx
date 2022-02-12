@@ -12,6 +12,8 @@ import { makeStyles, useTheme, Typography, Button } from "@material-ui/core";
 import UploadIcon from "@mui/icons-material/Upload";
 import styles from "./styles";
 
+import Compressor from "compressorjs";
+
 import { isSriLankan } from "../../functions/user";
 
 import LocalInstructions from "./local-instructions/LocalInstructions";
@@ -32,14 +34,10 @@ const Payments = ({
 
   // state
   const [showModal, setShowModal] = useState(false);
-  const [image, setImage] = useState(null);
+  const [alertModalData, setAlertModalData] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
 
-  // handlers
-  const fileUploadHandler = (e) => {
-    const image = e.target.files[0];
-    setImage(image);
-
+  const uploadFile = (image) => {
     // firebase
     const current_uid = firebaseAuth.currentUser.uid;
     const storageRef = refStorageFunc(
@@ -92,6 +90,28 @@ const Payments = ({
     );
   };
 
+  // handlers
+  const fileUploadHandler = (e) => {
+    const image = e.target.files[0];
+
+    // if the image file is too large (>1MB), compress the image and then upload
+    if (image.size / (1024 * 2) > 1) {
+      const quality = (1024 * 2) / image.size;
+      new Compressor(image, {
+        quality,
+        success(result) {
+          uploadFile(result);
+        },
+        error(err) {
+          console.log(err.message);
+        },
+      });
+    } else {
+      // directly upload if the file size is small enough (<1MB)
+      uploadFile(image);
+    }
+  };
+
   // rendering components
   let instructions = <LocalInstructions />;
   if (!isSriLankan(fetchedUserData.residence_country)) {
@@ -105,14 +125,31 @@ const Payments = ({
       <div className={classes.container}>
         {instructions}
         <div className={classes.breaker}></div>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<UploadIcon />}
-          onClick={() => setShowModal(true)}
-        >
-          Upload Image
-        </Button>
+        {fetchedUserData.bank_slip ? (
+          <div className={classes.uploaded_image_container}>
+            <img
+              className={classes.bank_slip_img}
+              src={fetchedUserData.bank_slip}
+              alt="transaction-document"
+            />
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => setShowModal(true)}
+            >
+              Change Image
+            </Button>
+          </div>
+        ) : (
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<UploadIcon />}
+            onClick={() => setShowModal(true)}
+          >
+            Upload Image
+          </Button>
+        )}
         <div className={classes.breaker}></div>
         <CommitteeRegistrationStatus fetchedUserData={fetchedUserData} />
       </div>

@@ -1,7 +1,7 @@
 const styles = (theme) => {
   return {
     root: {
-      position: "absolute",
+      position: "fixed",
       top: 0,
       left: 0,
       backgroundColor: theme.palette.background.transparentBlack,

@@ -21,6 +21,15 @@ const styles = {
     backgroundColor: "gray",
     margin: "30px auto",
   },
+  bank_slip_img: {
+    width: "300px",
+    maxWidth: "80vw",
+  },
+  uploaded_image_container: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+  },
 };
 
 export default styles;
