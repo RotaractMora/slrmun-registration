@@ -23,7 +23,7 @@ const DropDownSection = ({
   return (
     <div>
       <div className={classes.selectionContainer}>
-        <Typography variant="h5" className={classes.selectionHeading}>
+        <Typography variant="h2" className={classes.selectionHeading}>
           Committee
         </Typography>
         <DropDown
@@ -36,7 +36,7 @@ const DropDownSection = ({
         />
       </div>
       <div className={classes.selectionContainer}>
-        <Typography variant="h5" className={classes.selectionHeading}>
+        <Typography variant="h2" className={classes.selectionHeading}>
           Country
         </Typography>
         <DropDown

@@ -4,6 +4,9 @@ const theme_config = (base_theme) => ({
       fontSize: "4rem",
       color: base_theme.palette.primary.main,
     },
+    h2: {
+      fontSize: "1.5rem",
+    },
   },
 });
 
