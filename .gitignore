@@ -11,6 +11,9 @@
 # production
 /build
 
+# firebase service account
+/push_data/serviceAccountKey.json
+
 # misc
 .DS_Store
 .env.local
