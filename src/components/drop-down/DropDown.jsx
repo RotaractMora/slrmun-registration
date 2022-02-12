@@ -6,7 +6,7 @@ import styles from "./styles";
 import ListItem from "./list-item/ListItem";
 import { useEffect } from "react";
 
-import { DEFAULT_FLAG } from "../../constants/routes";
+import { BASE_URL, DEFAULT_FLAG } from "../../constants/routes";
 
 const useStyles = makeStyles(styles);
 
@@ -84,9 +84,9 @@ const DropDown = ({ list, selectedId, setSelectedId }) => {
           src={
             selectedObj
               ? selectedObj.imageUrl
-                ? selectedObj.imageUrl
-                : DEFAULT_FLAG
-              : DEFAULT_FLAG
+                ? BASE_URL + selectedObj.imageUrl
+                : BASE_URL + DEFAULT_FLAG
+              : BASE_URL + DEFAULT_FLAG
           }
         />
         <TextField
