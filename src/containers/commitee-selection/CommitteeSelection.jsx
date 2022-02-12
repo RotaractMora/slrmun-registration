@@ -11,7 +11,7 @@ import { getAuth } from "firebase/auth";
 
 // components
 import DropDownSection from "./dropdown-section/DropDownSection";
-import ButtonPanel from "../../UI/button-panel/ButtonPanel";
+import ButtonPanel from "../../components/button-panel/ButtonPanel";
 
 const useStyles = makeStyles(styles);
 

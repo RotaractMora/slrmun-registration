@@ -9,7 +9,7 @@ import styles from "./styles";
 
 import DefaultUserIcon from "../../assets/images/default-user-icon.png";
 import UserDetailsForm from "../../components/user-details-form/UserDetailsForm";
-import ButtonPanel from "../../UI/button-panel/ButtonPanel";
+import ButtonPanel from "../../components/button-panel/ButtonPanel";
 
 const useStyles = makeStyles(styles);
 

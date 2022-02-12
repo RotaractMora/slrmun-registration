@@ -3,7 +3,7 @@ import React from "react";
 import { makeStyles, useTheme, Typography } from "@material-ui/core";
 import styles from "./styles";
 
-import DropDown from "../../../UI/drop-down/DropDown";
+import DropDown from "../../../components/drop-down/DropDown";
 
 const useStyles = makeStyles(styles);
 

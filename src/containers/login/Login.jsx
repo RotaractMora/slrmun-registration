@@ -17,7 +17,7 @@ import {
 import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
 import styles from "./styles";
 
-import Modal from "../../UI/modal/Modal";
+import Modal from "../../components/modal/Modal";
 
 const useStyles = makeStyles(styles);
 
