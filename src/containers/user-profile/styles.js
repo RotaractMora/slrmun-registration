@@ -13,8 +13,20 @@ const styles = {
     borderRadius: "20px",
   },
   profile_img: {
+    position: "relative",
     borderRadius: "50%",
     width: "200px",
+  },
+  img_overlay: {
+    position: "absolute",
+    borderRadius: "50%",
+    width: "200px",
+    opacity: 0,
+    transition: "0.3s",
+    cursor: "pointer",
+    "&:hover": {
+      opacity: 0.9,
+    },
   },
   marginL: {
     marginLeft: "5px",

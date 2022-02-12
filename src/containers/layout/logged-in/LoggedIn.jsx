@@ -65,11 +65,25 @@ const LoggedIn = () => {
         <Routes>
           <Route
             path={USER_PROFILE}
-            element={<UserProfile fetchedUserData={userData} />}
+            element={
+              <UserProfile
+                fetchedUserData={userData}
+                firebaseAuth={auth}
+                firebaseDb={db}
+                firebaseStorage={storage}
+              />
+            }
           />
           <Route
             path={COMMITTEE_SELECTION}
-            element={<CommitteeSelection fetchedUserData={userData} />}
+            element={
+              <CommitteeSelection
+                fetchedUserData={userData}
+                firebaseAuth={auth}
+                firebaseDb={db}
+                firebaseStorage={storage}
+              />
+            }
           />
           <Route
             path={PAYMENTS}
@@ -85,7 +99,14 @@ const LoggedIn = () => {
           {userData.user_level > 0 ? (
             <Route
               path={USER_MANAGEMENT}
-              element={<UserManagement fetchedUserData={userData} />}
+              element={
+                <UserManagement
+                  fetchedUserData={userData}
+                  firebaseAuth={auth}
+                  firebaseDb={db}
+                  firebaseStorage={storage}
+                />
+              }
             />
           ) : null}
         </Routes>

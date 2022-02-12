@@ -10,6 +10,7 @@ const styles = (theme) => {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
+      zIndex: 30,
     },
     container: {
       backgroundColor: "white",

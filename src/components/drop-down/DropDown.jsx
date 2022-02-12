@@ -6,7 +6,7 @@ import styles from "./styles";
 import ListItem from "./list-item/ListItem";
 import { useEffect } from "react";
 
-import { BASE_URL, DEFAULT_FLAG } from "../../constants/routes";
+import { BASE_URL, DEFAULT_FLAG } from "../../constants/general";
 
 const useStyles = makeStyles(styles);
 

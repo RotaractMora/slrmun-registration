@@ -3,7 +3,7 @@ import React from "react";
 import { makeStyles, useTheme, Typography } from "@material-ui/core";
 import styles from "./styles";
 
-import { BASE_URL } from "../../../constants/routes";
+import { BASE_URL } from "../../../constants/general";
 
 const useStyles = makeStyles(styles);
 
