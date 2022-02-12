@@ -6,7 +6,7 @@ import styles from "./styles";
 
 import { PAYMENTS_FIELD_NAME } from "../../constants/general";
 
-const CommitteeRegistrationStatus = ({ fetchedUserData }) => {
+const CommitteeRegistrationStatus = ({ fetchedUserData, setShowBanner }) => {
   // state
   const [registrationStatus, setRegistrationStatus] = useState(0);
   /* Registration status:
@@ -22,6 +22,9 @@ const CommitteeRegistrationStatus = ({ fetchedUserData }) => {
     if (fetchedUserData) {
       if (fetchedUserData.admin_approved) {
         setRegistrationStatus(4);
+        if (setShowBanner) {
+          setShowBanner(false);
+        }
       } else if (
         fetchedUserData[PAYMENTS_FIELD_NAME] !== undefined &&
         fetchedUserData.committee_id !== undefined &&

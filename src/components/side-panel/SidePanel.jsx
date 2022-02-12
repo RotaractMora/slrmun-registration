@@ -24,7 +24,7 @@ import ListItem from "./list-item/ListItem";
 
 const useStyles = makeStyles(styles);
 
-const SidePanel = ({ cross }) => {
+const SidePanel = ({ cross, setShowSidePanel }) => {
   // styles
   const theme = useTheme();
   const classes = useStyles(theme);
@@ -72,22 +72,26 @@ const SidePanel = ({ cross }) => {
           text={"Profile"}
           link={USER_PROFILE}
           active={current_path === USER_PROFILE}
+          onClick={() => setShowSidePanel(false)}
         />
         <ListItem
           text={"Committee Selection"}
           link={COMMITTEE_SELECTION}
           active={current_path === COMMITTEE_SELECTION}
+          onClick={() => setShowSidePanel(false)}
         />
         <ListItem
           text={"Payments"}
           link={PAYMENTS}
           active={current_path === PAYMENTS}
+          onClick={() => setShowSidePanel(false)}
         />
         {userLevel > 0 ? (
           <ListItem
             text={"User Management"}
             link={USER_MANAGEMENT}
             active={current_path === USER_MANAGEMENT}
+            onClick={() => setShowSidePanel(false)}
           />
         ) : null}
         <ListItem text={"Log out"} onClick={handleLogout} />

@@ -11,7 +11,7 @@ const LocalInstructions = () => {
   return (
     <div className={classes.root}>
       <Typography variant="h2" className={classes.h1}>
-        Payment Method (local)
+        Payment Method
       </Typography>
       <Typography variant="body1">
         Please deposit an amount of <b>LKR 2000</b> to the following bank

@@ -30,6 +30,7 @@ const CommitteeSelection = ({ fetchedUserData }) => {
   const [fetchedCommitteeId, setFetchedCommitteeId] = useState(null);
   const [fetchedCountryId, setFetchedCountryId] = useState(null);
   const [enableButtons, setEnableButtons] = useState(false);
+  const [showBanner, setShowBanner] = useState(true);
 
   // fetch data
   const db = getDatabase(app);
@@ -53,7 +54,7 @@ const CommitteeSelection = ({ fetchedUserData }) => {
 
         // completes the committee object
         local_committee_obj[committee_key] = {
-          text: committee_obj.name,
+          text: committee_obj.short_name,
           imageUrl: committee_obj.imageUrl,
           available: true,
         };
@@ -151,7 +152,12 @@ const CommitteeSelection = ({ fetchedUserData }) => {
         Committee Selection
       </Typography>
       <div className={classes.container}>
-        <CommitteeRegistrationStatus fetchedUserData={fetchedUserData} />
+        {showBanner ? (
+          <CommitteeRegistrationStatus
+            fetchedUserData={fetchedUserData}
+            setShowBanner={setShowBanner}
+          />
+        ) : null}
         <DropDownSection
           fetchedCountryId={fetchedCountryId}
           fetchedCommitteeId={fetchedCommitteeId}

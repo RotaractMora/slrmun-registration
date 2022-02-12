@@ -11,9 +11,47 @@ const ForeignInstructions = () => {
   return (
     <div className={classes.root}>
       <Typography variant="h2" className={classes.h1}>
-        Payment Method (foreign)
+        Payment Method
       </Typography>
-      <div className={classes.container}>foreign</div>
+      <Typography variant="body1">
+        Please deposit an amount of <b>$15</b> to the following bank account and
+        upload a clear image of the transaction document to the below section.
+        Please note that this cost do not include transfering charges and they
+        must be beared by the registrant.
+      </Typography>
+      <table className={classes.table}>
+        <tbody>
+          <tr>
+            <td
+              align="right"
+              className={[classes.main_data, classes.table_cell].join(" ")}
+            >
+              Account Number
+            </td>
+            <td className={classes.table_cell} align="left">
+              307599
+            </td>
+          </tr>
+          <tr>
+            <td align="right" className={classes.main_data}>
+              Account Name
+            </td>
+            <td align="left">Rotaract Club of University of Moratuwa</td>
+          </tr>
+          <tr>
+            <td align="right" className={classes.main_data}>
+              Bank
+            </td>
+            <td align="left">Bank of Ceylon</td>
+          </tr>
+          <tr>
+            <td align="right" className={classes.main_data}>
+              Branch
+            </td>
+            <td align="left">Katubedda Branch</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 };

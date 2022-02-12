@@ -59,7 +59,7 @@ const LoggedIn = ({ firebaseAuth }) => {
     <React.Fragment>
       <Header cross={cross} setCross={(setValue) => setCross(setValue)} />
       <div className={classes.body}>
-        <SidePanel cross={cross} />
+        <SidePanel cross={cross} setShowSidePanel={setCross} />
         <Routes>
           <Route
             path={USER_PROFILE}

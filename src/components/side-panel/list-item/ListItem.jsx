@@ -17,7 +17,7 @@ const ListItem = ({ text, link, active, onClick }) => {
   }
 
   return link ? (
-    <Link to={link} style={{ textDecoration: "none" }}>
+    <Link to={link} style={{ textDecoration: "none" }} onClick={onClick}>
       <div className={list_item_class}>
         <div className={classes.list_item_bar}></div>
         <div className={classes.list_item_item}>{text}</div>
