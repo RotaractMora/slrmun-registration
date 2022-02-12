@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 //firebase
 import app from "../../../firebase/base";
-import { getAuth } from "firebase/auth";
 import { getDatabase, onValue, ref } from "firebase/database";
 import { getStorage } from "firebase/storage";
 
@@ -29,7 +28,7 @@ import UserManagement from "../../../containers/user-management/UserManagement";
 
 const useStyles = makeStyles(styles);
 
-const LoggedIn = () => {
+const LoggedIn = ({ firebaseAuth }) => {
   //styling
   const theme = useTheme();
   const classes = useStyles(theme);
@@ -39,10 +38,9 @@ const LoggedIn = () => {
   const [userData, setUserData] = useState({});
 
   //firebase
-  const auth = getAuth(app);
   const db = getDatabase(app);
   const storage = getStorage(app);
-  const current_uid = auth.currentUser.uid;
+  const current_uid = firebaseAuth.currentUser.uid;
   const userRef = ref(db, "users/" + current_uid);
   const fetch = () => {
     onValue(userRef, (snapshot) => {
@@ -68,7 +66,7 @@ const LoggedIn = () => {
             element={
               <UserProfile
                 fetchedUserData={userData}
-                firebaseAuth={auth}
+                firebaseAuth={firebaseAuth}
                 firebaseDb={db}
                 firebaseStorage={storage}
               />
@@ -79,7 +77,7 @@ const LoggedIn = () => {
             element={
               <CommitteeSelection
                 fetchedUserData={userData}
-                firebaseAuth={auth}
+                firebaseAuth={firebaseAuth}
                 firebaseDb={db}
                 firebaseStorage={storage}
               />
@@ -90,7 +88,7 @@ const LoggedIn = () => {
             element={
               <Payments
                 fetchedUserData={userData}
-                firebaseAuth={auth}
+                firebaseAuth={firebaseAuth}
                 firebaseDb={db}
                 firebaseStorage={storage}
               />
@@ -102,7 +100,7 @@ const LoggedIn = () => {
               element={
                 <UserManagement
                   fetchedUserData={userData}
-                  firebaseAuth={auth}
+                  firebaseAuth={firebaseAuth}
                   firebaseDb={db}
                   firebaseStorage={storage}
                 />

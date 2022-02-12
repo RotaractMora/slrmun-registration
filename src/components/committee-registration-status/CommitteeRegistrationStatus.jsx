@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import { makeStyles, useTheme, Typography } from "@material-ui/core";
 import styles from "./styles";
 
+import { PAYMENTS_FIELD_NAME } from "../../constants/general";
+
 const CommitteeRegistrationStatus = ({ fetchedUserData }) => {
   // state
   const [registrationStatus, setRegistrationStatus] = useState(0);
@@ -21,25 +23,25 @@ const CommitteeRegistrationStatus = ({ fetchedUserData }) => {
       if (fetchedUserData.admin_approved) {
         setRegistrationStatus(4);
       } else if (
-        fetchedUserData.bank_slip !== undefined &&
+        fetchedUserData[PAYMENTS_FIELD_NAME] !== undefined &&
         fetchedUserData.committee_id !== undefined &&
         fetchedUserData.country_id !== undefined
       ) {
         setRegistrationStatus(3);
       } else if (
-        fetchedUserData.bank_slip === undefined &&
+        fetchedUserData[PAYMENTS_FIELD_NAME] === undefined &&
         fetchedUserData.committee_id !== undefined &&
         fetchedUserData.country_id !== undefined
       ) {
         setRegistrationStatus(2);
       } else if (
-        fetchedUserData.bank_slip !== undefined &&
+        fetchedUserData[PAYMENTS_FIELD_NAME] !== undefined &&
         fetchedUserData.committee_id === undefined &&
         fetchedUserData.country_id === undefined
       ) {
         setRegistrationStatus(1);
       } else if (
-        fetchedUserData.bank_slip === undefined &&
+        fetchedUserData[PAYMENTS_FIELD_NAME] === undefined &&
         fetchedUserData.committee_id === undefined &&
         fetchedUserData.country_id === undefined
       ) {
