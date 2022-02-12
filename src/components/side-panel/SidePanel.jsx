@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
+//firebase
+import app from "../../auth/base";
 import { getAuth } from "firebase/auth";
+import { getDatabase, onValue, ref } from "firebase/database";
 
+// routing
 import { useLocation, useNavigate } from "react-router-dom";
-
 import {
   USER_PROFILE,
   COMMITTEE_SELECTION,
@@ -12,34 +15,55 @@ import {
   USER_LOGIN,
 } from "../../constants/routes";
 
+// styles
 import { makeStyles, useTheme } from "@material-ui/core";
 import styles from "./styles";
 
+// components
 import ListItem from "./list-item/ListItem";
-
-import app from "../../auth/base";
 
 const useStyles = makeStyles(styles);
 
 const SidePanel = ({ cross }) => {
+  // styles
   const theme = useTheme();
   const classes = useStyles(theme);
-
-  const current_path = useLocation().pathname;
-
-  const auth = getAuth(app);
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    auth.signOut();
-    navigate(USER_LOGIN);
-  };
-
-  //   Handles the cross transition
   let body_class = classes.body;
   if (cross) {
     body_class = [classes.body, classes.body_in].join(" ");
   }
+
+  // routing
+  const navigate = useNavigate();
+  const current_path = useLocation().pathname;
+
+  // state
+  const [userLevel, setUserLevel] = useState(null);
+
+  //firebase
+  const auth = getAuth(app);
+  const db = getDatabase(app);
+  const current_uid = auth.currentUser.uid;
+  const userRef = ref(db, "users/" + current_uid);
+  const fetch = () => {
+    onValue(userRef, (snapshot) => {
+      const data = snapshot.val();
+      setUserLevel(data.user_level);
+    });
+  };
+
+  //state management
+  useEffect(() => {
+    if (userLevel === null) {
+      fetch();
+    }
+  }, []);
+
+  // authentication
+  const handleLogout = () => {
+    auth.signOut();
+    navigate(USER_LOGIN);
+  };
 
   return (
     <div className={classes.root}>
@@ -59,11 +83,13 @@ const SidePanel = ({ cross }) => {
           link={PAYMENTS}
           active={current_path === PAYMENTS}
         />
-        <ListItem
-          text={"User Management"}
-          link={USER_MANAGEMENT}
-          active={current_path === USER_MANAGEMENT}
-        />
+        {userLevel > 0 ? (
+          <ListItem
+            text={"User Management"}
+            link={USER_MANAGEMENT}
+            active={current_path === USER_MANAGEMENT}
+          />
+        ) : null}
         <ListItem text={"Log out"} onClick={handleLogout} />
       </div>
     </div>
