@@ -3,7 +3,7 @@ const styles = {
     position: "relative",
   },
   selectedTile: {
-    width: "450px",
+    maxWidth: "450px",
     borderRadius: "75px",
     boxShadow: "0px 0px 5px gray",
     display: "flex",
@@ -18,6 +18,12 @@ const styles = {
   selectedImage: {
     margin: "10px",
     width: "130px",
+  },
+  text_field: {
+    backgroundColor: "red",
+    width: "280px",
+    maxWidth: "30vw",
+    marginRight: "20px",
   },
   list: {
     backgroundColor: "white",

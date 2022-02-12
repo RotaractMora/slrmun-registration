@@ -14,6 +14,7 @@ const styles = (theme, stat) => {
   }
   return {
     root: {
+      maxWidth: "450px",
       textAlign: "center",
       margin: "20px auto",
     },

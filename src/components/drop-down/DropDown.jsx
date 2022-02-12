@@ -98,7 +98,7 @@ const DropDown = ({ list, selectedId, setSelectedId }) => {
                 : "None"
               : "None"
           }
-          InputProps={{ disableUnderline: true }}
+          InputProps={{ disableUnderline: true, className: classes.text_field }}
           onClick={handleTextBoxClick}
           onChange={handleChangeText}
         />
