@@ -13,14 +13,22 @@ import ButtonPanel from "../../components/button-panel/ButtonPanel";
 
 const useStyles = makeStyles(styles);
 
-const UserProfile = () => {
+const UserProfile = ({ fetchedUserData }) => {
+  // styling
   const theme = useTheme();
   const classes = useStyles(theme);
 
+  //states
   const [enableButtons, setEnableButtons] = useState(false);
-  const [userData, setUserData] = useState({});
-  const [fetchedUserData, setFetchedUserData] = useState({});
+  const [userData, setUserData] = useState(fetchedUserData);
 
+  // firebase
+  const db = getDatabase(app);
+  const auth = getAuth(app);
+  const current_uid = auth.currentUser.uid;
+  const userRef = ref(db, "users/" + current_uid);
+
+  // button pannel functions
   const updateEnability = (fetchedObject, currentObject) => {
     if (JSON.stringify(fetchedObject) === JSON.stringify(currentObject)) {
       setEnableButtons(false);
@@ -28,30 +36,17 @@ const UserProfile = () => {
       setEnableButtons(true);
     }
   };
-
-  const db = getDatabase(app);
-  const auth = getAuth(app);
-  const current_uid = auth.currentUser.uid;
-  const userRef = ref(db, "users/" + current_uid);
-  const fetchData = () => {
-    onValue(userRef, (snapshot) => {
-      const data = snapshot.val();
-      setFetchedUserData(data);
-      setUserData(data);
-    });
-  };
-
   const save = () => {
     update(userRef, userData);
   };
-
   const cancel = () => {
     setUserData(fetchedUserData);
   };
 
+  // state management
   useEffect(() => {
-    fetchData();
-  }, []);
+    setUserData(fetchedUserData);
+  }, [fetchedUserData]);
   useEffect(() => {
     updateEnability(fetchedUserData, userData);
   }, [userData]);

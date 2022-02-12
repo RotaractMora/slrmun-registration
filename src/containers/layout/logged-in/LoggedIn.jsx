@@ -35,7 +35,6 @@ const LoggedIn = () => {
 
   //states
   const [cross, setCross] = useState(false);
-  const [userLevel, setUserLevel] = useState(null);
   const [userData, setUserData] = useState({});
 
   //firebase
@@ -47,13 +46,12 @@ const LoggedIn = () => {
     onValue(userRef, (snapshot) => {
       const data = snapshot.val();
       setUserData(data);
-      setUserLevel(data.user_level);
     });
   };
 
   //state management
   useEffect(() => {
-    if (userLevel === null) {
+    if (JSON.stringify(userData) === JSON.stringify({})) {
       fetch();
     }
   }, []);
@@ -65,17 +63,21 @@ const LoggedIn = () => {
         <Routes>
           <Route
             path={USER_PROFILE}
-            element={
-              <UserProfile
-                userData={userData}
-                setUserData={(data) => setUserData(data)}
-              />
-            }
+            element={<UserProfile fetchedUserData={userData} />}
           />
-          <Route path={COMMITTEE_SELECTION} element={<CommitteeSelection />} />
-          <Route path={PAYMENTS} element={<Payments />} />
-          {userLevel > 0 ? (
-            <Route path={USER_MANAGEMENT} element={<UserManagement />} />
+          <Route
+            path={COMMITTEE_SELECTION}
+            element={<CommitteeSelection fetchedUserData={userData} />}
+          />
+          <Route
+            path={PAYMENTS}
+            element={<Payments fetchedUserData={userData} />}
+          />
+          {userData.user_level > 0 ? (
+            <Route
+              path={USER_MANAGEMENT}
+              element={<UserManagement fetchedUserData={userData} />}
+            />
           ) : null}
         </Routes>
       </div>

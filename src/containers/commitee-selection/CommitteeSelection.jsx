@@ -16,7 +16,7 @@ import CommitteeRegistrationStatus from "../../components/committee-registration
 
 const useStyles = makeStyles(styles);
 
-const CommitteeSelection = () => {
+const CommitteeSelection = ({ fetchedUserData }) => {
   // Styling
   const theme = useTheme();
   const classes = useStyles(theme);
@@ -78,15 +78,6 @@ const CommitteeSelection = () => {
       setFetchedCommitteeList(local_committee_obj);
       setFullCountryList(local_country_obj);
     });
-
-    // update the selected IDs
-    onValue(userRef, (snapshot) => {
-      const data = snapshot.val();
-      setSelectedCommitteeId(data.committee_id);
-      setSelectedCountryId(data.country_id);
-      setFetchedCommitteeId(data.committee_id);
-      setFetchedCountryId(data.country_id);
-    });
   };
 
   // button panel functions
@@ -142,13 +133,20 @@ const CommitteeSelection = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    setSelectedCommitteeId(fetchedUserData.committee_id);
+    setSelectedCountryId(fetchedUserData.country_id);
+    setFetchedCommitteeId(fetchedUserData.committee_id);
+    setFetchedCountryId(fetchedUserData.country_id);
+  }, [fetchedUserData]);
+
   return (
     <div className={classes.root}>
       <Typography variant="h1" className={classes.h1}>
         Committee Selection
       </Typography>
       <div className={classes.container}>
-        <CommitteeRegistrationStatus />
+        <CommitteeRegistrationStatus fetchedUserData={fetchedUserData} />
         <DropDownSection
           fetchedCountryId={fetchedCountryId}
           fetchedCommitteeId={fetchedCommitteeId}

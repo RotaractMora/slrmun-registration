@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from "react";
 
-//firebase
-import app from "../../auth/base";
-import { getAuth } from "firebase/auth";
-import { getDatabase, onValue, ref } from "firebase/database";
-
 // styles
 import { makeStyles, useTheme, Typography } from "@material-ui/core";
 import styles from "./styles";
 
-const CommitteeRegistrationStatus = () => {
+const CommitteeRegistrationStatus = ({ fetchedUserData }) => {
   // state
-  const [userData, setUserData] = useState({});
   const [registrationStatus, setRegistrationStatus] = useState(0);
   /* Registration status:
    * 4: Approved by the admin
@@ -21,49 +15,38 @@ const CommitteeRegistrationStatus = () => {
    * 0: Not registered for committee and country; Payment not made; not approved by the admin
    */
 
-  //firebase
-  const auth = getAuth(app);
-  const db = getDatabase(app);
-  const current_uid = auth.currentUser.uid;
-  const userRef = ref(db, "users/" + current_uid);
-  const fetch = () => {
-    onValue(userRef, (snapshot) => {
-      const data = snapshot.val();
-      setUserData(data);
-    });
-  };
-
   // state management
-  useEffect(() => fetch(), []);
   useEffect(() => {
-    if (userData.admin_approved) {
-      setRegistrationStatus(4);
-    } else if (
-      userData.bank_slip !== undefined &&
-      userData.committee_id !== undefined &&
-      userData.country_id !== undefined
-    ) {
-      setRegistrationStatus(3);
-    } else if (
-      userData.bank_slip === undefined &&
-      userData.committee_id !== undefined &&
-      userData.country_id !== undefined
-    ) {
-      setRegistrationStatus(2);
-    } else if (
-      userData.bank_slip !== undefined &&
-      userData.committee_id === undefined &&
-      userData.country_id === undefined
-    ) {
-      setRegistrationStatus(1);
-    } else if (
-      userData.bank_slip === undefined &&
-      userData.committee_id === undefined &&
-      userData.country_id === undefined
-    ) {
-      setRegistrationStatus(0);
+    if (fetchedUserData) {
+      if (fetchedUserData.admin_approved) {
+        setRegistrationStatus(4);
+      } else if (
+        fetchedUserData.bank_slip !== undefined &&
+        fetchedUserData.committee_id !== undefined &&
+        fetchedUserData.country_id !== undefined
+      ) {
+        setRegistrationStatus(3);
+      } else if (
+        fetchedUserData.bank_slip === undefined &&
+        fetchedUserData.committee_id !== undefined &&
+        fetchedUserData.country_id !== undefined
+      ) {
+        setRegistrationStatus(2);
+      } else if (
+        fetchedUserData.bank_slip !== undefined &&
+        fetchedUserData.committee_id === undefined &&
+        fetchedUserData.country_id === undefined
+      ) {
+        setRegistrationStatus(1);
+      } else if (
+        fetchedUserData.bank_slip === undefined &&
+        fetchedUserData.committee_id === undefined &&
+        fetchedUserData.country_id === undefined
+      ) {
+        setRegistrationStatus(0);
+      }
     }
-  }, [userData]);
+  }, [fetchedUserData]);
 
   // Styling
   const theme = useTheme();
