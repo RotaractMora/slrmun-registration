@@ -1,5 +1,8 @@
 const styles = {
   header: {
+    position: "fixed",
+    width: "100%",
+    zIndex: 5,
     backgroundColor: (props) => props.palette.primary.main,
     padding: "5px",
     borderBottom: "1px solid gray",
