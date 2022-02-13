@@ -13,7 +13,6 @@ import {
   COMMITTEE_SELECTION,
   PAYMENTS,
   USER_MANAGEMENT,
-  USER_LOGIN,
 } from "../../constants/routes";
 
 // styles
@@ -22,6 +21,9 @@ import styles from "./styles";
 
 // components
 import ListItem from "./list-item/ListItem";
+
+// other constants
+import { GENERAL_USER_LEVEL, USERS_DOC_NAME } from "../../constants/general";
 
 const useStyles = makeStyles(styles);
 
@@ -46,7 +48,7 @@ const SidePanel = ({ cross, setShowSidePanel }) => {
   const db = getDatabase(app);
   const { currentUser } = useContext(AuthContext);
   const current_uid = currentUser.uid;
-  const userRef = ref(db, "users/" + current_uid);
+  const userRef = ref(db, USERS_DOC_NAME + "/" + current_uid);
   const fetch = () => {
     onValue(userRef, (snapshot) => {
       const data = snapshot.val();
@@ -87,7 +89,7 @@ const SidePanel = ({ cross, setShowSidePanel }) => {
           active={current_path === PAYMENTS}
           onClick={() => setShowSidePanel(false)}
         />
-        {userLevel > 0 ? (
+        {userLevel > GENERAL_USER_LEVEL ? (
           <ListItem
             text={"User Management"}
             link={USER_MANAGEMENT}

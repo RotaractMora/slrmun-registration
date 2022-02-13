@@ -18,6 +18,9 @@ import styles from "./styles";
 
 import UserDetailsForm from "../../components/user-details-form/UserDetailsForm";
 
+// other constants
+import { USERS_DOC_NAME } from "../../constants/general";
+
 const useStyles = makeStyles(styles);
 
 const Registration = () => {
@@ -83,7 +86,7 @@ const Registration = () => {
         const user = userCredential.user;
         // Add to database
         const userId = user.uid;
-        set(ref(db, "users/" + userId), {
+        set(ref(db, USERS_DOC_NAME + "/" + userId), {
           name,
           email,
           mobile_number,

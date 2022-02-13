@@ -27,6 +27,9 @@ import CommitteeSelection from "../../../containers/commitee-selection/Committee
 import Payments from "../../../containers/payments/Payments";
 import UserManagement from "../../../containers/user-management/UserManagement";
 
+// other constants
+import { GENERAL_USER_LEVEL, USERS_DOC_NAME } from "../../../constants/general";
+
 const useStyles = makeStyles(styles);
 
 const LoggedIn = ({ firebaseAuth }) => {
@@ -43,7 +46,7 @@ const LoggedIn = ({ firebaseAuth }) => {
   const storage = getStorage(app);
   const { currentUser } = useContext(AuthContext);
   const current_uid = currentUser.uid;
-  const userRef = ref(db, "users/" + current_uid);
+  const userRef = ref(db, USERS_DOC_NAME + "/" + current_uid);
   const fetch = () => {
     onValue(userRef, (snapshot) => {
       const data = snapshot.val();
@@ -89,8 +92,11 @@ const LoggedIn = ({ firebaseAuth }) => {
               />
             }
           />
-          {userData.user_level > 0 ? (
-            <Route path={USER_MANAGEMENT} element={<UserManagement />} />
+          {userData.user_level > GENERAL_USER_LEVEL ? (
+            <Route
+              path={USER_MANAGEMENT}
+              element={<UserManagement firebaseDatabase={db} />}
+            />
           ) : null}
         </Routes>
       </div>

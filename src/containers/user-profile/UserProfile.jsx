@@ -16,6 +16,7 @@ import FileUploadModal from "../../components/file-upload-modal/FileUploadModal"
 import {
   PROFILE_PICTURE_FIELD_NAME,
   PROFILE_PICTURE_UPLOAD_DIRECTORY,
+  USERS_DOC_NAME,
 } from "../../constants/general";
 
 const useStyles = makeStyles(styles);
@@ -34,7 +35,7 @@ const UserProfile = ({ fetchedUserData, firebaseDb, firebaseStorage }) => {
   // firebase
   const { currentUser } = useContext(AuthContext);
   const current_uid = currentUser.uid;
-  const userRef = ref(firebaseDb, "users/" + current_uid);
+  const userRef = ref(firebaseDb, USERS_DOC_NAME + "/" + current_uid);
 
   // button pannel functions
   const updateEnability = (fetchedObject, currentObject) => {

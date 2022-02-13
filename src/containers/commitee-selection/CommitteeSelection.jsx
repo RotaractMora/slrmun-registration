@@ -14,6 +14,7 @@ import DropDownSection from "./dropdown-section/DropDownSection";
 import ButtonPanel from "../../components/button-panel/ButtonPanel";
 import CommitteeRegistrationStatus from "../../components/committee-registration-status/CommitteeRegistrationStatus";
 import { AuthContext } from "../../firebase/Auth";
+import { COMMITTEES_DOC_NAME, USERS_DOC_NAME } from "../../constants/general";
 
 const useStyles = makeStyles(styles);
 
@@ -36,7 +37,7 @@ const CommitteeSelection = ({ fetchedUserData, firebaseDb }) => {
   // fetch data
   const { currentUser } = useContext(AuthContext);
   const current_uid = currentUser.uid;
-  const userRef = ref(firebaseDb, "users/" + current_uid);
+  const userRef = ref(firebaseDb, USERS_DOC_NAME + "/" + current_uid);
   const committeesRef = ref(firebaseDb, "committees");
   const fetchData = () => {
     // update the commitee and country list
@@ -87,12 +88,20 @@ const CommitteeSelection = ({ fetchedUserData, firebaseDb }) => {
     if (fetchedCountryId) {
       oldCountryRef = ref(
         firebaseDb,
-        "committees/" + fetchedCommitteeId + "/countries/" + fetchedCountryId
+        COMMITTEES_DOC_NAME +
+          "/" +
+          fetchedCommitteeId +
+          "/countries/" +
+          fetchedCountryId
       );
     }
     const newContryRef = ref(
       firebaseDb,
-      "committees/" + selectedCommitteeId + "/countries/" + selectedCountryId
+      COMMITTEES_DOC_NAME +
+        "/" +
+        selectedCommitteeId +
+        "/countries/" +
+        selectedCountryId
     );
 
     // update the database if the new country is available
