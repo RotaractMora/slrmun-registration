@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 //firebase
 import app from "../../firebase/base";
 import { getAuth } from "firebase/auth";
 import { getDatabase, onValue, ref } from "firebase/database";
+import { AuthContext } from "../../firebase/Auth";
 
 // routing
 import { useLocation, useNavigate } from "react-router-dom";
@@ -43,7 +44,8 @@ const SidePanel = ({ cross, setShowSidePanel }) => {
   //firebase
   const auth = getAuth(app);
   const db = getDatabase(app);
-  const current_uid = auth.currentUser.uid;
+  const { currentUser } = useContext(AuthContext);
+  const current_uid = currentUser.uid;
   const userRef = ref(db, "users/" + current_uid);
   const fetch = () => {
     onValue(userRef, (snapshot) => {

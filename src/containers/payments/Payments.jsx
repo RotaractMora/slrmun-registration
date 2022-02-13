@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { makeStyles, useTheme, Typography, Button } from "@material-ui/core";
 import UploadIcon from "@mui/icons-material/Upload";
@@ -17,20 +17,19 @@ import {
   PAYMENTS_UPLOAD_DIRECTORY,
 } from "../../constants/general";
 
+import { AuthContext } from "../../firebase/Auth";
+
 const useStyles = makeStyles(styles);
 
-const Payments = ({
-  fetchedUserData,
-  firebaseAuth,
-  firebaseDb,
-  firebaseStorage,
-}) => {
+const Payments = ({ fetchedUserData, firebaseDb, firebaseStorage }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
 
   // state
   const [showModal, setShowModal] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+
+  const { currentUser } = useContext(AuthContext);
 
   // handlers
   const fileUploadHandler = (e) => {
@@ -39,9 +38,9 @@ const Payments = ({
     compressAndUpload(
       image,
       fetchedUserData,
-      firebaseAuth,
       firebaseStorage,
       firebaseDb,
+      currentUser,
       setUploadProgress,
       setShowModal,
       PAYMENTS_UPLOAD_DIRECTORY,

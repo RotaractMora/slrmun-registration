@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 
 import app from "../../firebase/base";
 import { getAuth } from "firebase/auth";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 
 import { makeStyles, useTheme } from "@material-ui/core";
@@ -19,6 +19,8 @@ import {
   USER_MANAGEMENT,
 } from "../../constants/routes";
 
+import { AuthContext } from "../../firebase/Auth";
+
 const useStyles = makeStyles(styles);
 
 const Layout = () => {
@@ -28,7 +30,9 @@ const Layout = () => {
   const location = useLocation();
 
   const auth = getAuth(app);
-  const currentUser = auth.currentUser;
+  const { currentUser } = useContext(AuthContext);
+
+  useEffect(() => {}, [currentUser]);
 
   let renderElement = <UnLoggedIn />;
   if (currentUser) {
@@ -37,7 +41,6 @@ const Layout = () => {
         location.pathname
       )
     ) {
-      console.log("is a user");
       renderElement = <LoggedIn firebaseAuth={auth} />;
     } else {
       renderElement = <Navigate to={COMMITTEE_SELECTION} />;

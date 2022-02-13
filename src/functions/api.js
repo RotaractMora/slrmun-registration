@@ -35,15 +35,15 @@ export const HandleSignIn = (email, password) => {
 export const uploadFile = (
   image,
   fetchedUserData,
-  firebaseAuth,
   firebaseStorage,
   firebaseDb,
+  currentUser,
   setUploadProgress,
   setShowModal,
   uploadDirectory,
   uploadFieldName
 ) => {
-  const current_uid = firebaseAuth.currentUser.uid;
+  const current_uid = currentUser.uid;
   const upload_path =
     "/images/" + uploadDirectory + "/" + current_uid + "/" + image.name;
   const newImageRef = refStorageFunc(firebaseStorage, upload_path);
@@ -111,9 +111,9 @@ export const uploadFile = (
 export const compressAndUpload = (
   image,
   fetchedUserData,
-  firebaseAuth,
   firebaseStorage,
   firebaseDb,
+  currentUser,
   setUploadProgress,
   setShowModal,
   uploadDirectory,
@@ -127,9 +127,9 @@ export const compressAndUpload = (
         uploadFile(
           result,
           fetchedUserData,
-          firebaseAuth,
           firebaseStorage,
           firebaseDb,
+          currentUser,
           setUploadProgress,
           setShowModal,
           uploadDirectory,
@@ -145,9 +145,9 @@ export const compressAndUpload = (
     uploadFile(
       image,
       fetchedUserData,
-      firebaseAuth,
       firebaseStorage,
       firebaseDb,
+      currentUser,
       setUploadProgress,
       setShowModal,
       uploadDirectory,

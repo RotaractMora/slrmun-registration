@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 // styles
 import { makeStyles, useTheme, Typography } from "@material-ui/core";
@@ -13,10 +13,11 @@ import { getAuth } from "firebase/auth";
 import DropDownSection from "./dropdown-section/DropDownSection";
 import ButtonPanel from "../../components/button-panel/ButtonPanel";
 import CommitteeRegistrationStatus from "../../components/committee-registration-status/CommitteeRegistrationStatus";
+import { AuthContext } from "../../firebase/Auth";
 
 const useStyles = makeStyles(styles);
 
-const CommitteeSelection = ({ fetchedUserData }) => {
+const CommitteeSelection = ({ fetchedUserData, firebaseDb }) => {
   // Styling
   const theme = useTheme();
   const classes = useStyles(theme);
@@ -33,11 +34,10 @@ const CommitteeSelection = ({ fetchedUserData }) => {
   const [showBanner, setShowBanner] = useState(true);
 
   // fetch data
-  const db = getDatabase(app);
-  const auth = getAuth(app);
-  const current_uid = auth.currentUser.uid;
-  const userRef = ref(db, "users/" + current_uid);
-  const committeesRef = ref(db, "committees");
+  const { currentUser } = useContext(AuthContext);
+  const current_uid = currentUser.uid;
+  const userRef = ref(firebaseDb, "users/" + current_uid);
+  const committeesRef = ref(firebaseDb, "committees");
   const fetchData = () => {
     // update the commitee and country list
     onValue(committeesRef, (snapshot) => {
@@ -86,23 +86,32 @@ const CommitteeSelection = ({ fetchedUserData }) => {
     let oldCountryRef = undefined;
     if (fetchedCountryId) {
       oldCountryRef = ref(
-        db,
+        firebaseDb,
         "committees/" + fetchedCommitteeId + "/countries/" + fetchedCountryId
       );
     }
     const newContryRef = ref(
-      db,
+      firebaseDb,
       "committees/" + selectedCommitteeId + "/countries/" + selectedCountryId
     );
-    update(userRef, {
-      committee_id: selectedCommitteeId,
-      country_id: selectedCountryId,
+
+    // update the database if the new country is available
+    onValue(newContryRef, (snapshot) => {
+      const data = snapshot.val();
+      console.log(data.availability);
+      if (data.availability === 1) {
+        update(userRef, {
+          committee_id: selectedCommitteeId,
+          country_id: selectedCountryId,
+        });
+        if (oldCountryRef) {
+          update(oldCountryRef, { availability: 1 });
+        }
+        update(newContryRef, { availability: 0 });
+      }
     });
-    if (oldCountryRef) {
-      update(oldCountryRef, { availability: 1 });
-    }
-    update(newContryRef, { availability: 0 });
   };
+
   const cancel = () => {
     setSelectedCommitteeId(fetchedCommitteeId);
     setSelectedCountryId(fetchedCountryId);

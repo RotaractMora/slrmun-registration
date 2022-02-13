@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import { ref, update } from "firebase/database";
 import { compressAndUpload } from "../../functions/api";
+import { AuthContext } from "../../firebase/Auth";
 
 import { makeStyles, Typography, useTheme } from "@material-ui/core";
 import styles from "./styles";
@@ -19,12 +20,7 @@ import {
 
 const useStyles = makeStyles(styles);
 
-const UserProfile = ({
-  fetchedUserData,
-  firebaseAuth,
-  firebaseDb,
-  firebaseStorage,
-}) => {
+const UserProfile = ({ fetchedUserData, firebaseDb, firebaseStorage }) => {
   // styling
   const theme = useTheme();
   const classes = useStyles(theme);
@@ -36,7 +32,8 @@ const UserProfile = ({
   const [uploadProgress, setUploadProgress] = useState(0);
 
   // firebase
-  const current_uid = firebaseAuth.currentUser.uid;
+  const { currentUser } = useContext(AuthContext);
+  const current_uid = currentUser.uid;
   const userRef = ref(firebaseDb, "users/" + current_uid);
 
   // button pannel functions
@@ -60,9 +57,9 @@ const UserProfile = ({
     compressAndUpload(
       image,
       fetchedUserData,
-      firebaseAuth,
       firebaseStorage,
       firebaseDb,
+      currentUser,
       setUploadProgress,
       setShowModal,
       PROFILE_PICTURE_UPLOAD_DIRECTORY,

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 //firebase
 import app from "../../../firebase/base";
 import { getDatabase, onValue, ref } from "firebase/database";
 import { getStorage } from "firebase/storage";
+import { AuthContext } from "../../../firebase/Auth";
 
 //routing
 import { Routes, Route } from "react-router-dom";
@@ -40,7 +41,8 @@ const LoggedIn = ({ firebaseAuth }) => {
   //firebase
   const db = getDatabase(app);
   const storage = getStorage(app);
-  const current_uid = firebaseAuth.currentUser.uid;
+  const { currentUser } = useContext(AuthContext);
+  const current_uid = currentUser.uid;
   const userRef = ref(db, "users/" + current_uid);
   const fetch = () => {
     onValue(userRef, (snapshot) => {
@@ -66,7 +68,6 @@ const LoggedIn = ({ firebaseAuth }) => {
             element={
               <UserProfile
                 fetchedUserData={userData}
-                firebaseAuth={firebaseAuth}
                 firebaseDb={db}
                 firebaseStorage={storage}
               />
@@ -75,12 +76,7 @@ const LoggedIn = ({ firebaseAuth }) => {
           <Route
             path={COMMITTEE_SELECTION}
             element={
-              <CommitteeSelection
-                fetchedUserData={userData}
-                firebaseAuth={firebaseAuth}
-                firebaseDb={db}
-                firebaseStorage={storage}
-              />
+              <CommitteeSelection fetchedUserData={userData} firebaseDb={db} />
             }
           />
           <Route
@@ -88,24 +84,13 @@ const LoggedIn = ({ firebaseAuth }) => {
             element={
               <Payments
                 fetchedUserData={userData}
-                firebaseAuth={firebaseAuth}
                 firebaseDb={db}
                 firebaseStorage={storage}
               />
             }
           />
           {userData.user_level > 0 ? (
-            <Route
-              path={USER_MANAGEMENT}
-              element={
-                <UserManagement
-                  fetchedUserData={userData}
-                  firebaseAuth={firebaseAuth}
-                  firebaseDb={db}
-                  firebaseStorage={storage}
-                />
-              }
-            />
+            <Route path={USER_MANAGEMENT} element={<UserManagement />} />
           ) : null}
         </Routes>
       </div>
