@@ -64,7 +64,6 @@ const SidePanel = ({ cross, setShowSidePanel }) => {
   // authentication
   const handleLogout = () => {
     auth.signOut();
-    navigate(USER_LOGIN);
   };
 
   return (

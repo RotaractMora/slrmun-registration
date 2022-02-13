@@ -98,7 +98,6 @@ const CommitteeSelection = ({ fetchedUserData, firebaseDb }) => {
     // update the database if the new country is available
     onValue(newContryRef, (snapshot) => {
       const data = snapshot.val();
-      console.log(data.availability);
       if (data.availability === 1) {
         update(userRef, {
           committee_id: selectedCommitteeId,

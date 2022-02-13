@@ -49,7 +49,7 @@ const Layout = () => {
     if ([USER_LOGIN, USER_REGISTRATION].includes(location.pathname)) {
       renderElement = <UnLoggedIn />;
     } else {
-      renderElement = <Navigate to={USER_LOGIN} />;
+      renderElement = <Navigate to={USER_REGISTRATION} />;
     }
   }
   return <div className={classes.root}>{renderElement}</div>;
