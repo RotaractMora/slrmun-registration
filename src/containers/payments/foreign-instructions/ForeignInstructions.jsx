@@ -29,14 +29,14 @@ const ForeignInstructions = () => {
               Account Number
             </td>
             <td className={classes.table_cell} align="left">
-              307599
+              2785328
             </td>
           </tr>
           <tr>
             <td align="right" className={classes.main_data}>
               Account Name
             </td>
-            <td align="left">Rotaract Club of University of Moratuwa</td>
+            <td align="left">MS S P Manimendra</td>
           </tr>
           <tr>
             <td align="right" className={classes.main_data}>
@@ -48,7 +48,7 @@ const ForeignInstructions = () => {
             <td align="right" className={classes.main_data}>
               Branch
             </td>
-            <td align="left">Katubedda Branch</td>
+            <td align="left">Hikkaduwa Branch</td>
           </tr>
         </tbody>
       </table>
