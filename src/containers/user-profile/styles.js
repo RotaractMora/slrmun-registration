@@ -16,6 +16,7 @@ const styles = {
     position: "relative",
     borderRadius: "50%",
     width: "200px",
+    height: "200px",
   },
   img_overlay: {
     position: "absolute",
