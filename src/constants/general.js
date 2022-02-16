@@ -13,3 +13,4 @@ export const COMMITTEES_DOC_NAME = "committees";
 export const GENERAL_USER_LEVEL = 0;
 export const COMMITTEE_CHAIR_USER_LEVEL = 1;
 export const ADMIN_USER_LEVEL = 2;
+export const DEVELOPER_USER_LEVEL = 3;

@@ -19,13 +19,13 @@ import styles from "./styles";
 // components
 import defaultUserIcon from "../../../../assets/images/default-user-icon.png";
 import Dropdown from "./dropdown/Dropdown";
+import { PAYMENTS_FIELD_NAME } from "../../../../constants/general";
 
 const useStyles = makeStyles(styles);
 
 const UserRow = ({ userData, onChange, index }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
-
   return (
     <Fragment>
       <TableRow>
@@ -59,12 +59,14 @@ const UserRow = ({ userData, onChange, index }) => {
         <TableCell>{userData.rotaract_club}</TableCell>
         <TableCell>{userData.interact_club}</TableCell>
       </TableRow>
-      <TableRow>
+      <TableRow className={classes.admin_area_row}>
         <TableCell>
-          <Dropdown label={"Committee"} />
+          {/* <Dropdown label={"Committee"} /> */}
+          <Dropdown label={userData.committee_id} />
         </TableCell>
         <TableCell>
-          <Dropdown label={"Country"} />
+          {/* <Dropdown label={"Country"} /> */}
+          <Dropdown label={userData.country_id} />
         </TableCell>
         <TableCell>
           <FormControlLabel
@@ -97,7 +99,17 @@ const UserRow = ({ userData, onChange, index }) => {
             label="Admin"
           />
         </TableCell>
-        <TableCell>View image</TableCell>
+        <TableCell>
+          {userData[PAYMENTS_FIELD_NAME] ? (
+            <img
+              className={classes.bank_slip_img}
+              src={userData[PAYMENTS_FIELD_NAME]}
+              alt="bank slip"
+            />
+          ) : (
+            "No payments made"
+          )}
+        </TableCell>
         <TableCell>
           <TableRow>
             <TableCell className={classes.no_bottom_border}>

@@ -30,6 +30,9 @@ import UserManagement from "../../../containers/user-management/UserManagement";
 // other constants
 import { GENERAL_USER_LEVEL, USERS_DOC_NAME } from "../../../constants/general";
 
+// other functions
+import { getUserVisibilityArray } from "../../../functions/user";
+
 const useStyles = makeStyles(styles);
 
 const LoggedIn = ({ firebaseAuth }) => {
@@ -60,39 +63,50 @@ const LoggedIn = ({ firebaseAuth }) => {
       fetch();
     }
   }, []);
+
+  const visibilityArray = getUserVisibilityArray(userData.user_level);
   return (
     <React.Fragment>
       <Header cross={cross} setCross={(setValue) => setCross(setValue)} />
       <div className={classes.body}>
         <SidePanel cross={cross} setShowSidePanel={setCross} />
         <Routes>
-          <Route
-            path={USER_PROFILE}
-            element={
-              <UserProfile
-                fetchedUserData={userData}
-                firebaseDb={db}
-                firebaseStorage={storage}
-              />
-            }
-          />
-          <Route
-            path={COMMITTEE_SELECTION}
-            element={
-              <CommitteeSelection fetchedUserData={userData} firebaseDb={db} />
-            }
-          />
-          <Route
-            path={PAYMENTS}
-            element={
-              <Payments
-                fetchedUserData={userData}
-                firebaseDb={db}
-                firebaseStorage={storage}
-              />
-            }
-          />
-          {userData.user_level > GENERAL_USER_LEVEL ? (
+          {visibilityArray[0] ? (
+            <Route
+              path={USER_PROFILE}
+              element={
+                <UserProfile
+                  fetchedUserData={userData}
+                  firebaseDb={db}
+                  firebaseStorage={storage}
+                />
+              }
+            />
+          ) : null}
+          {visibilityArray[1] ? (
+            <Route
+              path={COMMITTEE_SELECTION}
+              element={
+                <CommitteeSelection
+                  fetchedUserData={userData}
+                  firebaseDb={db}
+                />
+              }
+            />
+          ) : null}
+          {visibilityArray[2] ? (
+            <Route
+              path={PAYMENTS}
+              element={
+                <Payments
+                  fetchedUserData={userData}
+                  firebaseDb={db}
+                  firebaseStorage={storage}
+                />
+              }
+            />
+          ) : null}
+          {visibilityArray[3] ? (
             <Route
               path={USER_MANAGEMENT}
               element={<UserManagement firebaseDatabase={db} />}

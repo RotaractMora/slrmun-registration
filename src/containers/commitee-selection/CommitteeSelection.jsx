@@ -175,6 +175,14 @@ const CommitteeSelection = ({ fetchedUserData, firebaseDb }) => {
             setShowBanner={setShowBanner}
           />
         ) : null}
+        <Typography
+          style={{ maxWidth: "350px", textAlign: "justify" }}
+          variant="body1"
+        >
+          Please note that your selection might be changed by the admin
+          depending on your MUN experience. You will be notified through your
+          contact details if this occurs.
+        </Typography>
         <DropDownSection
           fetchedCountryId={fetchedCountryId}
           fetchedCommitteeId={fetchedCommitteeId}

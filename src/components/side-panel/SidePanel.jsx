@@ -23,7 +23,10 @@ import styles from "./styles";
 import ListItem from "./list-item/ListItem";
 
 // other constants
-import { GENERAL_USER_LEVEL, USERS_DOC_NAME } from "../../constants/general";
+import { USERS_DOC_NAME } from "../../constants/general";
+
+// other functions
+import { getUserVisibilityArray } from "../../functions/user";
 
 const useStyles = makeStyles(styles);
 
@@ -67,29 +70,35 @@ const SidePanel = ({ cross, setShowSidePanel }) => {
   const handleLogout = () => {
     auth.signOut();
   };
-
+  const visibilityArray = getUserVisibilityArray(userLevel);
   return (
     <div className={classes.root}>
       <div className={body_class}>
-        <ListItem
-          text={"Profile"}
-          link={USER_PROFILE}
-          active={current_path === USER_PROFILE}
-          onClick={() => setShowSidePanel(false)}
-        />
-        <ListItem
-          text={"Committee Selection"}
-          link={COMMITTEE_SELECTION}
-          active={current_path === COMMITTEE_SELECTION}
-          onClick={() => setShowSidePanel(false)}
-        />
-        <ListItem
-          text={"Payments"}
-          link={PAYMENTS}
-          active={current_path === PAYMENTS}
-          onClick={() => setShowSidePanel(false)}
-        />
-        {userLevel > GENERAL_USER_LEVEL ? (
+        {visibilityArray[0] ? (
+          <ListItem
+            text={"Profile"}
+            link={USER_PROFILE}
+            active={current_path === USER_PROFILE}
+            onClick={() => setShowSidePanel(false)}
+          />
+        ) : null}
+        {visibilityArray[1] ? (
+          <ListItem
+            text={"Committee Selection"}
+            link={COMMITTEE_SELECTION}
+            active={current_path === COMMITTEE_SELECTION}
+            onClick={() => setShowSidePanel(false)}
+          />
+        ) : null}
+        {visibilityArray[2] ? (
+          <ListItem
+            text={"Payments"}
+            link={PAYMENTS}
+            active={current_path === PAYMENTS}
+            onClick={() => setShowSidePanel(false)}
+          />
+        ) : null}
+        {visibilityArray[3] ? (
           <ListItem
             text={"User Management"}
             link={USER_MANAGEMENT}
