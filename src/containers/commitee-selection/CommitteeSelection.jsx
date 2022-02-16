@@ -5,9 +5,7 @@ import { makeStyles, useTheme, Typography } from "@material-ui/core";
 import styles from "./styles";
 
 // firebase
-import app from "../../firebase/base";
-import { getDatabase, ref, onValue, update } from "firebase/database";
-import { getAuth } from "firebase/auth";
+import { get, ref, onValue, update } from "firebase/database";
 
 // components
 import DropDownSection from "./dropdown-section/DropDownSection";
@@ -104,20 +102,31 @@ const CommitteeSelection = ({ fetchedUserData, firebaseDb }) => {
         selectedCountryId
     );
 
-    // update the database if the new country is available
-    onValue(newContryRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data.availability === 1) {
-        update(userRef, {
-          committee_id: selectedCommitteeId,
-          country_id: selectedCountryId,
-        });
-        if (oldCountryRef) {
-          update(oldCountryRef, { availability: 1 });
+    // update the database
+    get(newContryRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          // checks if the country is still available (to handle simultaneos updates)
+          if (data.availability === 1) {
+            // update the new status of countries
+            update(newContryRef, { availability: 0 });
+            if (oldCountryRef) {
+              update(oldCountryRef, { availability: 1 });
+            }
+            // update the user data
+            update(userRef, {
+              committee_id: selectedCommitteeId,
+              country_id: selectedCountryId,
+            });
+          }
+        } else {
+          console.log("No data available");
         }
-        update(newContryRef, { availability: 0 });
-      }
-    });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const cancel = () => {
@@ -127,10 +136,12 @@ const CommitteeSelection = ({ fetchedUserData, firebaseDb }) => {
 
   // enability update function of the button panel
   const updateEnability = (fetchedArr, selectedArr) => {
-    if (selectedCountryId) {
-      setEnableButtons(
-        JSON.stringify(fetchedArr) !== JSON.stringify(selectedArr)
-      );
+    if (fetchedUserData.admin_approved) {
+      if (selectedCountryId) {
+        setEnableButtons(
+          JSON.stringify(fetchedArr) !== JSON.stringify(selectedArr)
+        );
+      }
     }
   };
 
@@ -175,10 +186,7 @@ const CommitteeSelection = ({ fetchedUserData, firebaseDb }) => {
             setShowBanner={setShowBanner}
           />
         ) : null}
-        <Typography
-          style={{ maxWidth: "350px", textAlign: "justify" }}
-          variant="body1"
-        >
+        <Typography className={classes.body1} variant="body1">
           Please note that your selection might be changed by the admin
           depending on your MUN experience. You will be notified through your
           contact details if this occurs.
@@ -193,7 +201,15 @@ const CommitteeSelection = ({ fetchedUserData, firebaseDb }) => {
           selectedCountryId={selectedCountryId}
           setSelectedCountryId={(value) => setSelectedCountryId(value)}
         />
-        <ButtonPanel enabled={enableButtons} onSave={save} onCancel={cancel} />
+        <ButtonPanel
+          enabled={enableButtons}
+          showMessage={!fetchedUserData.admin_approved}
+          message={
+            "Please make the payment and wait for admin approval to enable committee selection"
+          }
+          onSave={save}
+          onCancel={cancel}
+        />
       </div>
     </div>
   );

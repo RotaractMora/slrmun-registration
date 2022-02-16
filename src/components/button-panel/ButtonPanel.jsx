@@ -1,16 +1,21 @@
 import React from "react";
 
-import { makeStyles, useTheme, Button } from "@material-ui/core";
+import { makeStyles, useTheme, Button, Typography } from "@material-ui/core";
 import styles from "./styles";
 
 const useStyles = makeStyles(styles);
 
-const ButtonPanel = ({ enabled, onSave, onCancel }) => {
+const ButtonPanel = ({ enabled, showMessage, message, onSave, onCancel }) => {
   // console.log(enabled);
   const theme = useTheme();
   const classes = useStyles(theme);
   return (
     <div className={classes.root}>
+      {showMessage ? (
+        <Typography variant="body1" className={classes.body1}>
+          {message}
+        </Typography>
+      ) : null}
       <Button
         disabled={!enabled}
         variant="contained"

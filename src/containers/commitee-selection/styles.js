@@ -15,6 +15,12 @@ const styles = {
   h1: {
     margin: "20px",
   },
+  body1: {
+    color: "gray",
+    marginTop: 30,
+    maxWidth: "350px",
+    textAlign: "justify",
+  },
 };
 
 export default styles;
