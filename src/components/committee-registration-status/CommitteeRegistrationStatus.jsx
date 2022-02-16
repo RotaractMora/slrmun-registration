@@ -10,41 +10,42 @@ const CommitteeRegistrationStatus = ({ fetchedUserData, setShowBanner }) => {
   // state
   const [registrationStatus, setRegistrationStatus] = useState(0);
   /* Registration status:
-   * 4: Approved by the admin
-   * 3: Payment made; registered for committee and country; not approved by the admin
-   * 2: Registered for committee and country; Payment not made; not approved by the admin
-   * 1: Payment made; Not registered for committee and country; not approved by the admin
-   * 0: Not registered for committee and country; Payment not made; not approved by the admin
+   * 3: Payment made; Approved by the admin; Registered for committee and country
+   * 2: Payment made; Approved by the admin; Not registered for committee and country
+   * 1: Payment made; Not approved by the admin; Not registered for committee and country
+   * 0: Payment not made; Not approved by the admin; Not registered for committee and country
    */
 
   // state management
   useEffect(() => {
     if (fetchedUserData) {
-      if (fetchedUserData.admin_approved) {
-        setRegistrationStatus(4);
+      if (
+        fetchedUserData[PAYMENTS_FIELD_NAME] !== undefined &&
+        fetchedUserData.admin_approved &&
+        fetchedUserData.committee_id !== undefined &&
+        fetchedUserData.country_id !== undefined
+      ) {
+        setRegistrationStatus(3);
         if (setShowBanner) {
           setShowBanner(false);
         }
       } else if (
         fetchedUserData[PAYMENTS_FIELD_NAME] !== undefined &&
-        fetchedUserData.committee_id !== undefined &&
-        fetchedUserData.country_id !== undefined
-      ) {
-        setRegistrationStatus(3);
-      } else if (
-        fetchedUserData[PAYMENTS_FIELD_NAME] === undefined &&
-        fetchedUserData.committee_id !== undefined &&
-        fetchedUserData.country_id !== undefined
+        fetchedUserData.admin_approved &&
+        fetchedUserData.committee_id === undefined &&
+        fetchedUserData.country_id === undefined
       ) {
         setRegistrationStatus(2);
       } else if (
         fetchedUserData[PAYMENTS_FIELD_NAME] !== undefined &&
+        !fetchedUserData.admin_approved &&
         fetchedUserData.committee_id === undefined &&
         fetchedUserData.country_id === undefined
       ) {
         setRegistrationStatus(1);
       } else if (
         fetchedUserData[PAYMENTS_FIELD_NAME] === undefined &&
+        !fetchedUserData.admin_approved &&
         fetchedUserData.committee_id === undefined &&
         fetchedUserData.country_id === undefined
       ) {
@@ -66,14 +67,12 @@ const CommitteeRegistrationStatus = ({ fetchedUserData, setShowBanner }) => {
       <div className={classes.banner}>
         <Typography>
           {registrationStatus === 0
-            ? "Please register for a committee"
+            ? "Please deposit the registration fee and upload a clear image of the transaction document to the payments tab"
             : registrationStatus === 1
-            ? "Please register for a committee"
+            ? "Please wait for admin approval"
             : registrationStatus == 2
-            ? "Please deposit the registration fee and upload a clear image of the transaction document"
+            ? "Please register for a committee and select a country"
             : registrationStatus === 3
-            ? "Please wait for the admin approval"
-            : registrationStatus === 4
             ? "You are all set!"
             : "Undefined registration status"}
         </Typography>

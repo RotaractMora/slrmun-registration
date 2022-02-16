@@ -1,11 +1,11 @@
 const styles = (theme, stat) => {
   // color selection
   let banner_color = theme.palette.error.main;
-  if (stat === 1 || stat === 2) {
+  if (stat === 1) {
     banner_color = theme.palette.orange.main;
-  } else if (stat === 3) {
+  } else if (stat === 2) {
     banner_color = theme.palette.yellow.main;
-  } else if (stat === 4) {
+  } else if (stat === 3) {
     banner_color = theme.palette.success.main;
   }
   return {
