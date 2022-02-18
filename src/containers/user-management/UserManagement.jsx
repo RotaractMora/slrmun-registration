@@ -25,13 +25,15 @@ const UserManagement = ({ firebaseDatabase }) => {
     const usersRef = ref(firebaseDatabase, USERS_DOC_NAME);
     onValue(usersRef, (snapshot) => {
       const data = snapshot.val();
-      const dataArr = [];
+      const dataObj = {};
+      let dataArr = [];
       for (const user_id in data) {
         if (Object.hasOwnProperty.call(data, user_id)) {
           const user = data[user_id];
-          dataArr.push({ ...user, user_id });
+          dataObj[user.registered_timestamp] = user;
         }
       }
+      dataArr = Object.values(dataObj);
       setUsersData(dataArr);
     });
   }, []);
@@ -44,11 +46,7 @@ const UserManagement = ({ firebaseDatabase }) => {
       <UsersTable
         usersData={usersData}
         setUsersData={(newUsersData) => {
-          console.log("Triggered");
-          console.log("newUsersData: ", newUsersData);
-          console.log("usersData: ", usersData);
           setUsersData(newUsersData);
-          console.log("Set");
         }}
       />
     </div>

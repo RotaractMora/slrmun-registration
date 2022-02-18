@@ -50,6 +50,7 @@ const Registration = () => {
     const mun_experience = e.target.mun_experience.value;
     const current_status = e.target.current_status.value;
     const institute = e.target.institute.value;
+    const registered_timestamp = parseInt(Date.now() / 1000);
     const residence_country = e.target.residence_country.value;
     const residence_address = e.target.residence_address
       ? e.target.residence_address.value
@@ -93,6 +94,7 @@ const Registration = () => {
           mun_experience,
           current_status,
           institute,
+          registered_timestamp,
           residence_country,
           residence_address,
           rotaractor,
@@ -108,7 +110,10 @@ const Registration = () => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        console.log(errorCode);
+        if (errorCode === "auth/email-already-in-use") {
+          alert("Email already in use");
+        }
       });
   };
 
