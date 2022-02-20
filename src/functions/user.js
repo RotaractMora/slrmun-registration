@@ -37,7 +37,7 @@ export const getUserVisibilityArray = (userLevel) => {
   } else if (userLevel === COMMITTEE_CHAIR_USER_LEVEL) {
     visibilityArr = [true, false, false, false];
   } else if (userLevel === ADMIN_USER_LEVEL) {
-    visibilityArr = [true, false, false, true];
+    visibilityArr = [true, true, true, true];
   } else if (userLevel === DEVELOPER_USER_LEVEL) {
     visibilityArr = [true, true, true, true];
   }
