@@ -4,28 +4,46 @@ import React, { Fragment } from "react";
 import {
   makeStyles,
   useTheme,
-  Paper,
-  TableContainer,
-  TableHead,
   TableRow,
   TableCell,
-  TableBody,
   Button,
   FormControlLabel,
   Switch,
+  Typography,
 } from "@material-ui/core";
 import styles from "./styles";
 
 // components
 import defaultUserIcon from "../../../../assets/images/default-user-icon.png";
 import Dropdown from "./dropdown/Dropdown";
-import { PAYMENTS_FIELD_NAME } from "../../../../constants/general";
+import {
+  PAYMENTS_FIELD_NAME,
+  USERS_DOC_NAME,
+} from "../../../../constants/general";
+import { getDatabase, update, ref } from "firebase/database";
 
 const useStyles = makeStyles(styles);
 
-const UserRow = ({ userData, onChange, index }) => {
+const UserRow = ({
+  userData,
+  onChange,
+  index,
+  fethedUserData,
+  committeesData,
+}) => {
   const theme = useTheme();
   const classes = useStyles(theme);
+
+  const handleSave = () => {
+    const db = getDatabase();
+    const userRef = ref(db, USERS_DOC_NAME + "/" + userData.user_id);
+    update(userRef, userData);
+  };
+
+  const handleCancel = () => {
+    onChange(fethedUserData);
+  };
+
   return (
     <Fragment>
       <TableRow>
@@ -61,24 +79,52 @@ const UserRow = ({ userData, onChange, index }) => {
       </TableRow>
       <TableRow className={classes.admin_area_row}>
         <TableCell>
-          {/* <Dropdown label={"Committee"} /> */}
-          <Dropdown label={userData.committee_id} />
+          <Typography variant="body1">
+            {committeesData !== {} && userData.committee_id
+              ? committeesData[userData.committee_id].short_name
+              : "None"}
+          </Typography>
+          {/* <Dropdown
+            label={
+              committeesData !== {} && userData.committee_id
+                ? committeesData[userData.committee_id].short_name
+                : "None"
+            }
+          /> */}
         </TableCell>
         <TableCell>
-          {/* <Dropdown label={"Country"} /> */}
-          <Dropdown label={userData.country_id} />
+          <Typography variant="body1">
+            {committeesData !== {} &&
+            userData.committee_id &&
+            userData.country_id
+              ? committeesData[userData.committee_id].countries[
+                  userData.country_id
+                ].name
+              : "None"}
+          </Typography>
+          {/* <Dropdown
+            label={
+              committeesData !== {} &&
+              userData.committee_id &&
+              userData.country_id
+                ? committeesData[userData.committee_id].countries[
+                    userData.country_id
+                  ].name
+                : "None"
+            }
+          /> */}
         </TableCell>
         <TableCell>
           <FormControlLabel
             control={
               <Switch
                 checked={userData.admin_approved}
-                onChange={() =>
+                onChange={(e) => {
                   onChange({
                     ...userData,
-                    admin_approved: !userData.admin_approved,
-                  })
-                }
+                    admin_approved: e.target.checked,
+                  });
+                }}
                 color="primary"
                 name="gilad"
               />
@@ -91,7 +137,18 @@ const UserRow = ({ userData, onChange, index }) => {
             control={
               <Switch
                 checked={userData.user_level}
-                // onChange={handleChange}
+                onChange={(e) => {
+                  let newUserLevel;
+                  if (userData.user_level === 0) {
+                    newUserLevel = 2;
+                  } else {
+                    newUserLevel = 0;
+                  }
+                  onChange({
+                    ...userData,
+                    user_level: newUserLevel,
+                  });
+                }}
                 color="primary"
                 name="gilad"
               />
@@ -113,14 +170,30 @@ const UserRow = ({ userData, onChange, index }) => {
         <TableCell>
           <TableRow>
             <TableCell className={classes.no_bottom_border}>
-              <Button fullWidth variant="contained" color="primary">
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={handleSave}
+                disabled={
+                  JSON.stringify(userData) === JSON.stringify(fethedUserData)
+                }
+              >
                 Save
               </Button>
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell className={classes.no_bottom_border}>
-              <Button fullWidth variant="outlined" color="secondary">
+              <Button
+                fullWidth
+                variant="outlined"
+                color="secondary"
+                onClick={handleCancel}
+                disabled={
+                  JSON.stringify(userData) === JSON.stringify(fethedUserData)
+                }
+              >
                 Cancel
               </Button>
             </TableCell>
