@@ -18,6 +18,9 @@ const styles = {
   bank_slip_img: {
     height: "50px",
   },
+  btn: {
+    margin: 3,
+  },
 };
 
 export default styles;

@@ -11,6 +11,7 @@ export const isSriLankan = (text) => {
     if (
       [
         "sl",
+        "lk",
         "srilanka",
         "sri lanka",
         "sri-lanka",

@@ -48,32 +48,32 @@ const UserRow = ({
     <Fragment>
       <TableRow>
         <TableCell rowSpan={3}>
-          <TableRow>
-            <TableCell className={classes.no_bottom_border}>
-              {index + 1}
-            </TableCell>
-            <TableCell className={classes.no_bottom_border}>
-              <img
-                className={classes.profile_picture}
-                src={
-                  userData.profile_picture
-                    ? userData.profile_picture
-                    : defaultUserIcon
-                }
-                alt={userData.name}
-              ></img>
-            </TableCell>
-            <TableCell className={classes.no_bottom_border}>
-              {userData.name}
-            </TableCell>
-          </TableRow>
+          <TableCell className={classes.no_bottom_border}>
+            {index + 1}
+          </TableCell>
+          <TableCell className={classes.no_bottom_border}>
+            <img
+              className={classes.profile_picture}
+              src={
+                userData.profile_picture
+                  ? userData.profile_picture
+                  : defaultUserIcon
+              }
+              alt={userData.name}
+            ></img>
+          </TableCell>
+          <TableCell className={classes.no_bottom_border}>
+            {userData.name}
+          </TableCell>
         </TableCell>
       </TableRow>
       <TableRow>
         <TableCell>{userData.email}</TableCell>
         <TableCell>{userData.mobile_number}</TableCell>
         <TableCell>{userData.institute}</TableCell>
-        <TableCell>{userData.residence_address}</TableCell>
+        <TableCell>
+          {userData.residence_address + " " + userData.residence_country}
+        </TableCell>
         <TableCell>{userData.rotaract_club}</TableCell>
         <TableCell>{userData.interact_club}</TableCell>
       </TableRow>
@@ -167,37 +167,41 @@ const UserRow = ({
             "No payments made"
           )}
         </TableCell>
-        <TableCell>
-          <TableRow>
-            <TableCell className={classes.no_bottom_border}>
-              <Button
-                fullWidth
-                variant="contained"
-                color="primary"
-                onClick={handleSave}
-                disabled={
-                  JSON.stringify(userData) === JSON.stringify(fethedUserData)
-                }
-              >
-                Save
-              </Button>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className={classes.no_bottom_border}>
-              <Button
-                fullWidth
-                variant="outlined"
-                color="secondary"
-                onClick={handleCancel}
-                disabled={
-                  JSON.stringify(userData) === JSON.stringify(fethedUserData)
-                }
-              >
-                Cancel
-              </Button>
-            </TableCell>
-          </TableRow>
+        <TableCell style={{ display: "flex", flexDirection: "row" }}>
+          <Button
+            size="small"
+            variant="contained"
+            color="primary"
+            onClick={handleSave}
+            className={classes.btn}
+            disabled={
+              JSON.stringify(userData) === JSON.stringify(fethedUserData)
+            }
+          >
+            Save
+          </Button>
+          <Button
+            size="small"
+            variant="outlined"
+            color="secondary"
+            onClick={handleCancel}
+            className={classes.btn}
+            disabled={
+              JSON.stringify(userData) === JSON.stringify(fethedUserData)
+            }
+          >
+            Cancel
+          </Button>
+          <Button
+            size="small"
+            variant="contained"
+            color="secondary"
+            onClick={handleCancel}
+            className={classes.btn}
+            disabled={true}
+          >
+            Delete
+          </Button>
         </TableCell>
       </TableRow>
     </Fragment>
