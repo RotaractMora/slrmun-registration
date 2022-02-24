@@ -8,7 +8,6 @@ const useStyles = makeStyles({ ...styles, ...localStyles });
 
 const OlderPayments = () => {
   const theme = useTheme();
-  console.log(theme);
   const classes = useStyles(theme);
   const [expanded, setExpanded] = useState(false);
 

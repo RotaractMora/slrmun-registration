@@ -21,8 +21,6 @@ const DropDown = ({ list, selectedId, setSelectedId }) => {
   const [selectedObj, setSelectedObj] = useState({});
   const [visibleList, setVisibleList] = useState({});
 
-  // console.log(selectedId);
-
   // handler functions
   const handleListItemClick = (key, available) => {
     if (available) {

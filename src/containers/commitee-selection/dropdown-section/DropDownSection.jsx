@@ -18,8 +18,6 @@ const DropDownSection = ({
   const theme = useTheme();
   const classes = useStyles(theme);
 
-  // console.log(selectedCommitteeId);
-
   return (
     <div>
       <div className={classes.selectionContainer}>
