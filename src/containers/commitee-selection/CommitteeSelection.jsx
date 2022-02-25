@@ -5,7 +5,7 @@ import { makeStyles, useTheme, Typography } from "@material-ui/core";
 import styles from "./styles";
 
 // firebase
-import { get, ref, onValue, update } from "firebase/database";
+import { get, ref, onValue, update, remove, child } from "firebase/database";
 
 // components
 import DropDownSection from "./dropdown-section/DropDownSection";
@@ -109,11 +109,43 @@ const CommitteeSelection = ({ fetchedUserData, firebaseDb }) => {
           const data = snapshot.val();
           // checks if the country is still available (to handle simultaneos updates)
           if (data.availability === 1) {
-            // update the new status of countries
-            update(newContryRef, { availability: 0 });
-            if (oldCountryRef) {
-              update(oldCountryRef, { availability: 1 });
-            }
+            // update the request list of the new country
+            const current_time = new Date().getTime();
+            update(child(newContryRef, "requests"), {
+              [current_time]: current_uid,
+            });
+
+            // update the request list of the old country
+            get(oldCountryRef)
+              .then((snapshot) => {
+                if (snapshot.exists()) {
+                  const data = snapshot.val();
+                  if (data.requests) {
+                    // finds the timestamps the user has has selected the country. This will have always one occerence if no error has occured
+                    const occurences = [];
+                    for (const timestamp in data.requests) {
+                      if (
+                        Object.hasOwnProperty.call(data.requests, timestamp)
+                      ) {
+                        const uid = data.requests[timestamp];
+                        if (uid === current_uid) {
+                          occurences.push(timestamp);
+                        }
+                      }
+                    }
+
+                    // delete the occurences (most probably a single one) from the database
+                    for (let i = 0; i < occurences.length; i++) {
+                      const timestamp = occurences[i];
+                      remove(child(oldCountryRef, "/requests/" + timestamp));
+                    }
+                  }
+                } else {
+                  console.log("No data available");
+                }
+              })
+              .catch((error) => {});
+
             // update the user data
             update(userRef, {
               committee_id: selectedCommitteeId,
@@ -136,12 +168,10 @@ const CommitteeSelection = ({ fetchedUserData, firebaseDb }) => {
 
   // enability update function of the button panel
   const updateEnability = (fetchedArr, selectedArr) => {
-    if (fetchedUserData.admin_approved) {
-      if (selectedCountryId) {
-        setEnableButtons(
-          JSON.stringify(fetchedArr) !== JSON.stringify(selectedArr)
-        );
-      }
+    if (selectedCountryId) {
+      setEnableButtons(
+        JSON.stringify(fetchedArr) !== JSON.stringify(selectedArr)
+      );
     }
   };
 
