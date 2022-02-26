@@ -240,6 +240,9 @@ const CommitteeSelection = ({
           selectedCountryId={selectedCountryId}
           setSelectedCountryId={(value) => setSelectedCountryId(value)}
           fetchedCountryId={fetchedUserData.country_id}
+          selectedCountry={
+            committeesData[selectedCommitteeId].countries[selectedCountryId]
+          }
         />
         <ButtonPanel
           enabled={enableButtons}
