@@ -20,12 +20,13 @@ const useStyles = makeStyles(styles);
 const UsersTable = ({
   usersData,
   setUsersData,
-  fethedUsersData,
+  fetchedUserData,
   committeesData,
 }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
 
+  // used to change the original big all users data state when a single user is changed
   const handleOnChange = (index, updatedUserData) => {
     const newUsersData = usersData.slice();
     newUsersData[index] = updatedUserData;
@@ -57,8 +58,9 @@ const UsersTable = ({
               userData={userData}
               index={index}
               onChange={(userData) => handleOnChange(index, userData)}
-              fethedUserData={fethedUsersData ? fethedUsersData[index] : null}
+              fetchedUserData={fetchedUserData ? fetchedUserData[index] : null}
               committeesData={committeesData}
+              usersData={usersData}
             />
           ))}
         </TableBody>

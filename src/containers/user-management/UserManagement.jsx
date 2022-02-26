@@ -26,18 +26,18 @@ import {
 
 const useStyles = makeStyles(styles);
 
-const UserManagement = ({ firebaseDatabase }) => {
+const UserManagement = ({ firebaseDatabase, committeesData }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
 
   const [usersData, setUsersData] = useState([]);
-  const [fethedUsersData, setFetchedUsersData] = useState();
-  const [committeesData, setCommitteesData] = useState({});
+  const [fetchedUserData, setFetchedUsersData] = useState();
   const [showUsersArr, setShowUsersArr] = useState([
     GENERAL_USER_LEVEL,
     ADMIN_USER_LEVEL,
   ]);
 
+  // used to filter the users list by the switches
   const handleVisibility = (e, userLevel) => {
     const newShowUsers = JSON.parse(JSON.stringify(showUsersArr));
     if (e.target.checked) {
@@ -51,8 +51,8 @@ const UserManagement = ({ firebaseDatabase }) => {
     setShowUsersArr(newShowUsers);
 
     const newUsersData = [];
-    for (let i = 0; i < fethedUsersData.length; i++) {
-      const userData = fethedUsersData[i];
+    for (let i = 0; i < fetchedUserData.length; i++) {
+      const userData = fetchedUserData[i];
       if (newShowUsers.includes(userData.user_level)) {
         newUsersData.push(userData);
       }
@@ -60,6 +60,7 @@ const UserManagement = ({ firebaseDatabase }) => {
     setUsersData(newUsersData);
   };
 
+  // fetches the all users data
   useEffect(() => {
     const usersRef = ref(firebaseDatabase, USERS_DOC_NAME);
     onValue(usersRef, (snapshot) => {
@@ -75,12 +76,6 @@ const UserManagement = ({ firebaseDatabase }) => {
       dataArr = Object.values(dataObj);
       setUsersData(dataArr);
       setFetchedUsersData(dataArr);
-    });
-
-    const committeesRef = ref(firebaseDatabase, COMMITTEES_DOC_NAME);
-    onValue(committeesRef, (snapshot) => {
-      const data = snapshot.val();
-      setCommitteesData(data);
     });
   }, []);
 
@@ -120,7 +115,7 @@ const UserManagement = ({ firebaseDatabase }) => {
       <UsersTable
         usersData={usersData}
         setUsersData={setUsersData}
-        fethedUsersData={fethedUsersData}
+        fetchedUserData={fetchedUserData}
         committeesData={committeesData}
       />
     </div>

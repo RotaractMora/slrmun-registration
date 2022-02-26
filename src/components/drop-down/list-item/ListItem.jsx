@@ -7,12 +7,12 @@ import { BASE_URL } from "../../../constants/general";
 
 const useStyles = makeStyles(styles);
 
-const ListItem = ({ object, onClick }) => {
+const ListItem = ({ object, onClick, isSelectedItem }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
 
   let textClass = classes.text;
-  if (!object.available) {
+  if (!object.available && !isSelectedItem) {
     textClass = [classes.text, classes.strike].join(" ");
   }
   return (

@@ -10,7 +10,7 @@ import { BASE_URL, DEFAULT_FLAG } from "../../constants/general";
 
 const useStyles = makeStyles(styles);
 
-const DropDown = ({ list, selectedId, setSelectedId }) => {
+const DropDown = ({ list, selectedId, setSelectedId, fetchedSelectedId }) => {
   // styling
   const theme = useTheme();
   const classes = useStyles(theme);
@@ -22,8 +22,8 @@ const DropDown = ({ list, selectedId, setSelectedId }) => {
   const [visibleList, setVisibleList] = useState({});
 
   // handler functions
-  const handleListItemClick = (key, available) => {
-    if (available) {
+  const handleListItemClick = (key, available, isSelectedItem) => {
+    if (available || isSelectedItem) {
       setSelectedId(key);
       setSelectedObj(list[key]);
       setExpanded(false);
@@ -103,11 +103,18 @@ const DropDown = ({ list, selectedId, setSelectedId }) => {
       </div>
       <div className={listClass}>
         {visibleList
-          ? Object.entries(visibleList).map((arr) => (
+          ? Object.entries(visibleList).map((arr, index) => (
               <ListItem
                 key={arr[0]}
                 object={arr[1]}
-                onClick={() => handleListItemClick(arr[0], arr[1].available)}
+                onClick={() =>
+                  handleListItemClick(
+                    arr[0],
+                    arr[1].available,
+                    fetchedSelectedId == index
+                  )
+                }
+                isSelectedItem={fetchedSelectedId == index}
               />
             ))
           : null}

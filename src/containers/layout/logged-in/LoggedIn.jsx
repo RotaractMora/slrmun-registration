@@ -28,7 +28,11 @@ import Payments from "../../../containers/payments/Payments";
 import UserManagement from "../../../containers/user-management/UserManagement";
 
 // other constants
-import { GENERAL_USER_LEVEL, USERS_DOC_NAME } from "../../../constants/general";
+import {
+  COMMITTEES_DOC_NAME,
+  GENERAL_USER_LEVEL,
+  USERS_DOC_NAME,
+} from "../../../constants/general";
 
 // other functions
 import { getUserVisibilityArray } from "../../../functions/user";
@@ -43,6 +47,7 @@ const LoggedIn = ({ firebaseAuth }) => {
   //states
   const [cross, setCross] = useState(false);
   const [userData, setUserData] = useState({});
+  const [committeesData, setCommitteesData] = useState({});
 
   //firebase
   const db = getDatabase(app);
@@ -50,10 +55,15 @@ const LoggedIn = ({ firebaseAuth }) => {
   const { currentUser } = useContext(AuthContext);
   const current_uid = currentUser.uid;
   const userRef = ref(db, USERS_DOC_NAME + "/" + current_uid);
+  const committeesRef = ref(db, COMMITTEES_DOC_NAME);
   const fetch = () => {
     onValue(userRef, (snapshot) => {
       const data = snapshot.val();
       setUserData(data);
+    });
+    onValue(committeesRef, (snapshot) => {
+      const data = snapshot.val();
+      setCommitteesData(data);
     });
   };
 
@@ -90,6 +100,7 @@ const LoggedIn = ({ firebaseAuth }) => {
                 <CommitteeSelection
                   fetchedUserData={userData}
                   firebaseDb={db}
+                  committeesData={committeesData}
                 />
               }
             />
@@ -102,6 +113,7 @@ const LoggedIn = ({ firebaseAuth }) => {
                   fetchedUserData={userData}
                   firebaseDb={db}
                   firebaseStorage={storage}
+                  committeesData={committeesData}
                 />
               }
             />
@@ -109,7 +121,12 @@ const LoggedIn = ({ firebaseAuth }) => {
           {visibilityArray[3] ? (
             <Route
               path={USER_MANAGEMENT}
-              element={<UserManagement firebaseDatabase={db} />}
+              element={
+                <UserManagement
+                  firebaseDatabase={db}
+                  committeesData={committeesData}
+                />
+              }
             />
           ) : null}
         </Routes>

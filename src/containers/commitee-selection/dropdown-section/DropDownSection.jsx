@@ -14,6 +14,7 @@ const DropDownSection = ({
   setSelectedCommitteeId,
   selectedCountryId,
   setSelectedCountryId,
+  fetchedCountryId,
 }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
@@ -41,6 +42,7 @@ const DropDownSection = ({
           list={fetchedCountryList}
           selectedId={selectedCountryId}
           setSelectedId={(key) => setSelectedCountryId(key)}
+          fetchedSelectedId={fetchedCountryId}
         />
       </div>
     </div>

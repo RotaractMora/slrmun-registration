@@ -21,6 +21,12 @@ const styles = {
   btn: {
     margin: 3,
   },
+  smallTableCell: {
+    padding: 0,
+  },
+  table: {
+    margin: 10,
+  },
 };
 
 export default styles;

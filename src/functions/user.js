@@ -44,3 +44,108 @@ export const getUserVisibilityArray = (userLevel) => {
   }
   return visibilityArr;
 };
+
+export const getUserRegistrationStatus = (
+  userData,
+  paymentsFieldName,
+  countryData,
+  theme
+) => {
+  /* Registratsion status:
+   * 6: Registered for a committee; country reserved for another delegate
+   * 5: Registered for a committee; Payment made, Admin approved
+   * 4: Not regitered for a committee; Payment made, Admin approved
+   * 3: Not regitered for a committee; Payment made, Not admin approved
+   * 2: Registered for a committee; Payment made, Not admin approved
+   * 1: Registered for a committee; No payment made, Not admin approved
+   * 0: Not regitered for a committee; No payment made, Not admin approved
+   */
+
+  if (countryData)
+    if (
+      countryData.availability === 0 &&
+      countryData.reserved_to !== userData.user_id
+    )
+      // 6: Registered for a committee; country reserved for another delegate
+      return [
+        theme.palette.error.main,
+        "6 Your requested country has been reserved to another registrant. Please select another",
+        6,
+      ];
+
+  if (
+    // 5: Registered for a committee; Payment made, Admin approved
+    userData.admin_approved &&
+    userData.committee_id !== undefined &&
+    userData.country_id !== undefined &&
+    userData[paymentsFieldName]
+  )
+    return [theme.palette.success.main, "5 You are all set!", 5];
+
+  if (
+    // 4: Not regitered for a committee; Payment made, Admin approved
+    userData.admin_approved &&
+    userData.committee_id === undefined &&
+    userData.country_id === undefined &&
+    userData[paymentsFieldName]
+  )
+    return [
+      theme.palette.yellow.main,
+      "4 Please register for a committee and a country",
+      4,
+    ];
+
+  if (
+    // 3: Not regitered for a committee; Payment made, Not admin approved
+    !userData.admin_approved &&
+    userData.committee_id === undefined &&
+    userData.country_id === undefined &&
+    userData[paymentsFieldName]
+  )
+    return [
+      theme.palette.yellow.main,
+      "3 Please request a committee and a country",
+      3,
+    ];
+
+  if (
+    // 2: Registered for a committee; Payment made, Not admin approved
+    !userData.admin_approved &&
+    userData.committee_id !== undefined &&
+    userData.country_id !== undefined &&
+    userData[paymentsFieldName]
+  )
+    return [
+      theme.palette.yellow.main,
+      "2 Please wait for admin approval to confirm your request",
+      2,
+    ];
+
+  if (
+    // 1: Registered for a committee; No payment made, Not admin approved
+    !userData.admin_approved &&
+    userData.committee_id !== undefined &&
+    userData.country_id !== undefined &&
+    !userData[paymentsFieldName]
+  )
+    return [
+      theme.palette.orange.main,
+      "1 Please make the payment and wait for admin approval to confirm your request",
+      1,
+    ];
+
+  if (
+    // 0: Not regitered for a committee; No payment made, Not admin approved
+    !userData.admin_approved &&
+    userData.committee_id === undefined &&
+    userData.country_id === undefined &&
+    !userData[paymentsFieldName]
+  )
+    return [
+      theme.palette.error.main,
+      "0 Please request a committee and a country",
+      0,
+    ];
+
+  return [theme.palette.error.main, "Error, Please contact the admin", 0];
+};

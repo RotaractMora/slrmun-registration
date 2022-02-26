@@ -1,0 +1,5 @@
+hash the password
+show the modal (might need to edit) when errors occur in registration/logins
+when the url is entered in the url bar and hit enter the user gets logged out
+remove the requests for committees data throughout the app and pass them from loggenIn
+Integrate redux

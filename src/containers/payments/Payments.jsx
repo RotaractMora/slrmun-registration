@@ -21,7 +21,12 @@ import { AuthContext } from "../../firebase/Auth";
 
 const useStyles = makeStyles(styles);
 
-const Payments = ({ fetchedUserData, firebaseDb, firebaseStorage }) => {
+const Payments = ({
+  fetchedUserData,
+  firebaseDb,
+  firebaseStorage,
+  committeesData,
+}) => {
   const theme = useTheme();
   const classes = useStyles(theme);
 
@@ -87,7 +92,16 @@ const Payments = ({ fetchedUserData, firebaseDb, firebaseStorage }) => {
           </Button>
         )}
         <div className={classes.breaker}></div>
-        <CommitteeRegistrationStatus fetchedUserData={fetchedUserData} />
+        <CommitteeRegistrationStatus
+          fetchedUserData={fetchedUserData}
+          countryData={
+            fetchedUserData.committee_id && fetchedUserData.country_id
+              ? committeesData[fetchedUserData.committee_id].countries[
+                  fetchedUserData.country_id
+                ]
+              : undefined
+          }
+        />
       </div>
       {showModal ? (
         <FileUploadModal
