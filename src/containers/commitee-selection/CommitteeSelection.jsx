@@ -66,10 +66,20 @@ const CommitteeSelection = ({
           const country_obj = committee_obj.countries[country_key];
           if (local_country_obj[committee_key] === undefined)
             local_country_obj[committee_key] = {};
+          let req_count = 0;
+          if (country_obj.requests)
+            req_count = Object.keys(country_obj.requests).length;
+          if (
+            country_key === fetchedUserData.country_id &&
+            committee_key === parseInt(fetchedUserData.committee_id)
+          ) {
+            req_count -= 1;
+          }
           local_country_obj[committee_key][country_key] = {
             text: country_obj.name,
             available: country_obj.availability,
             imageUrl: country_obj.imageUrl,
+            req_count,
           };
         }
       }
@@ -240,9 +250,6 @@ const CommitteeSelection = ({
           selectedCountryId={selectedCountryId}
           setSelectedCountryId={(value) => setSelectedCountryId(value)}
           fetchedCountryId={fetchedUserData.country_id}
-          selectedCountry={
-            committeesData[selectedCommitteeId].countries[selectedCountryId]
-          }
         />
         <ButtonPanel
           enabled={enableButtons}

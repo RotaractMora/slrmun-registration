@@ -15,7 +15,6 @@ const DropDownSection = ({
   selectedCountryId,
   setSelectedCountryId,
   fetchedCountryId,
-  selectedCountry,
 }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
@@ -46,14 +45,11 @@ const DropDownSection = ({
           fetchedSelectedId={fetchedCountryId}
         />
       </div>
-      {selectedCountry.requests
-        ? console.log(Object.keys(selectedCountry.requests).length)
-        : null}
-      {selectedCountry.requests ? (
-        Object.keys(selectedCountry.requests).length > 0 ? (
+      {fetchedCountryList ? (
+        fetchedCountryList[selectedCountryId].req_count > 0 ? (
           <Typography variant="body2" className={classes.warning}>
             This country has already been requested by{" "}
-            <b>{Object.keys(selectedCountry.requests).length.toString()}</b>{" "}
+            <b>{fetchedCountryList[selectedCountryId].req_count.toString()}</b>{" "}
             registrants. Make the registration fee and confirm your
             participation soon.
           </Typography>

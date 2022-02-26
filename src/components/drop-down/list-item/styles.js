@@ -9,6 +9,7 @@ const styles = {
     "&:hover": {
       backgroundColor: (props) => props.palette.grey["200"],
     },
+    position: "relative",
   },
   image: {
     width: "80px",
@@ -21,6 +22,23 @@ const styles = {
   },
   strike: {
     textDecoration: "line-through",
+  },
+  badge: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    marginRight: 10,
+    marginTop: 5,
+    backgroundColor: (theme) => theme.palette.error.light,
+    color: (theme) => theme.palette.error.contrastText,
+    fontSize: "0.8rem",
+    width: 20,
+    height: 20,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: "50%",
+    boxShadow: (theme) => theme.shadows[3],
   },
 };
 

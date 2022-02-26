@@ -10,7 +10,6 @@ const useStyles = makeStyles(styles);
 const ListItem = ({ object, onClick, isSelectedItem }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
-
   let textClass = classes.text;
   if (!object.available && !isSelectedItem) {
     textClass = [classes.text, classes.strike].join(" ");
@@ -21,6 +20,9 @@ const ListItem = ({ object, onClick, isSelectedItem }) => {
       <Typography className={textClass} variant="body1">
         {object.text}
       </Typography>
+      {object.req_count > 0 ? (
+        <span className={classes.badge}>{object.req_count}</span>
+      ) : null}
     </div>
   );
 };

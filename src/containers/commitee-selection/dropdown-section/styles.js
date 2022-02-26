@@ -11,6 +11,7 @@ const styles = {
     textAlign: "justify",
     margin: "auto",
     backgroundColor: (theme) => theme.palette.error.light,
+    color: (theme) => theme.palette.error.contrastText,
     padding: 20,
   },
 };
