@@ -31,33 +31,42 @@ const UserManagement = ({ firebaseDatabase, committeesData }) => {
   const classes = useStyles(theme);
 
   const [usersData, setUsersData] = useState([]);
-  const [fetchedUserData, setFetchedUsersData] = useState();
-  const [showUsersArr, setShowUsersArr] = useState([
+  const [fetchedUserData, setFetchedUsersData] = useState([]);
+  const [fecthedVisibleUsers, setFetchedVisibleUsers] = useState([]);
+  const [visibleUsersArr, setVisibleUsersArr] = useState([
     GENERAL_USER_LEVEL,
     ADMIN_USER_LEVEL,
   ]);
 
+  const getVisibleUsers = (allUsers, userLevels) => {
+    const newUsersData = [];
+    if (userLevels) {
+      for (let i = 0; i < allUsers.length; i++) {
+        const userData = allUsers[i];
+        if (userLevels.includes(userData.user_level)) {
+          newUsersData.push(userData);
+        }
+      }
+      return newUsersData;
+    }
+  };
+
   // used to filter the users list by the switches
   const handleVisibility = (e, userLevel) => {
-    const newShowUsers = JSON.parse(JSON.stringify(showUsersArr));
+    const visibleUserLevels = JSON.parse(JSON.stringify(visibleUsersArr));
     if (e.target.checked) {
-      newShowUsers.push(userLevel);
+      visibleUserLevels.push(userLevel);
     } else {
-      const index = newShowUsers.indexOf(userLevel);
+      const index = visibleUserLevels.indexOf(userLevel);
       if (index > -1) {
-        newShowUsers.splice(index, 1);
+        visibleUserLevels.splice(index, 1);
       }
     }
-    setShowUsersArr(newShowUsers);
 
-    const newUsersData = [];
-    for (let i = 0; i < fetchedUserData.length; i++) {
-      const userData = fetchedUserData[i];
-      if (newShowUsers.includes(userData.user_level)) {
-        newUsersData.push(userData);
-      }
-    }
+    setVisibleUsersArr(visibleUserLevels);
+    const newUsersData = getVisibleUsers(fetchedUserData, visibleUserLevels);
     setUsersData(newUsersData);
+    setFetchedVisibleUsers(newUsersData);
   };
 
   // fetches the all users data
@@ -73,9 +82,12 @@ const UserManagement = ({ firebaseDatabase, committeesData }) => {
           dataObj[user.registered_timestamp] = { ...user, user_id };
         }
       }
+
       dataArr = Object.values(dataObj);
-      setUsersData(dataArr);
       setFetchedUsersData(dataArr);
+      const visibleUsers = getVisibleUsers(dataArr, visibleUsersArr);
+      setUsersData(visibleUsers);
+      setFetchedVisibleUsers(visibleUsers);
     });
   }, []);
 
@@ -88,7 +100,7 @@ const UserManagement = ({ firebaseDatabase, committeesData }) => {
         <FormControlLabel
           control={
             <Switch
-              checked={showUsersArr.includes(GENERAL_USER_LEVEL)}
+              checked={visibleUsersArr.includes(GENERAL_USER_LEVEL)}
               onChange={(e) => {
                 handleVisibility(e, GENERAL_USER_LEVEL);
               }}
@@ -101,7 +113,7 @@ const UserManagement = ({ firebaseDatabase, committeesData }) => {
         <FormControlLabel
           control={
             <Switch
-              checked={showUsersArr.includes(ADMIN_USER_LEVEL)}
+              checked={visibleUsersArr.includes(ADMIN_USER_LEVEL)}
               onChange={(e) => {
                 handleVisibility(e, ADMIN_USER_LEVEL);
               }}
@@ -115,7 +127,7 @@ const UserManagement = ({ firebaseDatabase, committeesData }) => {
       <UsersTable
         usersData={usersData}
         setUsersData={setUsersData}
-        fetchedUserData={fetchedUserData}
+        fetchedUserData={fecthedVisibleUsers}
         committeesData={committeesData}
       />
     </div>
