@@ -46,13 +46,17 @@ const DropDownSection = ({
         />
       </div>
       {fetchedCountryList ? (
-        fetchedCountryList[selectedCountryId].req_count > 0 ? (
-          <Typography variant="body2" className={classes.warning}>
-            This country has already been requested by{" "}
-            <b>{fetchedCountryList[selectedCountryId].req_count.toString()}</b>{" "}
-            registrants. Make the registration fee and confirm your
-            participation soon.
-          </Typography>
+        fetchedCountryList[selectedCountryId] ? (
+          fetchedCountryList[selectedCountryId].req_count > 0 ? (
+            <Typography variant="body2" className={classes.warning}>
+              This country has already been requested by{" "}
+              <b>
+                {fetchedCountryList[selectedCountryId].req_count.toString()}
+              </b>{" "}
+              registrants. Make the registration fee and confirm your
+              participation soon.
+            </Typography>
+          ) : null
         ) : null
       ) : null}
     </div>
