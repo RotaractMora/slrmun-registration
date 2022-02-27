@@ -102,50 +102,54 @@ const UserRow = ({
     const db = getDatabase();
 
     // Do any change only if the admin_approved value has been changed
-    if (userData.admin_approved !== fetchedUserData.admin_approved) {
-      const countryRef = ref(
-        db,
-        COMMITTEES_DOC_NAME +
-          "/" +
-          userData.committee_id +
-          "/countries/" +
-          userData.country_id
-      );
+    if (
+      userData.admin_approved !== fetchedUserData.admin_approved ||
+      userData.user_level !== fetchedUserData.user_level
+    ) {
+      if (userData.admin_approved !== fetchedUserData.admin_approved) {
+        const countryRef = ref(
+          db,
+          COMMITTEES_DOC_NAME +
+            "/" +
+            userData.committee_id +
+            "/countries/" +
+            userData.country_id
+        );
 
-      // checks the country's availability and update it
-      if (countryData.availability) {
-        if (userData.admin_approved) {
-          // reserve the country
-          update(countryRef, {
-            availability: 0,
-            reserved_to: userData.user_id,
-          });
-          userData.country_reserved = true;
-        } else {
-          userData.country_reserved = false;
-          // make the country available if it was reserved for this user. This will not happen if everything had gone correctly
-          if (countryData.reserved_to === userData.user_id) {
-            update(countryRef, { reserved_to: "" });
-          }
-        }
-      } else {
-        // if the country is unavailable and the admin is approving, must show that the user has not got the country
-        if (userData.admin_approved) {
-          alert(
-            userData.name +
-              " did not get the requested country because it has been reserved to someone else"
-          );
-        }
-
-        // if the country is unavailable and the admin is unapproving
-        if (!userData.admin_approved) {
-          if (countryData.reserved_to === userData.user_id) {
-            update(countryRef, { reserved_to: "", availability: 1 });
+        // checks the country's availability and update it
+        if (countryData.availability) {
+          if (userData.admin_approved) {
+            // reserve the country
+            update(countryRef, {
+              availability: 0,
+              reserved_to: userData.user_id,
+            });
+            userData.country_reserved = true;
+          } else {
             userData.country_reserved = false;
+            // make the country available if it was reserved for this user. This will not happen if everything had gone correctly
+            if (countryData.reserved_to === userData.user_id) {
+              update(countryRef, { reserved_to: "" });
+            }
+          }
+        } else {
+          // if the country is unavailable and the admin is approving, must show that the user has not got the country
+          if (userData.admin_approved) {
+            alert(
+              userData.name +
+                " did not get the requested country because it has been reserved to someone else"
+            );
+          }
+
+          // if the country is unavailable and the admin is unapproving
+          if (!userData.admin_approved) {
+            if (countryData.reserved_to === userData.user_id) {
+              update(countryRef, { reserved_to: "", availability: 1 });
+              userData.country_reserved = false;
+            }
           }
         }
       }
-
       // update userData
       const userRef = ref(db, USERS_DOC_NAME + "/" + userData.user_id);
       update(userRef, userData);
