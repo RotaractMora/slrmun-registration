@@ -64,36 +64,40 @@ const UserRow = ({
     // Must also show who requested it first and had deposited the payment SPECIALLY
     if (e.target.checked !== fetchedUserData.admin_approved) {
       if (countryData.availability && e.target.checked) {
-        setShowModal(true);
         // finds the users who has requested it
         const userIdToTimeStamp = {};
         for (const key in countryData.requests) {
           userIdToTimeStamp[countryData.requests[key]] = key;
         }
-        console.log(userIdToTimeStamp);
+
         const requestedList = [];
         const paymentsList = [];
         for (const index in usersData) {
           if (Object.hasOwnProperty.call(usersData, index)) {
             const user = usersData[index];
-            if (Object.values(countryData.requests).includes(user.user_id)) {
-              if (user.payment_slip) {
-                paymentsList.push([
-                  index,
-                  user.name,
-                  timeStampToString(userIdToTimeStamp[user.user_id]),
-                ]);
-              } else {
-                requestedList.push([
-                  index,
-                  user.name,
-                  timeStampToString(userIdToTimeStamp[user.user_id]),
-                ]);
+            if (countryData.requests) {
+              if (Object.values(countryData.requests).includes(user.user_id)) {
+                if (user.payment_slip) {
+                  paymentsList.push([
+                    index,
+                    user.name,
+                    timeStampToString(userIdToTimeStamp[user.user_id]),
+                  ]);
+                } else {
+                  requestedList.push([
+                    index,
+                    user.name,
+                    timeStampToString(userIdToTimeStamp[user.user_id]),
+                  ]);
+                }
               }
             }
           }
         }
-        setModalData([paymentsList, requestedList]);
+        if (paymentsList !== [] || requestedList !== []) {
+          setShowModal(true);
+          setModalData([paymentsList, requestedList]);
+        }
       }
     }
   };
@@ -162,7 +166,7 @@ const UserRow = ({
 
   return (
     <Fragment>
-      {showModal ? (
+      {showModal && (modalData[0].length > 0 || modalData[1].length > 0) ? (
         <TwoButtonModal
           heading="User Approval"
           onProceed={() => setShowModal(false)}
@@ -174,50 +178,58 @@ const UserRow = ({
             setShowModal(false);
           }}
         >
-          <Typography variant="body1">
-            Other users who have made the payment and requested this country
-          </Typography>
-          <Table className={classes.table}>
-            <TableBody>
-              {modalData[0].map((userData, index) => {
-                return (
-                  <TableRow key={index}>
-                    <TableCell className={classes.smallTableCell}>
-                      {userData[0]}
-                    </TableCell>
-                    <TableCell className={classes.smallTableCell}>
-                      {userData[1]}
-                    </TableCell>
-                    <TableCell className={classes.smallTableCell}>
-                      {userData[2]}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-          <Typography variant="body1">
-            Other users who have requested the same country
-          </Typography>
-          <Table className={classes.table}>
-            <TableBody>
-              {modalData[1].map((userData, index) => {
-                return (
-                  <TableRow key={index}>
-                    <TableCell className={classes.smallTableCell}>
-                      {userData[0]}
-                    </TableCell>
-                    <TableCell className={classes.smallTableCell}>
-                      {userData[1]}
-                    </TableCell>
-                    <TableCell className={classes.smallTableCell}>
-                      {userData[2]}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
+          {modalData[0] ? (
+            <div>
+              <Typography variant="body1">
+                Other users who have made the payment and requested this country
+              </Typography>
+              <Table className={classes.table}>
+                <TableBody>
+                  {modalData[0].map((userData, index) => {
+                    return (
+                      <TableRow key={index}>
+                        <TableCell className={classes.smallTableCell}>
+                          {userData[0]}
+                        </TableCell>
+                        <TableCell className={classes.smallTableCell}>
+                          {userData[1]}
+                        </TableCell>
+                        <TableCell className={classes.smallTableCell}>
+                          {userData[2]}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </div>
+          ) : null}
+          {modalData[1] ? (
+            <div>
+              <Typography variant="body1">
+                Other users who have requested the same country
+              </Typography>
+              <Table className={classes.table}>
+                <TableBody>
+                  {modalData[1].map((userData, index) => {
+                    return (
+                      <TableRow key={index}>
+                        <TableCell className={classes.smallTableCell}>
+                          {userData[0]}
+                        </TableCell>
+                        <TableCell className={classes.smallTableCell}>
+                          {userData[1]}
+                        </TableCell>
+                        <TableCell className={classes.smallTableCell}>
+                          {userData[2]}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </div>
+          ) : null}
         </TwoButtonModal>
       ) : null}
       <TableRow>
