@@ -69,7 +69,7 @@ export const getUserRegistrationStatus = (
       // 6: Registered for a committee; country reserved for another delegate
       return [
         theme.palette.error.main,
-        "6 Your requested country has been reserved to another registrant. Please select another",
+        "Your requested country has been reserved to another registrant. Please select another",
         6,
       ];
 
@@ -80,7 +80,7 @@ export const getUserRegistrationStatus = (
     userData.country_id !== undefined &&
     userData[paymentsFieldName]
   )
-    return [theme.palette.success.main, "5 You are all set!", 5];
+    return [theme.palette.success.main, "You are all set!", 5];
 
   if (
     // 4: Not regitered for a committee; Payment made, Admin approved
@@ -91,7 +91,7 @@ export const getUserRegistrationStatus = (
   )
     return [
       theme.palette.yellow.main,
-      "4 Please register for a committee and a country",
+      "Please register for a committee and a country",
       4,
     ];
 
@@ -104,7 +104,7 @@ export const getUserRegistrationStatus = (
   )
     return [
       theme.palette.yellow.main,
-      "3 Please request a committee and a country",
+      "Please request a committee and a country",
       3,
     ];
 
@@ -117,7 +117,7 @@ export const getUserRegistrationStatus = (
   )
     return [
       theme.palette.yellow.main,
-      "2 Please wait for admin approval to confirm your request",
+      "Please wait for admin approval to confirm your request",
       2,
     ];
 
@@ -130,7 +130,7 @@ export const getUserRegistrationStatus = (
   )
     return [
       theme.palette.orange.main,
-      "1 Please make the payment and wait for admin approval to confirm your request",
+      "Please make the payment and wait for admin approval to confirm your request",
       1,
     ];
 
@@ -143,7 +143,7 @@ export const getUserRegistrationStatus = (
   )
     return [
       theme.palette.error.main,
-      "0 Please request a committee and a country",
+      "Please request a committee and a country",
       0,
     ];
 
