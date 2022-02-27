@@ -17,15 +17,18 @@ import styles from "./styles";
 
 // components
 import defaultUserIcon from "../../../../assets/images/default-user-icon.png";
-import Dropdown from "./dropdown/Dropdown";
 import {
   COMMITTEES_DOC_NAME,
   PAYMENTS_FIELD_NAME,
   USERS_DOC_NAME,
 } from "../../../../constants/general";
-import { getDatabase, get, update, ref } from "firebase/database";
+
+import { getDatabase, update, ref } from "firebase/database";
 import TwoButtonModal from "../../../../components/two-button-modal/TwoButtonModal";
 import { timeStampToString } from "../../../../functions/general";
+import { getWhatsAppNumber } from "../../../../functions/user";
+
+import whatsAppIcon from "../../../../assets/images/whatsapp-icon.png";
 
 const useStyles = makeStyles(styles);
 
@@ -255,7 +258,14 @@ const UserRow = ({
       </TableRow>
       <TableRow>
         <TableCell>{userData.email}</TableCell>
-        <TableCell>{userData.mobile_number}</TableCell>
+        <TableCell>
+          <span className={classes.numberCell}>
+            <a target="_blank" href={getWhatsAppNumber(userData.mobile_number)}>
+              <img src={whatsAppIcon} />
+            </a>
+            {userData.mobile_number}
+          </span>
+        </TableCell>
         <TableCell>{userData.institute}</TableCell>
         <TableCell>
           {userData.residence_address + " " + userData.residence_country}

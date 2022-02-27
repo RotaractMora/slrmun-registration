@@ -27,6 +27,18 @@ const styles = {
   table: {
     margin: 10,
   },
+  numberCell: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    "& img": {
+      width: 20,
+      margin: 0,
+      marginRight: 5,
+      padding: 0,
+    },
+  },
 };
 
 export default styles;

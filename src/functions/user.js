@@ -149,3 +149,23 @@ export const getUserRegistrationStatus = (
 
   return [theme.palette.error.main, "Error, Please contact the admin", 0];
 };
+
+export const getWhatsAppNumber = (number) => {
+  //remove the spaces
+  const spacelessNum = number.replace(/\s/g, "");
+  const whatsAppPrefix = "https://wa.me/";
+  // Sri Lankans
+  // general case 0715942246
+  if (spacelessNum.length === 10 && spacelessNum[0] === "0") {
+    return (
+      whatsAppPrefix + "94" + spacelessNum.substr(1, spacelessNum.length - 1)
+    );
+  }
+  // +94715942246
+  if (spacelessNum[0] === "+") {
+    return whatsAppPrefix + spacelessNum.substr(1, spacelessNum.length - 1);
+  }
+
+  // 94715942246
+  return whatsAppPrefix + spacelessNum;
+};
