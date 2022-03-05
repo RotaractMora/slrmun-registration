@@ -39,6 +39,16 @@ const styles = {
       padding: 0,
     },
   },
+  flexColumn: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  maxWidth200: {
+    maxWidth: 200,
+  },
+  maxWidth300: {
+    maxWidth: 300,
+  },
 };
 
 export default styles;

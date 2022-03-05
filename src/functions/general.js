@@ -1,14 +1,14 @@
 export const timeStampToString = (timestamp) => {
-  var date = new Date(parseInt(timestamp));
+  var date = new Date(parseInt(timestamp * 1000));
   return (
-    date.getHours() +
+    date.getHours().toString().padStart(2, "0") +
     ":" +
-    date.getMinutes() +
+    date.getMinutes().toString().padStart(2, "0") +
     ", " +
-    date.getDate() +
-    "/" +
-    date.getMonth() +
-    "/" +
+    date.getDate().toString().padStart(2, "0") +
+    "." +
+    (date.getMonth() + 1).toString().padStart(2, "0") +
+    "." +
     date.getFullYear()
   );
 };

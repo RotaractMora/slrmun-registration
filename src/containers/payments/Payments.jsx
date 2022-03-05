@@ -51,7 +51,7 @@ const Payments = ({
       setShowModal,
       PAYMENTS_UPLOAD_DIRECTORY,
       PAYMENTS_FIELD_NAME,
-      PAYMENT_TIMESTAMP_FIELD_NAME
+      "payment_timestamp"
     );
   };
 

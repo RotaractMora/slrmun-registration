@@ -24,6 +24,7 @@ const UsersTable = ({
   committeesData,
 }) => {
   const theme = useTheme();
+  console.log(theme.palette.grey);
   const classes = useStyles(theme);
 
   // used to change the original big all users data state when a single user is changed
@@ -39,16 +40,36 @@ const UsersTable = ({
       className={classes.root}
       style={{ maxHeight: "80vh" }}
     >
-      <Table stickyHeader>
+      <Table stickyHeader size="small">
         <TableHead>
           <TableRow className={classes.table_head}>
             <TableCell align="center">User</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Phone&nbsp;Number</TableCell>
-            <TableCell>Institue</TableCell>
-            <TableCell>Resident Address</TableCell>
-            <TableCell>Rotaractor</TableCell>
-            <TableCell>Interactor</TableCell>
+            <TableCell align="center">
+              <div>Email</div>
+              <div className={classes.grayBg}>
+                Committee | Country | MUN Exp
+              </div>
+            </TableCell>
+            <TableCell align="center">
+              <div>Phone&nbsp;Number</div>
+              <div className={classes.grayBg}>Registered time</div>
+            </TableCell>
+            <TableCell align="center">
+              <div>Institue</div>
+              <div className={classes.grayBg}>Approval</div>
+            </TableCell>
+            <TableCell align="center">
+              <div>Resident&nbsp;Address</div>
+              <div className={classes.grayBg}>Admin</div>
+            </TableCell>
+            <TableCell align="center">
+              <div>Rotaract</div>
+              <div className={classes.grayBg}>Payment</div>
+            </TableCell>
+            <TableCell align="center">
+              <div>Interact</div>
+              <div className={classes.grayBg}>Update</div>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

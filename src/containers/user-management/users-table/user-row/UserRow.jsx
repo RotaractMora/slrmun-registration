@@ -20,6 +20,7 @@ import defaultUserIcon from "../../../../assets/images/default-user-icon.png";
 import {
   COMMITTEES_DOC_NAME,
   PAYMENTS_FIELD_NAME,
+  PAYMENT_TIMESTAMP_FIELD_NAME,
   USERS_DOC_NAME,
 } from "../../../../constants/general";
 
@@ -236,7 +237,7 @@ const UserRow = ({
         </TwoButtonModal>
       ) : null}
       <TableRow>
-        <TableCell rowSpan={3}>
+        <TableCell rowSpan={3} className={classes.maxWidth300}>
           <TableCell className={classes.no_bottom_border}>
             {index + 1}
           </TableCell>
@@ -266,12 +267,18 @@ const UserRow = ({
             {userData.mobile_number}
           </span>
         </TableCell>
-        <TableCell>{userData.institute}</TableCell>
-        <TableCell>
+        <TableCell className={classes.maxWidth200}>
+          {userData.institute}
+        </TableCell>
+        <TableCell className={classes.maxWidth200}>
           {userData.residence_address + " " + userData.residence_country}
         </TableCell>
-        <TableCell>{userData.rotaract_club}</TableCell>
-        <TableCell>{userData.interact_club}</TableCell>
+        <TableCell className={classes.maxWidth200}>
+          {userData.rotaractor ? userData.rotaract_club : "None"}
+        </TableCell>
+        <TableCell className={classes.maxWidth200}>
+          {userData.interactor ? userData.interact_club : "None"}
+        </TableCell>
       </TableRow>
       <TableRow className={classes.admin_area_row}>
         <TableCell>
@@ -279,6 +286,16 @@ const UserRow = ({
             {committeesData !== {} && userData.committee_id
               ? committeesData[userData.committee_id].short_name
               : "None"}
+            {" | "}
+            {committeesData !== {} &&
+            userData.committee_id &&
+            userData.country_id
+              ? committeesData[userData.committee_id].countries[
+                  userData.country_id
+                ].name
+              : "None"}
+            {" | "}
+            {userData.mun_experience}
           </Typography>
           {/* <Dropdown
             label={
@@ -287,17 +304,6 @@ const UserRow = ({
                 : "None"
             }
           /> */}
-        </TableCell>
-        <TableCell>
-          <Typography variant="body1">
-            {committeesData !== {} &&
-            userData.committee_id &&
-            userData.country_id
-              ? committeesData[userData.committee_id].countries[
-                  userData.country_id
-                ].name
-              : "None"}
-          </Typography>
           {/* <Dropdown
             label={
               committeesData !== {} &&
@@ -309,6 +315,9 @@ const UserRow = ({
                 : "None"
             }
           /> */}
+        </TableCell>
+        <TableCell>
+          {timeStampToString(userData.registered_timestamp)}
         </TableCell>
         <TableCell>
           <FormControlLabel
@@ -349,16 +358,23 @@ const UserRow = ({
         </TableCell>
         <TableCell>
           {userData[PAYMENTS_FIELD_NAME] ? (
-            <img
-              className={classes.bank_slip_img}
-              src={userData[PAYMENTS_FIELD_NAME]}
-              alt="bank slip"
-            />
+            <div className={classes.flexColumn}>
+              <span>
+                <img
+                  className={classes.bank_slip_img}
+                  src={userData[PAYMENTS_FIELD_NAME]}
+                  alt="bank slip"
+                />
+              </span>
+              <Typography variant="caption">
+                {timeStampToString(userData.payment_timestamp)}
+              </Typography>
+            </div>
           ) : (
             "No payments made"
           )}
         </TableCell>
-        <TableCell style={{ display: "flex", flexDirection: "row" }}>
+        <TableCell className={classes.flexColumn}>
           <Button
             size="small"
             variant="contained"
@@ -382,16 +398,6 @@ const UserRow = ({
             }
           >
             Cancel
-          </Button>
-          <Button
-            size="small"
-            variant="contained"
-            color="secondary"
-            onClick={handleCancel}
-            className={classes.btn}
-            disabled={true}
-          >
-            Delete
           </Button>
         </TableCell>
       </TableRow>

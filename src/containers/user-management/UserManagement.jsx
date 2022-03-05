@@ -79,7 +79,14 @@ const UserManagement = ({ firebaseDatabase, committeesData }) => {
       for (const user_id in data) {
         if (Object.hasOwnProperty.call(data, user_id)) {
           const user = data[user_id];
-          dataObj[user.registered_timestamp] = { ...user, user_id };
+          if (user.name == "Avishka Perera") {
+            console.log(user, user_id);
+          }
+          if (dataObj[user.registered_timestamp]) {
+            dataObj[user.registered_timestamp + 1] = { ...user, user_id };
+          } else {
+            dataObj[user.registered_timestamp] = { ...user, user_id };
+          }
         }
       }
 
