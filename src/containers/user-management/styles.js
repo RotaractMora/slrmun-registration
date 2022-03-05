@@ -5,8 +5,8 @@ const styles = {
   h1: {
     margin: "20px",
   },
-  filter_container: {
-    margin: "0px 30px",
+  controls_container: {
+    margin: "10px 30px",
   },
 };
 

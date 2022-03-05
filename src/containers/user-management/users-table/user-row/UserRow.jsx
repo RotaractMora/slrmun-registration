@@ -27,7 +27,7 @@ import {
 import { getDatabase, update, ref } from "firebase/database";
 import TwoButtonModal from "../../../../components/two-button-modal/TwoButtonModal";
 import { timeStampToString } from "../../../../functions/general";
-import { getWhatsAppNumber } from "../../../../functions/user";
+import { getWhatsAppNumber } from "../../../../functions/userManagement";
 
 import whatsAppIcon from "../../../../assets/images/whatsapp-icon.png";
 

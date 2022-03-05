@@ -1,7 +1,4 @@
-import React, { useEffect, useState } from "react";
-
-// firebase
-import { onValue, ref } from "firebase/database";
+import React, { useState } from "react";
 
 // styling
 import {
@@ -10,19 +7,19 @@ import {
   Typography,
   Switch,
   FormControlLabel,
+  Button,
 } from "@material-ui/core";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import styles from "./styles";
 
 // components
 import UsersTable from "./users-table/UsersTable";
 
 // other constants
-import {
-  USERS_DOC_NAME,
-  COMMITTEES_DOC_NAME,
-  GENERAL_USER_LEVEL,
-  ADMIN_USER_LEVEL,
-} from "../../constants/general";
+import { GENERAL_USER_LEVEL, ADMIN_USER_LEVEL } from "../../constants/general";
+import { download_csv_file, timeStampToString } from "../../functions/general";
+import { usersObjectToCSV } from "../../functions/userManagement";
+import { userLevelToString } from "../../functions/user";
 
 const useStyles = makeStyles(styles);
 
@@ -74,12 +71,51 @@ const UserManagement = ({
     setFetchedVisibleUsers(newUsersData);
   };
 
+  const handleUserDataDownload = () => {
+    const downloadData = usersObjectToCSV(visibleUsers, committeesData);
+    const timestamp = new Date().getTime() / 1000;
+    const downloadName =
+      timeStampToString(timestamp, 1) +
+      "-" +
+      visibleUsersArr.map((level) => userLevelToString(level)).join("-") +
+      ".csv";
+    const headings = [
+      "Approval",
+      "Committee",
+      "Country",
+      "Country Reservation",
+      "Current Status",
+      "Email",
+      "Institue",
+      "Interact Club",
+      "Mobile number",
+      "MUN Experience",
+      "Name",
+      "Payment Image",
+      "Payment time",
+      "Profile picture",
+      "Registered time",
+      "Resident address",
+      "Resident Country",
+      "Rotaract Club",
+      "user_id",
+      "User Level",
+    ];
+    download_csv_file(headings, downloadData, downloadName);
+  };
+
   return (
     <div className={classes.root}>
       <Typography variant="h1" className={classes.h1}>
         User Management
       </Typography>
-      <div className={classes.filter_container}>
+      <UsersTable
+        usersData={usersData}
+        setUsersData={setUsersData}
+        fetchedUserData={fetchedVisibleUsers}
+        committeesData={committeesData}
+      />
+      <div className={classes.controls_container}>
         <FormControlLabel
           control={
             <Switch
@@ -106,13 +142,15 @@ const UserManagement = ({
           }
           label="Admins"
         />
+        <Button
+          color="primary"
+          variant="contained"
+          startIcon={<FileDownloadIcon />}
+          onClick={handleUserDataDownload}
+        >
+          Download Table
+        </Button>
       </div>
-      <UsersTable
-        usersData={usersData}
-        setUsersData={setUsersData}
-        fetchedUserData={fetchedVisibleUsers}
-        committeesData={committeesData}
-      />
     </div>
   );
 };

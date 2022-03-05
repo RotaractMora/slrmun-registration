@@ -150,22 +150,31 @@ export const getUserRegistrationStatus = (
   return [theme.palette.error.main, "Error, Please contact the admin", 0];
 };
 
-export const getWhatsAppNumber = (number) => {
-  //remove the spaces
-  const spacelessNum = number.replace(/\s/g, "");
-  const whatsAppPrefix = "https://wa.me/";
-  // Sri Lankans
-  // general case 0715942246
-  if (spacelessNum.length === 10 && spacelessNum[0] === "0") {
-    return (
-      whatsAppPrefix + "94" + spacelessNum.substr(1, spacelessNum.length - 1)
-    );
-  }
-  // +94715942246
-  if (spacelessNum[0] === "+") {
-    return whatsAppPrefix + spacelessNum.substr(1, spacelessNum.length - 1);
-  }
+export const userLevelToString = (userLevel) => {
+  if (userLevel === 0) return "Delegate";
+  if (userLevel === 1) return "Committee Chairperson";
+  if (userLevel === 2) return "Admin";
+  if (userLevel === 3) return "Developer";
+  return "Undefined User Level";
+};
 
-  // 94715942246
-  return whatsAppPrefix + spacelessNum;
+export const getCommitteeAndCountryFromNumbers = (
+  committee_id,
+  country_id,
+  committeesData
+) => {
+  let committee = "None";
+  let country = "None";
+  if (committee_id) committee = committeesData[committee_id].short_name;
+  if (committee_id && country_id)
+    country = committeesData[committee_id].countries[country_id].name;
+
+  return [committee, country];
+};
+
+export const getCurrentStatusFromNumber = (number) => {
+  if (parseInt(number) === 0) return "School Student";
+  if (parseInt(number) === 1) return "University Student";
+  if (parseInt(number) === 2) return "Employeed";
+  return "Undefined currentStatusNumber";
 };
