@@ -24,7 +24,6 @@ const UsersTable = ({
   committeesData,
 }) => {
   const theme = useTheme();
-  console.log(theme.palette.grey);
   const classes = useStyles(theme);
 
   // used to change the original big all users data state when a single user is changed

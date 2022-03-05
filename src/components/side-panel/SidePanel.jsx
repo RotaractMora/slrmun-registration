@@ -43,7 +43,6 @@ const SidePanel = ({ cross, setShowSidePanel }) => {
 
   // styles
   const theme = useTheme();
-  console.log(theme);
   const classes = useStyles(theme);
   let body_class = classes.body;
   let backArrow_class = classes.backArrow;
