@@ -26,13 +26,14 @@ import {
 
 const useStyles = makeStyles(styles);
 
-const UserManagement = ({ firebaseDatabase, committeesData }) => {
+const UserManagement = ({
+  firebaseDatabase,
+  committeesData,
+  fetchedUserData,
+}) => {
   const theme = useTheme();
   const classes = useStyles(theme);
 
-  const [usersData, setUsersData] = useState([]);
-  const [fetchedUserData, setFetchedUsersData] = useState([]);
-  const [fecthedVisibleUsers, setFetchedVisibleUsers] = useState([]);
   const [visibleUsersArr, setVisibleUsersArr] = useState([
     GENERAL_USER_LEVEL,
     ADMIN_USER_LEVEL,
@@ -47,56 +48,31 @@ const UserManagement = ({ firebaseDatabase, committeesData }) => {
           newUsersData.push(userData);
         }
       }
-      return newUsersData;
     }
+    return newUsersData;
   };
+
+  const visibleUsers = getVisibleUsers(fetchedUserData, visibleUsersArr);
+  const [fetchedVisibleUsers, setFetchedVisibleUsers] = useState(visibleUsers);
+  const [usersData, setUsersData] = useState(visibleUsers);
 
   // used to filter the users list by the switches
   const handleVisibility = (e, userLevel) => {
-    const visibleUserLevels = JSON.parse(JSON.stringify(visibleUsersArr));
+    const newVisibleUsersArr = JSON.parse(JSON.stringify(visibleUsersArr));
     if (e.target.checked) {
-      visibleUserLevels.push(userLevel);
+      newVisibleUsersArr.push(userLevel);
     } else {
-      const index = visibleUserLevels.indexOf(userLevel);
+      const index = newVisibleUsersArr.indexOf(userLevel);
       if (index > -1) {
-        visibleUserLevels.splice(index, 1);
+        newVisibleUsersArr.splice(index, 1);
       }
     }
 
-    setVisibleUsersArr(visibleUserLevels);
-    const newUsersData = getVisibleUsers(fetchedUserData, visibleUserLevels);
+    setVisibleUsersArr(newVisibleUsersArr);
+    const newUsersData = getVisibleUsers(fetchedUserData, newVisibleUsersArr);
     setUsersData(newUsersData);
     setFetchedVisibleUsers(newUsersData);
   };
-
-  // fetches the all users data
-  useEffect(() => {
-    const usersRef = ref(firebaseDatabase, USERS_DOC_NAME);
-    onValue(usersRef, (snapshot) => {
-      const data = snapshot.val();
-      const dataObj = {};
-      let dataArr = [];
-      for (const user_id in data) {
-        if (Object.hasOwnProperty.call(data, user_id)) {
-          const user = data[user_id];
-          if (user.name == "Avishka Perera") {
-            console.log(user, user_id);
-          }
-          if (dataObj[user.registered_timestamp]) {
-            dataObj[user.registered_timestamp + 1] = { ...user, user_id };
-          } else {
-            dataObj[user.registered_timestamp] = { ...user, user_id };
-          }
-        }
-      }
-
-      dataArr = Object.values(dataObj);
-      setFetchedUsersData(dataArr);
-      const visibleUsers = getVisibleUsers(dataArr, visibleUsersArr);
-      setUsersData(visibleUsers);
-      setFetchedVisibleUsers(visibleUsers);
-    });
-  }, []);
 
   return (
     <div className={classes.root}>
@@ -134,7 +110,7 @@ const UserManagement = ({ firebaseDatabase, committeesData }) => {
       <UsersTable
         usersData={usersData}
         setUsersData={setUsersData}
-        fetchedUserData={fecthedVisibleUsers}
+        fetchedUserData={fetchedVisibleUsers}
         committeesData={committeesData}
       />
     </div>

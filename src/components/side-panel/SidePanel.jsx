@@ -52,7 +52,6 @@ const SidePanel = ({ cross, setShowSidePanel }) => {
   if (collapsed) {
     body_class = [body_class, classes.body_collapsed].join(" ");
     backArrow_class = [backArrow_class, classes.backArrow_collapsed].join(" ");
-    console.log(backArrow_class);
   }
 
   // routing

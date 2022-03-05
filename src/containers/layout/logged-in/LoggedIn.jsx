@@ -47,6 +47,8 @@ const LoggedIn = ({ firebaseAuth }) => {
   //states
   const [cross, setCross] = useState(false);
   const [userData, setUserData] = useState({});
+  const [fetchedUserData, setFetchedUsersData] = useState([]);
+
   const [committeesData, setCommitteesData] = useState({});
 
   //firebase
@@ -58,12 +60,37 @@ const LoggedIn = ({ firebaseAuth }) => {
   const committeesRef = ref(db, COMMITTEES_DOC_NAME);
   const fetch = () => {
     onValue(userRef, (snapshot) => {
-      const data = snapshot.val();
-      setUserData(data);
+      const userData = snapshot.val();
+      setUserData(userData);
+      if (userData.user_level >= 1) {
+        //fetch all users data
+        const usersRef = ref(db, USERS_DOC_NAME);
+        onValue(usersRef, (snapshot) => {
+          const data = snapshot.val();
+          const dataObj = {};
+          let dataArr = [];
+          for (const user_id in data) {
+            if (Object.hasOwnProperty.call(data, user_id)) {
+              const user = data[user_id];
+              if (user.name == "Avishka Perera") {
+                console.log(user, user_id);
+              }
+              if (dataObj[user.registered_timestamp]) {
+                dataObj[user.registered_timestamp + 1] = { ...user, user_id };
+              } else {
+                dataObj[user.registered_timestamp] = { ...user, user_id };
+              }
+            }
+          }
+
+          dataArr = Object.values(dataObj);
+          setFetchedUsersData(dataArr);
+        });
+      }
     });
     onValue(committeesRef, (snapshot) => {
-      const data = snapshot.val();
-      setCommitteesData(data);
+      const committeeData = snapshot.val();
+      setCommitteesData(committeeData);
     });
   };
 
@@ -125,6 +152,7 @@ const LoggedIn = ({ firebaseAuth }) => {
                 <UserManagement
                   firebaseDatabase={db}
                   committeesData={committeesData}
+                  fetchedUserData={fetchedUserData}
                 />
               }
             />
