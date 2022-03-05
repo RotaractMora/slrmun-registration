@@ -1,13 +1,20 @@
 const styles = {
   root: {
+    color: "yellow",
     height: "100vh",
     width: "30vw",
+    maxWidth: "250px",
     position: "sticky",
+    transition: "0.3s",
     top: 0,
     "@media screen and (max-width: 768px)": {
       height: "100%",
+      width: 0,
       zIndex: 2,
     },
+  },
+  root_collapsed: {
+    width: "55px",
   },
   body: {
     transition: "0.3s",

@@ -37,7 +37,7 @@ const UsersTable = ({
     <TableContainer
       component={Paper}
       className={classes.root}
-      style={{ maxHeight: "80vh" }}
+      style={{ maxHeight: "75vh" }}
     >
       <Table stickyHeader size="small">
         <TableHead>

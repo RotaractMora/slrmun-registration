@@ -46,12 +46,14 @@ const SidePanel = ({ cross, setShowSidePanel }) => {
   const classes = useStyles(theme);
   let body_class = classes.body;
   let backArrow_class = classes.backArrow;
+  let root_class = classes.root;
   if (cross) {
     body_class = [body_class, classes.body_in].join(" ");
   }
   if (collapsed) {
     body_class = [body_class, classes.body_collapsed].join(" ");
     backArrow_class = [backArrow_class, classes.backArrow_collapsed].join(" ");
+    root_class = [root_class, classes.root_collapsed].join(" ");
   }
 
   // routing
@@ -82,7 +84,7 @@ const SidePanel = ({ cross, setShowSidePanel }) => {
   };
   const visibilityArray = getUserVisibilityArray(userLevel);
   return (
-    <div className={classes.root}>
+    <div className={root_class}>
       <div className={body_class}>
         <div className={classes.listItems}>
           {visibilityArray[0] ? (

@@ -1,6 +1,7 @@
 const styles = {
   header: {
-    position: "fixed",
+    position: "sticky",
+    top: 0,
     width: "100%",
     zIndex: 5,
     backgroundColor: (props) => props.palette.primary.main,
