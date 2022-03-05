@@ -15,6 +15,7 @@ import FileUploadModal from "../../components/file-upload-modal/FileUploadModal"
 import {
   PAYMENTS_FIELD_NAME,
   PAYMENTS_UPLOAD_DIRECTORY,
+  PAYMENT_TIMESTAMP_FIELD_NAME,
 } from "../../constants/general";
 
 import { AuthContext } from "../../firebase/Auth";
@@ -49,7 +50,8 @@ const Payments = ({
       setUploadProgress,
       setShowModal,
       PAYMENTS_UPLOAD_DIRECTORY,
-      PAYMENTS_FIELD_NAME
+      PAYMENTS_FIELD_NAME,
+      PAYMENT_TIMESTAMP_FIELD_NAME
     );
   };
 

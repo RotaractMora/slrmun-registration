@@ -16,9 +16,8 @@ const LocalInstructions = () => {
         Payment Method
       </Typography>
       <Typography variant="body1">
-        Please deposit the amount mentioned in the email you will be receiving
-        to the following bank account and upload a clear image of the
-        transaction document to the below section
+        Please deposit LKR 2500 to the following bank account and upload a clear
+        image of the transaction document to the below section
       </Typography>
       <table className={classes.table}>
         <tbody>

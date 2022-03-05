@@ -41,7 +41,8 @@ export const uploadFile = (
   setUploadProgress,
   setShowModal,
   uploadDirectory,
-  uploadFieldName
+  uploadFieldName,
+  paymentTimestampeFieldName
 ) => {
   const current_uid = currentUser.uid;
   const upload_path =
@@ -98,6 +99,9 @@ export const uploadFile = (
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
         const userRef = refDatabaseFunction(firebaseDb, "users/" + current_uid);
         const updateObj = {};
+        if (paymentTimestampeFieldName) {
+          updateObj[paymentTimestampeFieldName] = parseInt(Date.now() / 1000);
+        }
         updateObj[uploadFieldName] = downloadURL;
         updateObj[uploadFieldName + "_storage_path"] = upload_path;
         update(userRef, updateObj);
@@ -117,7 +121,8 @@ export const compressAndUpload = (
   setUploadProgress,
   setShowModal,
   uploadDirectory,
-  uploadFieldName
+  uploadFieldName,
+  paymentTimestampeFieldName
 ) => {
   if (image.size / 1024 ** 2 > 1) {
     const quality = 1024 ** 2 / image.size;
@@ -133,7 +138,8 @@ export const compressAndUpload = (
           setUploadProgress,
           setShowModal,
           uploadDirectory,
-          uploadFieldName
+          uploadFieldName,
+          paymentTimestampeFieldName
         );
       },
       error(err) {
@@ -151,7 +157,8 @@ export const compressAndUpload = (
       setUploadProgress,
       setShowModal,
       uploadDirectory,
-      uploadFieldName
+      uploadFieldName,
+      paymentTimestampeFieldName
     );
   }
 };
