@@ -20,7 +20,6 @@ import defaultUserIcon from "../../../../assets/images/default-user-icon.png";
 import {
   COMMITTEES_DOC_NAME,
   PAYMENTS_FIELD_NAME,
-  PAYMENT_TIMESTAMP_FIELD_NAME,
   USERS_DOC_NAME,
 } from "../../../../constants/general";
 
@@ -297,24 +296,6 @@ const UserRow = ({
             {" | "}
             {userData.mun_experience}
           </Typography>
-          {/* <Dropdown
-            label={
-              committeesData !== {} && userData.committee_id
-                ? committeesData[userData.committee_id].short_name
-                : "None"
-            }
-          /> */}
-          {/* <Dropdown
-            label={
-              committeesData !== {} &&
-              userData.committee_id &&
-              userData.country_id
-                ? committeesData[userData.committee_id].countries[
-                    userData.country_id
-                  ].name
-                : "None"
-            }
-          /> */}
         </TableCell>
         <TableCell>
           {timeStampToString(userData.registered_timestamp)}

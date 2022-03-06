@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // styling
 import {
@@ -23,11 +23,7 @@ import { userLevelToString } from "../../functions/user";
 
 const useStyles = makeStyles(styles);
 
-const UserManagement = ({
-  firebaseDatabase,
-  committeesData,
-  fetchedUserData,
-}) => {
+const UserManagement = ({ committeesData, fetchedUserData }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
 
@@ -53,6 +49,12 @@ const UserManagement = ({
   const [fetchedVisibleUsers, setFetchedVisibleUsers] = useState(visibleUsers);
   const [usersData, setUsersData] = useState(visibleUsers);
 
+  useEffect(() => {
+    const visibleUsers = getVisibleUsers(fetchedUserData, visibleUsersArr);
+    setUsersData(JSON.parse(JSON.stringify(visibleUsers)));
+    setFetchedVisibleUsers(JSON.parse(JSON.stringify(visibleUsers)));
+  }, [fetchedUserData]);
+
   // used to filter the users list by the switches
   const handleVisibility = (e, userLevel) => {
     const newVisibleUsersArr = JSON.parse(JSON.stringify(visibleUsersArr));
@@ -72,7 +74,7 @@ const UserManagement = ({
   };
 
   const handleUserDataDownload = () => {
-    const downloadData = usersObjectToCSV(visibleUsers, committeesData);
+    const downloadData = usersObjectToCSV(fetchedVisibleUsers, committeesData);
     const timestamp = new Date().getTime() / 1000;
     const downloadName =
       timeStampToString(timestamp, 1) +

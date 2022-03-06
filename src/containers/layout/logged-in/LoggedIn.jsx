@@ -58,48 +58,56 @@ const LoggedIn = ({ firebaseAuth }) => {
   const current_uid = currentUser.uid;
   const userRef = ref(db, USERS_DOC_NAME + "/" + current_uid);
   const committeesRef = ref(db, COMMITTEES_DOC_NAME);
-  const fetch = () => {
+  const initFetch = () => {
+    // fetch user data
     onValue(userRef, (snapshot) => {
       const userData = snapshot.val();
       setUserData(userData);
-      if (userData.user_level >= 1) {
-        //fetch all users data
-        const usersRef = ref(db, USERS_DOC_NAME);
-        onValue(usersRef, (snapshot) => {
-          const data = snapshot.val();
-          const dataObj = {};
-          let dataArr = [];
-          for (const user_id in data) {
-            if (Object.hasOwnProperty.call(data, user_id)) {
-              const user = data[user_id];
-              if (user.name == "Avishka Perera") {
-                console.log(user, user_id);
-              }
-              if (dataObj[user.registered_timestamp]) {
-                dataObj[user.registered_timestamp + 1] = { ...user, user_id };
-              } else {
-                dataObj[user.registered_timestamp] = { ...user, user_id };
-              }
-            }
-          }
-
-          dataArr = Object.values(dataObj);
-          setFetchedUsersData(dataArr);
-        });
-      }
     });
+
+    // fetch committee data
     onValue(committeesRef, (snapshot) => {
       const committeeData = snapshot.val();
       setCommitteesData(committeeData);
     });
   };
 
+  const loggedInFetch = () => {
+    //fetch all users data
+    const usersRef = ref(db, USERS_DOC_NAME);
+    onValue(usersRef, (snapshot) => {
+      const data = snapshot.val();
+      const dataObj = {};
+      let dataArr = [];
+      for (const user_id in data) {
+        if (Object.hasOwnProperty.call(data, user_id)) {
+          const user = data[user_id];
+          if (dataObj[user.registered_timestamp]) {
+            dataObj[user.registered_timestamp + 1] = { ...user, user_id };
+          } else {
+            dataObj[user.registered_timestamp] = { ...user, user_id };
+          }
+        }
+      }
+
+      dataArr = Object.values(dataObj);
+      setFetchedUsersData(dataArr);
+    });
+  };
+
   //state management
   useEffect(() => {
     if (JSON.stringify(userData) === JSON.stringify({})) {
-      fetch();
+      initFetch();
     }
   }, []);
+  useEffect(() => {
+    if (userData) {
+      if (userData.user_level >= 1) {
+        loggedInFetch();
+      }
+    }
+  }, [userData]);
 
   const visibilityArray = getUserVisibilityArray(userData.user_level);
   return (
