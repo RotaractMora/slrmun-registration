@@ -50,7 +50,7 @@ const Registration = () => {
     const mun_experience = e.target.mun_experience.value;
     const current_status = e.target.current_status.value;
     const institute = e.target.institute.value;
-    const registered_timestamp = parseInt(Date.now() / 1000);
+    const registered_timestamp = parseInt(Date.now());
     const residence_country = e.target.residence_country.value;
     const residence_address = e.target.residence_address
       ? e.target.residence_address.value

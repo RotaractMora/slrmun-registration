@@ -245,7 +245,7 @@ const UserRow = ({
               className={classes.profile_picture}
               src={
                 userData.profile_picture
-                  ? userData.profile_picture
+                  ? userData.profile_picture.public_url
                   : defaultUserIcon
               }
               alt={userData.name}
@@ -338,17 +338,17 @@ const UserRow = ({
           />
         </TableCell>
         <TableCell>
-          {userData[PAYMENTS_FIELD_NAME] ? (
+          {userData.payment_slip ? (
             <div className={classes.flexColumn}>
               <span>
                 <img
                   className={classes.bank_slip_img}
-                  src={userData[PAYMENTS_FIELD_NAME]}
+                  src={userData.payment_slip.public_url}
                   alt="bank slip"
                 />
               </span>
               <Typography variant="caption">
-                {timeStampToString(userData.payment_timestamp)}
+                {timeStampToString(userData.payment_slip.timestamp)}
               </Typography>
             </div>
           ) : (

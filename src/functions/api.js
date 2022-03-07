@@ -36,18 +36,15 @@ export const uploadFile = (
   image,
   fetchedUserData,
   firebaseStorage,
-  firebaseDb,
   setUploadProgress,
   setShowModal,
   uploadDirectory,
   uploadFieldName,
-  uploadTimestampeFieldName
+  uploadRef,
+  updateRef,
+  updateData
 ) => {
-  const current_uid = fetchedUserData.user_id;
-  const upload_path =
-    "/images/" + uploadDirectory + "/" + current_uid + "/" + image.name;
-  const newImageRef = refStorageFunc(firebaseStorage, upload_path);
-  const uploadTask = uploadBytesResumable(newImageRef, image);
+  const uploadTask = uploadBytesResumable(uploadRef, image);
   // Listen for state changes, errors, and completion of the upload.
   uploadTask.on(
     "state_changed",
@@ -57,10 +54,8 @@ export const uploadFile = (
       setUploadProgress(progress);
       switch (snapshot.state) {
         case "paused":
-          console.log("Upload is paused");
           break;
         case "running":
-          console.log("Upload is running");
           break;
       }
     },
@@ -80,28 +75,24 @@ export const uploadFile = (
     () => {
       // Upload completed successfully,
       // Check if an old image existed. If so, delete the old image
-      if (fetchedUserData[uploadFieldName + "_storage_path"]) {
+      if (fetchedUserData[uploadFieldName]) {
         // Before that, must check if the new file name is the same as the old file
         // When a file with the same name is uploaded, firebase will automatially replace the old file with the new one
         // Hence, we must check if the new file name is different from the old name.
         //    If they are different, proceed the deletion process
         //    else (file names are equal), skip the deletion process
         if (
-          !fetchedUserData[uploadFieldName + "_storage_path"].endsWith(
-            image.name
-          )
+          !fetchedUserData[uploadFieldName].storage_path.endsWith(image.name)
         ) {
           const oldImageRef = refStorageFunc(
             firebaseStorage,
-            fetchedUserData[uploadFieldName + "_storage_path"]
+            fetchedUserData[uploadFieldName].storage_path
           );
           deleteObject(oldImageRef)
             .then(() => {
-              console.log("Delete success");
               // File deleted successfully, firebaseAuth
             })
             .catch((error) => {
-              console.log("Delete failed");
               console.log(error);
             });
         }
@@ -109,14 +100,20 @@ export const uploadFile = (
 
       // now we can get the download URL
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-        const userRef = refDatabaseFunction(firebaseDb, "users/" + current_uid);
+        updateData.timestamp = parseInt(Date.now());
+        const upload_path =
+          "/images/" +
+          uploadDirectory +
+          "/" +
+          fetchedUserData.user_id +
+          "/" +
+          image.name;
+        updateData.public_url = downloadURL;
+        updateData.storage_path = upload_path;
         const updateObj = {};
-        if (uploadTimestampeFieldName) {
-          updateObj[uploadTimestampeFieldName] = parseInt(Date.now());
-        }
-        updateObj[uploadFieldName] = downloadURL;
-        updateObj[uploadFieldName + "_storage_path"] = upload_path;
-        update(userRef, updateObj);
+        updateObj[uploadFieldName] = updateData;
+
+        update(updateRef, updateObj);
         setShowModal(false);
         setUploadProgress(0);
       });
@@ -128,12 +125,13 @@ export const compressAndUpload = (
   image,
   fetchedUserData,
   firebaseStorage,
-  firebaseDb,
   setUploadProgress,
   setShowModal,
   uploadDirectory,
   uploadFieldName,
-  uploadTimestampeFieldName
+  uploadRef,
+  updateRef,
+  updateData
 ) => {
   if (image.size / 1024 ** 2 > 1) {
     const quality = 1024 ** 2 / image.size;
@@ -144,12 +142,13 @@ export const compressAndUpload = (
           result,
           fetchedUserData,
           firebaseStorage,
-          firebaseDb,
           setUploadProgress,
           setShowModal,
           uploadDirectory,
           uploadFieldName,
-          uploadTimestampeFieldName
+          uploadRef,
+          updateRef,
+          updateData
         );
       },
       error(err) {
@@ -162,12 +161,13 @@ export const compressAndUpload = (
       image,
       fetchedUserData,
       firebaseStorage,
-      firebaseDb,
       setUploadProgress,
       setShowModal,
       uploadDirectory,
       uploadFieldName,
-      uploadTimestampeFieldName
+      uploadRef,
+      updateRef,
+      updateData
     );
   }
 };

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import { ref, update } from "firebase/database";
+import { ref as refStorage } from "firebase/storage";
+import { ref as refDatabase, update } from "firebase/database";
+
 import { compressAndUpload } from "../../functions/api";
 import { AuthContext } from "../../firebase/Auth";
 
@@ -35,7 +37,7 @@ const UserProfile = ({ fetchedUserData, firebaseDb, firebaseStorage }) => {
   // firebase
   const { currentUser } = useContext(AuthContext);
   const current_uid = currentUser.uid;
-  const userRef = ref(firebaseDb, USERS_DOC_NAME + "/" + current_uid);
+  const userRef = refDatabase(firebaseDb, USERS_DOC_NAME + "/" + current_uid);
 
   // button pannel functions
   const updateEnability = (fetchedObject, currentObject) => {
@@ -55,15 +57,31 @@ const UserProfile = ({ fetchedUserData, firebaseDb, firebaseStorage }) => {
   const fileUploadHandler = (e) => {
     const image = e.target.files[0];
     // if the image file is too large (>1MB), compress the image and then upload
+    const upload_path =
+      "/images/" +
+      PROFILE_PICTURE_UPLOAD_DIRECTORY +
+      "/" +
+      fetchedUserData.user_id +
+      "/" +
+      image.name;
+    const uploadRef = refStorage(firebaseStorage, upload_path);
+    const updateRef = refDatabase(
+      firebaseDb,
+      "users/" + fetchedUserData.user_id
+    );
+    const updateData = {};
+
     compressAndUpload(
       image,
       fetchedUserData,
       firebaseStorage,
-      firebaseDb,
       setUploadProgress,
       setShowModal,
       PROFILE_PICTURE_UPLOAD_DIRECTORY,
-      PROFILE_PICTURE_FIELD_NAME
+      PROFILE_PICTURE_FIELD_NAME,
+      uploadRef,
+      updateRef,
+      updateData
     );
   };
 
@@ -84,8 +102,8 @@ const UserProfile = ({ fetchedUserData, firebaseDb, firebaseStorage }) => {
         <img
           className={classes.profile_img}
           src={
-            fetchedUserData[PROFILE_PICTURE_FIELD_NAME]
-              ? fetchedUserData[PROFILE_PICTURE_FIELD_NAME]
+            fetchedUserData.profile_picture
+              ? fetchedUserData.profile_picture.public_url
               : DefaultUserIcon
           }
         />

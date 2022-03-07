@@ -15,10 +15,11 @@ import FileUploadModal from "../../components/file-upload-modal/FileUploadModal"
 import {
   PAYMENTS_FIELD_NAME,
   PAYMENTS_UPLOAD_DIRECTORY,
-  PAYMENT_TIMESTAMP_FIELD_NAME,
 } from "../../constants/general";
 
 import { AuthContext } from "../../firebase/Auth";
+import { ref as refStorage } from "firebase/storage";
+import { ref as refDatabase } from "firebase/database";
 
 const useStyles = makeStyles(styles);
 
@@ -35,22 +36,36 @@ const Payments = ({
   const [showModal, setShowModal] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
-  const { currentUser } = useContext(AuthContext);
-
   // handlers
   const fileUploadHandler = (e) => {
     const image = e.target.files[0];
+    const upload_path =
+      "/images/" +
+      PAYMENTS_UPLOAD_DIRECTORY +
+      "/" +
+      fetchedUserData.user_id +
+      "/" +
+      image.name;
+    const uploadRef = refStorage(firebaseStorage, upload_path);
+    const updateRef = refDatabase(
+      firebaseDb,
+      "users/" + fetchedUserData.user_id
+    );
+    const updateData = {};
     // if the image file is too large (>1MB), compress the image and then upload
+    const uploadFieldName = PAYMENTS_FIELD_NAME;
+
     compressAndUpload(
       image,
       fetchedUserData,
       firebaseStorage,
-      firebaseDb,
       setUploadProgress,
       setShowModal,
       PAYMENTS_UPLOAD_DIRECTORY,
-      PAYMENTS_FIELD_NAME,
-      "payment_timestamp"
+      uploadFieldName,
+      uploadRef,
+      updateRef,
+      updateData
     );
   };
 
@@ -67,11 +82,11 @@ const Payments = ({
       <div className={classes.container}>
         {instructions}
         <div className={classes.breaker}></div>
-        {fetchedUserData[PAYMENTS_FIELD_NAME] ? (
+        {fetchedUserData.payment_slip ? (
           <div className={classes.uploaded_image_container}>
             <img
               className={classes.bank_slip_img}
-              src={fetchedUserData[PAYMENTS_FIELD_NAME]}
+              src={fetchedUserData.payment_slip.public_url}
               alt="transaction-document"
             />
             <Button

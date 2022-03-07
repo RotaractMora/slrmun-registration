@@ -31,18 +31,6 @@ const FPSSubmission = ({ firebaseDb, committee_id, current_uid }) => {
 
   const fileUploadHandler = (e) => {
     const image = e.target.files[0];
-    // uploadFile(
-    //   image,
-    //   fetchedUserData,
-    //   firebaseStorage,
-    //   firebaseDb,
-    //   currentUser,
-    //   setUploadProgress,
-    //   setShowModal,
-    //   uploadDirectory,
-    //   uploadFieldName,
-    //   uploadTimestampeFieldName
-    // );
   };
 
   const fetchFPSData = () => {

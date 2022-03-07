@@ -75,7 +75,7 @@ const UserManagement = ({ committeesData, fetchedUserData }) => {
 
   const handleUserDataDownload = () => {
     const downloadData = usersObjectToCSV(fetchedVisibleUsers, committeesData);
-    const timestamp = new Date().getTime() / 1000;
+    const timestamp = new Date().getTime();
     const downloadName =
       timeStampToString(timestamp, 1) +
       "-" +
