@@ -1,19 +1,7 @@
 export const timeStampToString = (timestamp, type) => {
   if (timestamp) {
     const date = new Date(parseInt(timestamp));
-    if (type === 1) {
-      return (
-        date.getHours().toString().padStart(2, "0") +
-        "." +
-        date.getMinutes().toString().padStart(2, "0") +
-        "-" +
-        date.getDate().toString().padStart(2, "0") +
-        "." +
-        (date.getMonth() + 1).toString().padStart(2, "0") +
-        "." +
-        date.getFullYear()
-      );
-    } else {
+    if (type === 0) {
       return (
         date.getHours().toString().padStart(2, "0") +
         ":" +
@@ -25,6 +13,26 @@ export const timeStampToString = (timestamp, type) => {
         "." +
         date.getFullYear()
       );
+    } else if (type === 1) {
+      return (
+        date.getHours().toString().padStart(2, "0") +
+        "." +
+        date.getMinutes().toString().padStart(2, "0") +
+        "-" +
+        date.getDate().toString().padStart(2, "0") +
+        "." +
+        (date.getMonth() + 1).toString().padStart(2, "0") +
+        "." +
+        date.getFullYear()
+      );
+    } else if (type === 2) {
+      const utc_str = date.toUTCString();
+      let lst = utc_str.split(" ");
+      lst = lst.slice(0, lst.length - 1);
+      lst[4] = lst[4].split(":").slice(0, 2).join(":");
+      return lst.join(" ");
+    } else {
+      return "Invalid type definition";
     }
   } else {
     return "Unvailable";

@@ -134,7 +134,7 @@ const FPSSubmission = ({
               <TableCell>Due Time</TableCell>
               <TableCell>
                 {subTableData.due_timestamp
-                  ? timeStampToString(subTableData.due_timestamp, 1)
+                  ? timeStampToString(subTableData.due_timestamp, 2)
                   : null}
               </TableCell>
             </TableRow>
@@ -149,7 +149,7 @@ const FPSSubmission = ({
               <TableCell>
                 {subUserTableData.file
                   ? subUserTableData.file.timestamp
-                    ? timeStampToString(subUserTableData.file.timestamp, 1)
+                    ? timeStampToString(subUserTableData.file.timestamp, 2)
                     : "Not Submitted"
                   : "Not Submitted"}
               </TableCell>

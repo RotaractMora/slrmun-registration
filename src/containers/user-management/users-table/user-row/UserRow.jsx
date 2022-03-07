@@ -84,13 +84,13 @@ const UserRow = ({
                   paymentsList.push([
                     index,
                     user.name,
-                    timeStampToString(userIdToTimeStamp[user.user_id]),
+                    timeStampToString(userIdToTimeStamp[user.user_id], 2),
                   ]);
                 } else {
                   requestedList.push([
                     index,
                     user.name,
-                    timeStampToString(userIdToTimeStamp[user.user_id]),
+                    timeStampToString(userIdToTimeStamp[user.user_id], 2),
                   ]);
                 }
               }
@@ -298,7 +298,7 @@ const UserRow = ({
           </Typography>
         </TableCell>
         <TableCell>
-          {timeStampToString(userData.registered_timestamp)}
+          {timeStampToString(userData.registered_timestamp, 2)}
         </TableCell>
         <TableCell>
           <FormControlLabel
@@ -348,7 +348,7 @@ const UserRow = ({
                 />
               </span>
               <Typography variant="caption">
-                {timeStampToString(userData.payment_slip.timestamp)}
+                {timeStampToString(userData.payment_slip.timestamp, 2)}
               </Typography>
             </div>
           ) : (
