@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 
 import { makeStyles, useTheme, Typography, Button } from "@material-ui/core";
 import UploadIcon from "@mui/icons-material/Upload";
@@ -17,7 +17,6 @@ import {
   PAYMENTS_UPLOAD_DIRECTORY,
 } from "../../constants/general";
 
-import { AuthContext } from "../../firebase/Auth";
 import { ref as refStorage } from "firebase/storage";
 import { ref as refDatabase } from "firebase/database";
 
@@ -40,7 +39,6 @@ const Payments = ({
   const fileUploadHandler = (e) => {
     const image = e.target.files[0];
     const upload_path =
-      "/images/" +
       PAYMENTS_UPLOAD_DIRECTORY +
       "/" +
       fetchedUserData.user_id +
@@ -62,6 +60,7 @@ const Payments = ({
       setUploadProgress,
       setShowModal,
       PAYMENTS_UPLOAD_DIRECTORY,
+      [],
       uploadFieldName,
       uploadRef,
       updateRef,

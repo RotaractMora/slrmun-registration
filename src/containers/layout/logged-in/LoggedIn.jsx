@@ -161,7 +161,9 @@ const LoggedIn = ({ firebaseAuth }) => {
               element={
                 <FPSSubmission
                   firebaseDb={db}
+                  firebaseStorage={storage}
                   committee_id={userData.committee_id}
+                  fetchedUserData={userData}
                   current_uid={current_uid}
                 />
               }

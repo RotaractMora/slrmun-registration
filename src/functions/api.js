@@ -39,6 +39,7 @@ export const uploadFile = (
   setUploadProgress,
   setShowModal,
   uploadDirectory,
+  objectTreeToFieldName,
   uploadFieldName,
   uploadRef,
   updateRef,
@@ -74,27 +75,38 @@ export const uploadFile = (
     },
     () => {
       // Upload completed successfully,
-      // Check if an old image existed. If so, delete the old image
-      if (fetchedUserData[uploadFieldName]) {
-        // Before that, must check if the new file name is the same as the old file
-        // When a file with the same name is uploaded, firebase will automatially replace the old file with the new one
-        // Hence, we must check if the new file name is different from the old name.
-        //    If they are different, proceed the deletion process
-        //    else (file names are equal), skip the deletion process
-        if (
-          !fetchedUserData[uploadFieldName].storage_path.endsWith(image.name)
-        ) {
-          const oldImageRef = refStorageFunc(
-            firebaseStorage,
-            fetchedUserData[uploadFieldName].storage_path
-          );
-          deleteObject(oldImageRef)
-            .then(() => {
-              // File deleted successfully, firebaseAuth
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+      // Check if an old image existed. If so, check if the storage_path exists, then delete the old image
+      let insideObject = fetchedUserData;
+      for (let int = 0; int < objectTreeToFieldName.length; int++) {
+        const path = objectTreeToFieldName[int];
+        if (insideObject[path]) {
+          insideObject = insideObject[path];
+        }
+      }
+      if (insideObject) {
+        if (insideObject[uploadFieldName]) {
+          if (insideObject[uploadFieldName].storage_path) {
+            // Before that, must check if the new file name is the same as the old file
+            // When a file with the same name is uploaded, firebase will automatially replace the old file with the new one
+            // Hence, we must check if the new file name is different from the old name.
+            //    If they are different, proceed the deletion process
+            //    else (file names are equal), skip the deletion process
+            if (
+              !insideObject[uploadFieldName].storage_path.endsWith(image.name)
+            ) {
+              const oldImageRef = refStorageFunc(
+                firebaseStorage,
+                insideObject[uploadFieldName].storage_path
+              );
+              deleteObject(oldImageRef)
+                .then(() => {
+                  // File deleted successfully, firebaseAuth
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            }
+          }
         }
       }
 
@@ -102,12 +114,7 @@ export const uploadFile = (
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
         updateData.timestamp = parseInt(Date.now());
         const upload_path =
-          "/images/" +
-          uploadDirectory +
-          "/" +
-          fetchedUserData.user_id +
-          "/" +
-          image.name;
+          uploadDirectory + "/" + fetchedUserData.user_id + "/" + image.name;
         updateData.public_url = downloadURL;
         updateData.storage_path = upload_path;
         const updateObj = {};
@@ -128,6 +135,7 @@ export const compressAndUpload = (
   setUploadProgress,
   setShowModal,
   uploadDirectory,
+  objectTreeToFieldName,
   uploadFieldName,
   uploadRef,
   updateRef,
@@ -145,6 +153,7 @@ export const compressAndUpload = (
           setUploadProgress,
           setShowModal,
           uploadDirectory,
+          objectTreeToFieldName,
           uploadFieldName,
           uploadRef,
           updateRef,
@@ -164,6 +173,7 @@ export const compressAndUpload = (
       setUploadProgress,
       setShowModal,
       uploadDirectory,
+      objectTreeToFieldName,
       uploadFieldName,
       uploadRef,
       updateRef,

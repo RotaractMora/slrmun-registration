@@ -58,7 +58,6 @@ const UserProfile = ({ fetchedUserData, firebaseDb, firebaseStorage }) => {
     const image = e.target.files[0];
     // if the image file is too large (>1MB), compress the image and then upload
     const upload_path =
-      "/images/" +
       PROFILE_PICTURE_UPLOAD_DIRECTORY +
       "/" +
       fetchedUserData.user_id +
@@ -78,6 +77,7 @@ const UserProfile = ({ fetchedUserData, firebaseDb, firebaseStorage }) => {
       setUploadProgress,
       setShowModal,
       PROFILE_PICTURE_UPLOAD_DIRECTORY,
+      [],
       PROFILE_PICTURE_FIELD_NAME,
       uploadRef,
       updateRef,

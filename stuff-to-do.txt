@@ -4,3 +4,4 @@ when the url is entered in the url bar and hit enter the user gets logged out
 remove the requests for committees data throughout the app and pass them from loggenIn
 Integrate redux
 Fix the redirecting bug
+Check the submission format before uploading the fps and limit them to the ones definedd in the database

@@ -14,13 +14,28 @@ import {
 } from "@material-ui/core";
 import styles from "./styles";
 import FileUploadModal from "../../components/file-upload-modal/FileUploadModal";
-import { get, onValue, ref } from "firebase/database";
-import { FPS_DOC_NAME, USERS_DOC_NAME } from "../../constants/general";
+import { onValue, ref as refDatabase } from "firebase/database";
+import { ref as refStorage } from "firebase/storage";
+
+import {
+  FPS_DOC_NAME,
+  FPS_FIELD_NAME,
+  FPS_UPLOAD_DIRECTORY,
+  USERS_DOC_NAME,
+} from "../../constants/general";
 import { timeStampToString } from "../../functions/general";
+import { uploadFile } from "../../functions/api";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(styles);
 
-const FPSSubmission = ({ firebaseDb, committee_id, current_uid }) => {
+const FPSSubmission = ({
+  firebaseDb,
+  firebaseStorage,
+  committee_id,
+  fetchedUserData,
+  current_uid,
+}) => {
   const theme = useTheme();
   const classes = useStyles(theme);
 
@@ -30,12 +45,35 @@ const FPSSubmission = ({ firebaseDb, committee_id, current_uid }) => {
   const [subUserTableData, setUserSubTableData] = useState({});
 
   const fileUploadHandler = (e) => {
-    const image = e.target.files[0];
+    const file = e.target.files[0];
+
+    const upload_path =
+      FPS_UPLOAD_DIRECTORY + "/" + fetchedUserData.user_id + "/" + file.name;
+    const uploadRef = refStorage(firebaseStorage, upload_path);
+    const updateRef = refDatabase(
+      firebaseDb,
+      "users/" + fetchedUserData.user_id + "/fps"
+    );
+    const updateData = {};
+
+    uploadFile(
+      file,
+      fetchedUserData,
+      firebaseStorage,
+      setUploadProgress,
+      setShowModal,
+      FPS_UPLOAD_DIRECTORY,
+      ["fps"],
+      "file",
+      uploadRef,
+      updateRef,
+      updateData
+    );
   };
 
   const fetchFPSData = () => {
     // fetch common submission data
-    const commonFpsRef = ref(firebaseDb, FPS_DOC_NAME);
+    const commonFpsRef = refDatabase(firebaseDb, FPS_DOC_NAME);
     onValue(commonFpsRef, (snapshot) => {
       const commonFpsData = snapshot.val();
       const submissionTableData = {
@@ -50,13 +88,12 @@ const FPSSubmission = ({ firebaseDb, committee_id, current_uid }) => {
     });
 
     // fetch user specific submission data
-    const userSpecificFpsRef = ref(
+    const userSpecificFpsRef = refDatabase(
       firebaseDb,
       USERS_DOC_NAME + "/" + current_uid + "/" + "fps"
     );
     onValue(userSpecificFpsRef, (snapshot) => {
       const userSpecificFpsData = snapshot.val();
-      console.log(userSpecificFpsData);
       if (userSpecificFpsData) setUserSubTableData(userSpecificFpsData);
     });
   };
@@ -65,6 +102,12 @@ const FPSSubmission = ({ firebaseDb, committee_id, current_uid }) => {
     fetchFPSData();
   }, []);
 
+  let file_name = "";
+  if (subUserTableData.file) {
+    const storage_path = subUserTableData.file.storage_path;
+    const path_arr = storage_path.split("/");
+    file_name = path_arr[path_arr.length - 1];
+  }
   return (
     <div className={classes.root}>
       <Typography variant="h1" className={classes.h1}>
@@ -76,7 +119,7 @@ const FPSSubmission = ({ firebaseDb, committee_id, current_uid }) => {
             <TableRow>
               <TableCell>Submission Status</TableCell>
               <TableCell>
-                {Object.keys(subUserTableData).length > 0
+                {subUserTableData.file
                   ? "Submitted for grading"
                   : "Not Submitted"}
               </TableCell>
@@ -104,8 +147,10 @@ const FPSSubmission = ({ firebaseDb, committee_id, current_uid }) => {
             <TableRow>
               <TableCell>Submission Time</TableCell>
               <TableCell>
-                {subUserTableData.submission_timestamp
-                  ? timeStampToString(subUserTableData.submission_timestamp, 1)
+                {subUserTableData.file
+                  ? subUserTableData.file.timestamp
+                    ? timeStampToString(subUserTableData.file.timestamp, 1)
+                    : "Not Submitted"
                   : "Not Submitted"}
               </TableCell>
             </TableRow>
@@ -118,13 +163,23 @@ const FPSSubmission = ({ firebaseDb, committee_id, current_uid }) => {
               <TableCell
                 style={{ display: "flex", justifyContent: "space-between" }}
               >
-                <Typography>[File]</Typography>
+                {file_name !== "" ? (
+                  <Typography>
+                    <a
+                      href={subUserTableData.file.public_url}
+                      target="_blank"
+                      download={file_name}
+                    >
+                      {file_name}
+                    </a>
+                  </Typography>
+                ) : null}
                 <Button
                   variant="contained"
                   color="primary"
                   onClick={() => setShowModal(!showModal)}
                 >
-                  Upload Document
+                  {file_name === "" ? "Add Submission" : "Edit Submission"}
                 </Button>
               </TableCell>
             </TableRow>

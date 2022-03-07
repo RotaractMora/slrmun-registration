@@ -22,6 +22,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import PaymentIcon from "@mui/icons-material/Payment";
+import ArticleIcon from "@mui/icons-material/Article";
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import styles from "./styles";
@@ -121,7 +122,7 @@ const SidePanel = ({ cross, setShowSidePanel }) => {
           {visibilityArray[3] ? (
             <ListItem
               text={"FPS Submission"}
-              DispIcon={PaymentIcon}
+              DispIcon={ArticleIcon}
               link={FPS_SUBMISSION}
               active={current_path === FPS_SUBMISSION}
               collapsed={collapsed}
