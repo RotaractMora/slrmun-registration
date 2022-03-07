@@ -9,6 +9,7 @@ export const PROFILE_PICTURE_FIELD_NAME = "profile_picture";
 
 export const USERS_DOC_NAME = "users";
 export const COMMITTEES_DOC_NAME = "committees";
+export const FPS_DOC_NAME = "fps_submissions";
 
 export const GENERAL_USER_LEVEL = 0;
 export const COMMITTEE_CHAIR_USER_LEVEL = 1;

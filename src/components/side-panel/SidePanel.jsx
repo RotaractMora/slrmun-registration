@@ -13,6 +13,7 @@ import {
   COMMITTEE_SELECTION,
   PAYMENTS,
   USER_MANAGEMENT,
+  FPS_SUBMISSION,
 } from "../../constants/routes";
 
 // styles
@@ -118,6 +119,16 @@ const SidePanel = ({ cross, setShowSidePanel }) => {
             />
           ) : null}
           {visibilityArray[3] ? (
+            <ListItem
+              text={"FPS Submission"}
+              DispIcon={PaymentIcon}
+              link={FPS_SUBMISSION}
+              active={current_path === FPS_SUBMISSION}
+              collapsed={collapsed}
+              onClick={() => setShowSidePanel(false)}
+            />
+          ) : null}
+          {visibilityArray[4] ? (
             <ListItem
               text={"User Management"}
               DispIcon={SupervisedUserCircleIcon}

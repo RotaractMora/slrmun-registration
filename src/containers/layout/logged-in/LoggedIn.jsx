@@ -13,6 +13,7 @@ import {
   COMMITTEE_SELECTION,
   PAYMENTS,
   USER_MANAGEMENT,
+  FPS_SUBMISSION,
 } from "../../../constants/routes";
 
 //styles
@@ -36,6 +37,7 @@ import {
 
 // other functions
 import { getUserVisibilityArray } from "../../../functions/user";
+import FPSSubmission from "../../fps-submission/FPSSubmission";
 
 const useStyles = makeStyles(styles);
 
@@ -154,6 +156,18 @@ const LoggedIn = ({ firebaseAuth }) => {
             />
           ) : null}
           {visibilityArray[3] ? (
+            <Route
+              path={FPS_SUBMISSION}
+              element={
+                <FPSSubmission
+                  firebaseDb={db}
+                  committee_id={userData.committee_id}
+                  current_uid={current_uid}
+                />
+              }
+            />
+          ) : null}
+          {visibilityArray[4] ? (
             <Route
               path={USER_MANAGEMENT}
               element={

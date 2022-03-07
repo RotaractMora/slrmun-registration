@@ -1,6 +1,6 @@
 export const timeStampToString = (timestamp, type) => {
   if (timestamp) {
-    const date = new Date(parseInt(timestamp * 1000));
+    const date = new Date(parseInt(timestamp));
     if (type === 1) {
       return (
         date.getHours().toString().padStart(2, "0") +

@@ -17,6 +17,7 @@ import {
   COMMITTEE_SELECTION,
   PAYMENTS,
   USER_MANAGEMENT,
+  FPS_SUBMISSION,
 } from "../../constants/routes";
 
 import { AuthContext } from "../../firebase/Auth";
@@ -37,9 +38,13 @@ const Layout = () => {
   let renderElement = <UnLoggedIn />;
   if (currentUser) {
     if (
-      [USER_PROFILE, COMMITTEE_SELECTION, PAYMENTS, USER_MANAGEMENT].includes(
-        location.pathname
-      )
+      [
+        USER_PROFILE,
+        COMMITTEE_SELECTION,
+        PAYMENTS,
+        FPS_SUBMISSION,
+        USER_MANAGEMENT,
+      ].includes(location.pathname)
     ) {
       renderElement = <LoggedIn firebaseAuth={auth} />;
     } else {

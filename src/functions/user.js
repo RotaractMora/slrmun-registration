@@ -30,17 +30,17 @@ export const isSriLankan = (text) => {
 };
 
 // returns the tabs to show for a specific user level
-// array format = [PROFILE, COMMITTEE_SELECTION, PAYMENTS, USER_MANAGEMENT]
+// array format = [PROFILE, COMMITTEE_SELECTION, PAYMENTS, FPS_SUBMISSION, USER_MANAGEMENT]
 export const getUserVisibilityArray = (userLevel) => {
   let visibilityArr = [];
   if (userLevel === GENERAL_USER_LEVEL) {
-    visibilityArr = [true, true, true, false];
+    visibilityArr = [true, true, true, true, false];
   } else if (userLevel === COMMITTEE_CHAIR_USER_LEVEL) {
-    visibilityArr = [true, false, false, false];
+    visibilityArr = [true, false, false, false, false];
   } else if (userLevel === ADMIN_USER_LEVEL) {
-    visibilityArr = [true, true, true, true];
+    visibilityArr = [true, true, true, true, true];
   } else if (userLevel === DEVELOPER_USER_LEVEL) {
-    visibilityArr = [true, true, true, true];
+    visibilityArr = [true, true, true, true, true];
   }
   return visibilityArr;
 };

@@ -241,7 +241,6 @@ const CommitteeSelection = ({
           contact details if this occurs.
         </Typography>
         <DropDownSection
-          fetchedCountryId={fetchedCountryId}
           fetchedCommitteeId={fetchedCommitteeId}
           fetchedCountryList={selectedCountryList}
           fetchedCommitteeList={fetchedCommitteeList}
