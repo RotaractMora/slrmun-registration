@@ -37,14 +37,13 @@ export const uploadFile = (
   fetchedUserData,
   firebaseStorage,
   firebaseDb,
-  currentUser,
   setUploadProgress,
   setShowModal,
   uploadDirectory,
   uploadFieldName,
   uploadTimestampeFieldName
 ) => {
-  const current_uid = currentUser.uid;
+  const current_uid = fetchedUserData.user_id;
   const upload_path =
     "/images/" + uploadDirectory + "/" + current_uid + "/" + image.name;
   const newImageRef = refStorageFunc(firebaseStorage, upload_path);
@@ -80,19 +79,32 @@ export const uploadFile = (
     },
     () => {
       // Upload completed successfully,
-      // delete the old image
+      // Check if an old image existed. If so, delete the old image
       if (fetchedUserData[uploadFieldName + "_storage_path"]) {
-        const oldImageRef = refStorageFunc(
-          firebaseStorage,
-          fetchedUserData[uploadFieldName + "_storage_path"]
-        );
-        deleteObject(oldImageRef)
-          .then(() => {
-            // File deleted successfully, firebaseAuth
-          })
-          .catch((error) => {
-            // Uh-oh, an error occurred!
-          });
+        // Before that, must check if the new file name is the same as the old file
+        // When a file with the same name is uploaded, firebase will automatially replace the old file with the new one
+        // Hence, we must check if the new file name is different from the old name.
+        //    If they are different, proceed the deletion process
+        //    else (file names are equal), skip the deletion process
+        if (
+          !fetchedUserData[uploadFieldName + "_storage_path"].endsWith(
+            image.name
+          )
+        ) {
+          const oldImageRef = refStorageFunc(
+            firebaseStorage,
+            fetchedUserData[uploadFieldName + "_storage_path"]
+          );
+          deleteObject(oldImageRef)
+            .then(() => {
+              console.log("Delete success");
+              // File deleted successfully, firebaseAuth
+            })
+            .catch((error) => {
+              console.log("Delete failed");
+              console.log(error);
+            });
+        }
       }
 
       // now we can get the download URL
@@ -117,7 +129,6 @@ export const compressAndUpload = (
   fetchedUserData,
   firebaseStorage,
   firebaseDb,
-  currentUser,
   setUploadProgress,
   setShowModal,
   uploadDirectory,
@@ -134,7 +145,6 @@ export const compressAndUpload = (
           fetchedUserData,
           firebaseStorage,
           firebaseDb,
-          currentUser,
           setUploadProgress,
           setShowModal,
           uploadDirectory,
@@ -153,7 +163,6 @@ export const compressAndUpload = (
       fetchedUserData,
       firebaseStorage,
       firebaseDb,
-      currentUser,
       setUploadProgress,
       setShowModal,
       uploadDirectory,
