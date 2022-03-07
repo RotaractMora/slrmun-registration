@@ -60,7 +60,6 @@ const UserProfile = ({ fetchedUserData, firebaseDb, firebaseStorage }) => {
       fetchedUserData,
       firebaseStorage,
       firebaseDb,
-      currentUser,
       setUploadProgress,
       setShowModal,
       PROFILE_PICTURE_UPLOAD_DIRECTORY,

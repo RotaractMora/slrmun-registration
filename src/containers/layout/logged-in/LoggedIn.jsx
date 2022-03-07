@@ -64,7 +64,7 @@ const LoggedIn = ({ firebaseAuth }) => {
     // fetch user data
     onValue(userRef, (snapshot) => {
       const userData = snapshot.val();
-      setUserData(userData);
+      setUserData({ ...userData, user_id: current_uid });
     });
 
     // fetch committee data

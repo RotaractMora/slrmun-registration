@@ -46,7 +46,6 @@ const Payments = ({
       fetchedUserData,
       firebaseStorage,
       firebaseDb,
-      currentUser,
       setUploadProgress,
       setShowModal,
       PAYMENTS_UPLOAD_DIRECTORY,
