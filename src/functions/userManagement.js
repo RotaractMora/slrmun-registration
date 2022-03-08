@@ -1,3 +1,9 @@
+import {
+  ADMIN_USER_LEVEL,
+  COMMITTEE_CHAIR_USER_LEVEL,
+  DEVELOPER_USER_LEVEL,
+  GENERAL_USER_LEVEL,
+} from "../constants/general";
 import { timeStampToString } from "./general";
 import {
   getCommitteeAndCountryFromNumbers,
@@ -23,6 +29,24 @@ export const getWhatsAppNumber = (number) => {
 
   // 94715942246
   return whatsAppPrefix + spacelessNum;
+};
+
+export const getUserLevelAccordingToSwitches = (
+  chairSwitchChecked,
+  adminSwitchChecked
+) => {
+  let newUserLevel;
+  if (adminSwitchChecked && chairSwitchChecked) {
+    newUserLevel = DEVELOPER_USER_LEVEL;
+  } else if (chairSwitchChecked) {
+    newUserLevel = COMMITTEE_CHAIR_USER_LEVEL;
+  } else if (adminSwitchChecked) {
+    newUserLevel = ADMIN_USER_LEVEL;
+  } else {
+    newUserLevel = GENERAL_USER_LEVEL;
+  }
+
+  return newUserLevel;
 };
 
 export const usersObjectToCSV = (usersData, committeesData) => {

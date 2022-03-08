@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useRef, useState } from "react";
 
 //styles
 import {
@@ -18,7 +18,11 @@ import styles from "./styles";
 // components
 import defaultUserIcon from "../../../../assets/images/default-user-icon.png";
 import {
+  ADMIN_USER_LEVEL,
   COMMITTEES_DOC_NAME,
+  COMMITTEE_CHAIR_USER_LEVEL,
+  DEVELOPER_USER_LEVEL,
+  GENERAL_USER_LEVEL,
   PAYMENTS_FIELD_NAME,
   USERS_DOC_NAME,
 } from "../../../../constants/general";
@@ -26,7 +30,10 @@ import {
 import { getDatabase, update, ref } from "firebase/database";
 import TwoButtonModal from "../../../../components/two-button-modal/TwoButtonModal";
 import { timeStampToString } from "../../../../functions/general";
-import { getWhatsAppNumber } from "../../../../functions/userManagement";
+import {
+  getUserLevelAccordingToSwitches,
+  getWhatsAppNumber,
+} from "../../../../functions/userManagement";
 
 import whatsAppIcon from "../../../../assets/images/whatsapp-icon.png";
 
@@ -45,6 +52,9 @@ const UserRow = ({
 
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState([]);
+
+  const chairSwitchRef = useRef();
+  const adminSwitchRef = useRef();
 
   let countryData = {};
   if (
@@ -280,7 +290,7 @@ const UserRow = ({
         </TableCell>
       </TableRow>
       <TableRow className={classes.admin_area_row}>
-        <TableCell>
+        <TableCell className={classes.committeeCell}>
           <Typography variant="body1">
             {committeesData !== {} && userData.committee_id
               ? committeesData[userData.committee_id].short_name
@@ -296,11 +306,6 @@ const UserRow = ({
             {" | "}
             {userData.mun_experience}
           </Typography>
-        </TableCell>
-        <TableCell>
-          {timeStampToString(userData.registered_timestamp, 2)}
-        </TableCell>
-        <TableCell>
           <FormControlLabel
             control={
               <Switch
@@ -314,17 +319,54 @@ const UserRow = ({
           />
         </TableCell>
         <TableCell>
+          {timeStampToString(userData.registered_timestamp, 2)}
+        </TableCell>
+        <TableCell>
           <FormControlLabel
             control={
               <Switch
-                checked={userData.user_level > 1}
+                inputRef={chairSwitchRef}
+                checked={
+                  userData.user_level === COMMITTEE_CHAIR_USER_LEVEL ||
+                  userData.user_level === DEVELOPER_USER_LEVEL
+                }
                 onChange={(e) => {
-                  let newUserLevel;
-                  if (userData.user_level === 0) {
-                    newUserLevel = 2;
-                  } else {
-                    newUserLevel = 0;
-                  }
+                  const chairSwitchChecked = e.target.checked;
+                  const adminSwitchChecked = adminSwitchRef.current.checked;
+
+                  const newUserLevel = getUserLevelAccordingToSwitches(
+                    chairSwitchChecked,
+                    adminSwitchChecked
+                  );
+                  onChange({
+                    ...userData,
+                    user_level: newUserLevel,
+                  });
+                }}
+                color="primary"
+                name="gilad"
+              />
+            }
+            label="Chairperson"
+          />
+        </TableCell>
+        <TableCell>
+          <FormControlLabel
+            control={
+              <Switch
+                inputRef={adminSwitchRef}
+                checked={
+                  userData.user_level === ADMIN_USER_LEVEL ||
+                  userData.user_level === DEVELOPER_USER_LEVEL
+                }
+                onChange={(e) => {
+                  const chairSwitchChecked = chairSwitchRef.current.checked;
+                  const adminSwitchChecked = e.target.checked;
+
+                  const newUserLevel = getUserLevelAccordingToSwitches(
+                    chairSwitchChecked,
+                    adminSwitchChecked
+                  );
                   onChange({
                     ...userData,
                     user_level: newUserLevel,

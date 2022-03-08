@@ -46,7 +46,8 @@ const UsersTable = ({
             <TableCell align="center">
               <div>Email</div>
               <div className={classes.grayBg}>
-                Committee | Country | MUN Exp
+                Committee&nbsp;|&nbsp;Country&nbsp;|&nbsp;MUN
+                XP&nbsp;|&nbsp;Approval
               </div>
             </TableCell>
             <TableCell align="center">

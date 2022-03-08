@@ -1,4 +1,4 @@
-export const BASE_URL = "/slrmun";
+export const BASE_URL = "";
 
 export const DEFAULT_FLAG = "/images/country-flags/default-flag.jpg";
 

@@ -39,6 +39,14 @@ const styles = {
       padding: 0,
     },
   },
+  committeeCell: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 0,
+    width: 310,
+  },
   flexColumn: {
     display: "flex",
     flexDirection: "column",

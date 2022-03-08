@@ -5,3 +5,4 @@ remove the requests for committees data throughout the app and pass them from lo
 Integrate redux
 Fix the redirecting bug
 Check the submission format before uploading the fps and limit them to the ones definedd in the database
+Align the Committee | Country | MUN XP | Approval vertically to the center
