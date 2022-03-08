@@ -17,13 +17,12 @@ import styles from "./styles";
 
 // components
 import defaultUserIcon from "../../../../assets/images/default-user-icon.png";
+import whatsAppIcon from "../../../../assets/images/whatsapp-icon.png";
 import {
   ADMIN_USER_LEVEL,
   COMMITTEES_DOC_NAME,
   COMMITTEE_CHAIR_USER_LEVEL,
   DEVELOPER_USER_LEVEL,
-  GENERAL_USER_LEVEL,
-  PAYMENTS_FIELD_NAME,
   USERS_DOC_NAME,
 } from "../../../../constants/general";
 
@@ -34,8 +33,6 @@ import {
   getUserLevelAccordingToSwitches,
   getWhatsAppNumber,
 } from "../../../../functions/userManagement";
-
-import whatsAppIcon from "../../../../assets/images/whatsapp-icon.png";
 
 const useStyles = makeStyles(styles);
 

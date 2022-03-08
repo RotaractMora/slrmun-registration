@@ -41,6 +41,8 @@ import {
 // other functions
 import { getUserVisibilityArray } from "../../../functions/user";
 import FPSSubmission from "../../fps-submission/FPSSubmission";
+import DelegateManagement from "../../delegate-management/DelegateManagement";
+import { filterVisibleUsersFromField } from "../../../functions/userManagement";
 
 const useStyles = makeStyles(styles);
 
@@ -152,6 +154,11 @@ const LoggedIn = ({ firebaseAuth }) => {
   }, [userData]);
 
   const visibilityArray = getUserVisibilityArray(userData.user_level);
+  const fetchedDelegateUsersData = filterVisibleUsersFromField(
+    fetchedUserData,
+    [0],
+    "user_level"
+  );
   return (
     <React.Fragment>
       <Header cross={cross} setCross={(setValue) => setCross(setValue)} />
@@ -215,10 +222,10 @@ const LoggedIn = ({ firebaseAuth }) => {
             <Route
               path={DELEGATE_MANAGEMENT}
               element={
-                <UserManagement
+                <DelegateManagement
                   firebaseDatabase={db}
                   committeesData={committeesData}
-                  fetchedUserData={fetchedUserData}
+                  fetchedUserData={fetchedDelegateUsersData}
                 />
               }
             />

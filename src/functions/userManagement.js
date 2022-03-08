@@ -11,6 +11,19 @@ import {
   userLevelToString,
 } from "./user";
 
+export const filterVisibleUsersFromField = (allUsers, includeArr, field) => {
+  const newUsersData = [];
+  if (includeArr) {
+    for (let i = 0; i < allUsers.length; i++) {
+      const userData = allUsers[i];
+      if (includeArr.includes(userData[field])) {
+        newUsersData.push(userData);
+      }
+    }
+  }
+  return newUsersData;
+};
+
 export const getWhatsAppNumber = (number) => {
   //remove the spaces
   const spacelessNum = number.replace(/\s/g, "");

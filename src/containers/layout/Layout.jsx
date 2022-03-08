@@ -18,6 +18,7 @@ import {
   PAYMENTS,
   USER_MANAGEMENT,
   FPS_SUBMISSION,
+  DELEGATE_MANAGEMENT,
 } from "../../constants/routes";
 
 import { AuthContext } from "../../firebase/Auth";
@@ -43,6 +44,7 @@ const Layout = () => {
         COMMITTEE_SELECTION,
         PAYMENTS,
         FPS_SUBMISSION,
+        DELEGATE_MANAGEMENT,
         USER_MANAGEMENT,
       ].includes(location.pathname)
     ) {

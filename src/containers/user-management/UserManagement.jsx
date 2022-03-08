@@ -23,7 +23,10 @@ import {
   DEVELOPER_USER_LEVEL,
 } from "../../constants/general";
 import { download_csv_file, timeStampToString } from "../../functions/general";
-import { usersObjectToCSV } from "../../functions/userManagement";
+import {
+  filterVisibleUsersFromField,
+  usersObjectToCSV,
+} from "../../functions/userManagement";
 import { userLevelToString } from "../../functions/user";
 
 const useStyles = makeStyles(styles);
@@ -39,28 +42,23 @@ const UserManagement = ({ committeesData, fetchedUserData }) => {
     DEVELOPER_USER_LEVEL,
   ]);
 
-  const getVisibleUsers = (allUsers, userLevels) => {
-    const newUsersData = [];
-    if (userLevels) {
-      for (let i = 0; i < allUsers.length; i++) {
-        const userData = allUsers[i];
-        if (userLevels.includes(userData.user_level)) {
-          newUsersData.push(userData);
-        }
-      }
-    }
-    return newUsersData;
-  };
-
-  const visibleUsers = getVisibleUsers(fetchedUserData, visibleUsersArr);
+  const visibleUsers = filterVisibleUsersFromField(
+    fetchedUserData,
+    visibleUsersArr,
+    "user_level"
+  );
   const [fetchedVisibleUsers, setFetchedVisibleUsers] = useState(visibleUsers);
   const [usersData, setUsersData] = useState(visibleUsers);
 
   useEffect(() => {
-    const visibleUsers = getVisibleUsers(fetchedUserData, visibleUsersArr);
+    const visibleUsers = filterVisibleUsersFromField(
+      fetchedUserData,
+      visibleUsersArr,
+      "user_level"
+    );
     setUsersData(visibleUsers);
     setFetchedVisibleUsers(visibleUsers);
-  }, [fetchedUserData]);
+  }, [fetchedUserData, visibleUsersArr]);
 
   // used to filter the users list by the switches
   const handleVisibility = (e, userLevel) => {
@@ -75,7 +73,11 @@ const UserManagement = ({ committeesData, fetchedUserData }) => {
     }
 
     setVisibleUsersArr(newVisibleUsersArr);
-    const newUsersData = getVisibleUsers(fetchedUserData, newVisibleUsersArr);
+    const newUsersData = filterVisibleUsersFromField(
+      fetchedUserData,
+      newVisibleUsersArr,
+      "user_level"
+    );
     setUsersData(newUsersData);
     setFetchedVisibleUsers(newUsersData);
   };
