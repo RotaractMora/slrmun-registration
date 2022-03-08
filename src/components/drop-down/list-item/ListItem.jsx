@@ -26,9 +26,12 @@ const ListItem = ({
       <Typography className={textClass} variant="body1">
         {object.text}
       </Typography>
-      {object.req_count + injectingCount > 0 && showRequestCounts ? (
+      {(object.req_count > 0 || object.req_count + injectingCount > 0) &&
+      showRequestCounts ? (
         <span className={classes.badge}>
-          {injectingCount + object.req_count}
+          {injectingCount
+            ? injectingCount + object.req_count
+            : object.req_count}
         </span>
       ) : null}
     </div>
