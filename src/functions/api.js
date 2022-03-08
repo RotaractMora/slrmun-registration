@@ -112,15 +112,16 @@ export const uploadFile = (
 
       // now we can get the download URL
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-        updateData.timestamp = parseInt(Date.now());
+        const fileObject = {};
+        fileObject.timestamp = parseInt(Date.now());
         const upload_path =
           uploadDirectory + "/" + fetchedUserData.user_id + "/" + image.name;
-        updateData.public_url = downloadURL;
-        updateData.storage_path = upload_path;
-        const updateObj = {};
-        updateObj[uploadFieldName] = updateData;
+        fileObject.public_url = downloadURL;
+        fileObject.storage_path = upload_path;
 
-        update(updateRef, updateObj);
+        updateData[uploadFieldName] = fileObject;
+
+        update(updateRef, updateData);
         setShowModal(false);
         setUploadProgress(0);
       });

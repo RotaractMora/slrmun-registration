@@ -60,7 +60,7 @@ const FPSSubmission = ({
       firebaseDb,
       "users/" + fetchedUserData.user_id + "/fps"
     );
-    const updateData = {};
+    const updateData = { grade: 0 };
 
     uploadFile(
       file,
