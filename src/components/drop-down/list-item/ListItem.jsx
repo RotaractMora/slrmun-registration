@@ -7,7 +7,13 @@ import { BASE_URL } from "../../../constants/general";
 
 const useStyles = makeStyles(styles);
 
-const ListItem = ({ object, onClick, isSelectedItem }) => {
+const ListItem = ({
+  object,
+  injectingCount,
+  showRequestCounts,
+  onClick,
+  isSelectedItem,
+}) => {
   const theme = useTheme();
   const classes = useStyles(theme);
   let textClass = classes.text;
@@ -20,8 +26,10 @@ const ListItem = ({ object, onClick, isSelectedItem }) => {
       <Typography className={textClass} variant="body1">
         {object.text}
       </Typography>
-      {object.req_count > 0 ? (
-        <span className={classes.badge}>{object.req_count}</span>
+      {object.req_count + injectingCount > 0 && showRequestCounts ? (
+        <span className={classes.badge}>
+          {injectingCount + object.req_count}
+        </span>
       ) : null}
     </div>
   );

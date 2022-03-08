@@ -14,6 +14,9 @@
 # firebase service account
 /push_data/serviceAccountKey.json
 
+# google apis
+/src/constants/secrets.js
+
 # misc
 .DS_Store
 .env.local

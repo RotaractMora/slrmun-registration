@@ -32,6 +32,8 @@ import UserManagement from "../../../containers/user-management/UserManagement";
 import {
   COMMITTEES_DOC_NAME,
   GENERAL_USER_LEVEL,
+  GOOGLE_SHEET_GIDS,
+  REQUEST_INJECTION_GOOGLE_SHEET_LINK,
   USERS_DOC_NAME,
 } from "../../../constants/general";
 
@@ -50,6 +52,8 @@ const LoggedIn = ({ firebaseAuth }) => {
   const [cross, setCross] = useState(false);
   const [userData, setUserData] = useState({});
   const [fetchedUserData, setFetchedUsersData] = useState([]);
+  const [injectingRequests, setInjectingRequests] = useState({});
+  const [showRequestCounts, setShowRequestCounts] = useState(false);
 
   const [committeesData, setCommitteesData] = useState({});
 
@@ -60,6 +64,26 @@ const LoggedIn = ({ firebaseAuth }) => {
   const current_uid = currentUser.uid;
   const userRef = ref(db, USERS_DOC_NAME + "/" + current_uid);
   const committeesRef = ref(db, COMMITTEES_DOC_NAME);
+
+  // fetch request_injection Data
+  // This data will take a relatively larger time to load.
+  // Hence, if we update the new injecting data after showig the original request data, the users will see that the request counts change (hora wada maattu wenawa
+  // So, we will not show the real request counts till the data from the google sheet is fetched
+  // For this we will be using the above showRequestCounts state
+  const getResults = async () => {
+    const responses = {};
+    for (const committee in GOOGLE_SHEET_GIDS) {
+      if (Object.hasOwnProperty.call(GOOGLE_SHEET_GIDS, committee)) {
+        const gid = GOOGLE_SHEET_GIDS[committee];
+        const url = REQUEST_INJECTION_GOOGLE_SHEET_LINK + "&gid=" + gid;
+        const response = await fetch(url);
+        const text = await response.text();
+        responses[committee] = text;
+      }
+    }
+    return responses;
+  };
+
   const initFetch = () => {
     // fetch user data
     onValue(userRef, (snapshot) => {
@@ -72,10 +96,18 @@ const LoggedIn = ({ firebaseAuth }) => {
       const committeeData = snapshot.val();
       setCommitteesData(committeeData);
     });
+
+    // get data from the google sheets
+    getResults().then((response) => {
+      if (Object.keys(injectingRequests).length === 0) {
+        setInjectingRequests(response);
+        setShowRequestCounts(true);
+      }
+    });
   };
 
   const loggedInFetch = () => {
-    //fetch all users data
+    //fetch all users data, will be called after checking whether it's an admin
     const usersRef = ref(db, USERS_DOC_NAME);
     onValue(usersRef, (snapshot) => {
       const data = snapshot.val();
@@ -138,6 +170,8 @@ const LoggedIn = ({ firebaseAuth }) => {
                   fetchedUserData={userData}
                   firebaseDb={db}
                   committeesData={committeesData}
+                  showRequestCounts={showRequestCounts}
+                  injectingRequests={injectingRequests}
                 />
               }
             />

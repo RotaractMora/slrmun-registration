@@ -20,6 +20,8 @@ const CommitteeSelection = ({
   fetchedUserData,
   firebaseDb,
   committeesData,
+  showRequestCounts,
+  injectingRequests,
 }) => {
   // Styling
   const theme = useTheme();
@@ -249,6 +251,8 @@ const CommitteeSelection = ({
           selectedCountryId={selectedCountryId}
           setSelectedCountryId={(value) => setSelectedCountryId(value)}
           fetchedCountryId={fetchedUserData.country_id}
+          showRequestCounts={showRequestCounts}
+          injectingRequests={injectingRequests}
         />
         <ButtonPanel
           enabled={enableButtons}

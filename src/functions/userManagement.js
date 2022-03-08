@@ -29,9 +29,6 @@ export const usersObjectToCSV = (usersData, committeesData) => {
   const returnArr = [];
   for (let i = 0; i < usersData.length; i++) {
     const user = JSON.parse(JSON.stringify(usersData[i]));
-    if (user.name === "Avishka Perera") {
-      console.log(user);
-    }
 
     // change required data
     if (user.admin_approved) user.admin_approved = "Approved";
@@ -72,10 +69,6 @@ export const usersObjectToCSV = (usersData, committeesData) => {
       if (user.fps.file) user.fps = user.fps.file.public_url;
       else user.fps = "";
     else user.fps = "";
-
-    if (user.name === "Avishka Perera") {
-      console.log(user);
-    }
 
     // delete unwanted data
     delete user.payment_slip_storage_path;

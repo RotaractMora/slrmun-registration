@@ -10,7 +10,14 @@ import { BASE_URL, DEFAULT_FLAG } from "../../constants/general";
 
 const useStyles = makeStyles(styles);
 
-const DropDown = ({ list, selectedId, setSelectedId, fetchedSelectedId }) => {
+const DropDown = ({
+  list,
+  selectedId,
+  setSelectedId,
+  fetchedSelectedId,
+  showRequestCounts,
+  injectingRequests,
+}) => {
   // styling
   const theme = useTheme();
   const classes = useStyles(theme);
@@ -107,6 +114,10 @@ const DropDown = ({ list, selectedId, setSelectedId, fetchedSelectedId }) => {
               <ListItem
                 key={arr[0]}
                 object={arr[1]}
+                injectingCount={
+                  injectingRequests ? injectingRequests[index] : 0
+                }
+                showRequestCounts={showRequestCounts}
                 onClick={() =>
                   handleListItemClick(
                     arr[0],

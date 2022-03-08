@@ -4,6 +4,8 @@ import { makeStyles, useTheme, Typography } from "@material-ui/core";
 import styles from "./styles";
 
 import DropDown from "../../../components/drop-down/DropDown";
+import { stringObjectToArray } from "../../../functions/user";
+import { committeeIdToCommitteeNameMap } from "../../../constants/general";
 
 const useStyles = makeStyles(styles);
 
@@ -15,9 +17,13 @@ const DropDownSection = ({
   selectedCountryId,
   setSelectedCountryId,
   fetchedCountryId,
+  showRequestCounts,
+  injectingRequests,
 }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
+
+  const injectingRequestsArr = stringObjectToArray(injectingRequests);
 
   return (
     <div>
@@ -43,6 +49,12 @@ const DropDownSection = ({
           selectedId={selectedCountryId}
           setSelectedId={(key) => setSelectedCountryId(key)}
           fetchedSelectedId={fetchedCountryId}
+          showRequestCounts={showRequestCounts}
+          injectingRequests={
+            injectingRequestsArr[
+              committeeIdToCommitteeNameMap[selectedCommitteeId]
+            ]
+          }
         />
       </div>
       {fetchedCountryList ? (

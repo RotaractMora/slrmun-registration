@@ -178,3 +178,40 @@ export const getCurrentStatusFromNumber = (number) => {
   if (parseInt(number) === 2) return "Employeed";
   return "Undefined currentStatusNumber";
 };
+
+const parseIntHandleEmptyString = (string) => {
+  if (string === "") return 0;
+  else return parseInt(string);
+};
+
+export const stringObjectToArray = (committeeObj) => {
+  const returnObj = {};
+  if (Object.keys(committeeObj).length > 0) {
+    for (const committee in committeeObj) {
+      if (Object.hasOwnProperty.call(committeeObj, committee)) {
+        const string = committeeObj[committee];
+        const countryObj = {};
+        const lst = string.split("\r\n");
+        delete lst[0]; // delete the header
+
+        // convert the string in each line to objects
+        for (
+          let countryRowIndex = 0;
+          countryRowIndex < lst.length;
+          countryRowIndex++
+        ) {
+          const countryRow = lst[countryRowIndex];
+          if (countryRow) {
+            const countryArr = countryRow.split(",");
+            countryObj[countryArr[0]] = parseIntHandleEmptyString(
+              countryArr[2]
+            );
+          }
+        }
+
+        returnObj[committee] = countryObj;
+      }
+    }
+  }
+  return returnObj;
+};
