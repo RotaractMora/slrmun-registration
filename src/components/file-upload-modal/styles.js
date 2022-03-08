@@ -29,6 +29,9 @@ const styles = (theme) => {
       borderRadius: "10px",
       padding: "20px",
     },
+    drop_area_active: {
+      border: "3px dashed " + theme.palette.primary.main,
+    },
     contents: {},
   };
 };

@@ -55,7 +55,14 @@ const UserProfile = ({ fetchedUserData, firebaseDb, firebaseStorage }) => {
   };
   // Profile picture upload function
   const fileUploadHandler = (e) => {
-    const image = e.target.files[0];
+    let image = "";
+    if (e.target.files)
+      // buton click
+      image = e.target.files[0];
+    else if (e.dataTransfer)
+      // drop files
+      image = e.dataTransfer.files[0];
+
     // if the image file is too large (>1MB), compress the image and then upload
     const upload_path =
       PROFILE_PICTURE_UPLOAD_DIRECTORY +

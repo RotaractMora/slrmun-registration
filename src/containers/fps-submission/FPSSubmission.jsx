@@ -45,7 +45,13 @@ const FPSSubmission = ({
   const [subUserTableData, setUserSubTableData] = useState({});
 
   const fileUploadHandler = (e) => {
-    const file = e.target.files[0];
+    let file = "";
+    if (e.target.files)
+      // buton click
+      file = e.target.files[0];
+    else if (e.dataTransfer)
+      // drop files
+      file = e.dataTransfer.files[0];
 
     const upload_path =
       FPS_UPLOAD_DIRECTORY + "/" + fetchedUserData.user_id + "/" + file.name;

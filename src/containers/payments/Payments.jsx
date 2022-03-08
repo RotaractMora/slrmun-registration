@@ -37,7 +37,14 @@ const Payments = ({
 
   // handlers
   const fileUploadHandler = (e) => {
-    const image = e.target.files[0];
+    let image = "";
+    if (e.target.files)
+      // buton click
+      image = e.target.files[0];
+    else if (e.dataTransfer)
+      // drop files
+      image = e.dataTransfer.files[0];
+
     const upload_path =
       PAYMENTS_UPLOAD_DIRECTORY +
       "/" +
