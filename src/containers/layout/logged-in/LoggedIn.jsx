@@ -14,6 +14,7 @@ import {
   PAYMENTS,
   USER_MANAGEMENT,
   FPS_SUBMISSION,
+  DELEGATE_MANAGEMENT,
 } from "../../../constants/routes";
 
 //styles
@@ -131,7 +132,6 @@ const LoggedIn = ({ firebaseAuth }) => {
           obj[key] = dataObj[key];
           return obj;
         }, {});
-
       dataArr = Object.values(orderedDataObj);
       setFetchedUsersData(dataArr);
     });
@@ -212,6 +212,18 @@ const LoggedIn = ({ firebaseAuth }) => {
             />
           ) : null}
           {visibilityArray[4] ? (
+            <Route
+              path={DELEGATE_MANAGEMENT}
+              element={
+                <UserManagement
+                  firebaseDatabase={db}
+                  committeesData={committeesData}
+                  fetchedUserData={fetchedUserData}
+                />
+              }
+            />
+          ) : null}
+          {visibilityArray[5] ? (
             <Route
               path={USER_MANAGEMENT}
               element={

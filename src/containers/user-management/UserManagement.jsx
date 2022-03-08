@@ -16,7 +16,12 @@ import styles from "./styles";
 import UsersTable from "./users-table/UsersTable";
 
 // other constants
-import { GENERAL_USER_LEVEL, ADMIN_USER_LEVEL } from "../../constants/general";
+import {
+  GENERAL_USER_LEVEL,
+  ADMIN_USER_LEVEL,
+  COMMITTEE_CHAIR_USER_LEVEL,
+  DEVELOPER_USER_LEVEL,
+} from "../../constants/general";
 import { download_csv_file, timeStampToString } from "../../functions/general";
 import { usersObjectToCSV } from "../../functions/userManagement";
 import { userLevelToString } from "../../functions/user";
@@ -29,7 +34,9 @@ const UserManagement = ({ committeesData, fetchedUserData }) => {
 
   const [visibleUsersArr, setVisibleUsersArr] = useState([
     GENERAL_USER_LEVEL,
+    COMMITTEE_CHAIR_USER_LEVEL,
     ADMIN_USER_LEVEL,
+    DEVELOPER_USER_LEVEL,
   ]);
 
   const getVisibleUsers = (allUsers, userLevels) => {
@@ -51,8 +58,8 @@ const UserManagement = ({ committeesData, fetchedUserData }) => {
 
   useEffect(() => {
     const visibleUsers = getVisibleUsers(fetchedUserData, visibleUsersArr);
-    setUsersData(JSON.parse(JSON.stringify(visibleUsers)));
-    setFetchedVisibleUsers(JSON.parse(JSON.stringify(visibleUsers)));
+    setUsersData(visibleUsers);
+    setFetchedVisibleUsers(visibleUsers);
   }, [fetchedUserData]);
 
   // used to filter the users list by the switches
@@ -135,6 +142,19 @@ const UserManagement = ({ committeesData, fetchedUserData }) => {
         <FormControlLabel
           control={
             <Switch
+              checked={visibleUsersArr.includes(COMMITTEE_CHAIR_USER_LEVEL)}
+              onChange={(e) => {
+                handleVisibility(e, COMMITTEE_CHAIR_USER_LEVEL);
+              }}
+              color="primary"
+              name="admins"
+            />
+          }
+          label="Chairpersons"
+        />
+        <FormControlLabel
+          control={
+            <Switch
               checked={visibleUsersArr.includes(ADMIN_USER_LEVEL)}
               onChange={(e) => {
                 handleVisibility(e, ADMIN_USER_LEVEL);
@@ -144,6 +164,19 @@ const UserManagement = ({ committeesData, fetchedUserData }) => {
             />
           }
           label="Admins"
+        />
+        <FormControlLabel
+          control={
+            <Switch
+              checked={visibleUsersArr.includes(DEVELOPER_USER_LEVEL)}
+              onChange={(e) => {
+                handleVisibility(e, DEVELOPER_USER_LEVEL);
+              }}
+              color="primary"
+              name="admins"
+            />
+          }
+          label="Developers"
         />
         <Button
           color="primary"

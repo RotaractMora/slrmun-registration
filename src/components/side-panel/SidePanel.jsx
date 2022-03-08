@@ -14,6 +14,7 @@ import {
   PAYMENTS,
   USER_MANAGEMENT,
   FPS_SUBMISSION,
+  DELEGATE_MANAGEMENT,
 } from "../../constants/routes";
 
 // styles
@@ -23,6 +24,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import PaymentIcon from "@mui/icons-material/Payment";
 import ArticleIcon from "@mui/icons-material/Article";
+import GavelIcon from "@mui/icons-material/Gavel";
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import styles from "./styles";
@@ -130,6 +132,16 @@ const SidePanel = ({ cross, setShowSidePanel }) => {
             />
           ) : null}
           {visibilityArray[4] ? (
+            <ListItem
+              text={"Delegate Management"}
+              DispIcon={GavelIcon}
+              link={DELEGATE_MANAGEMENT}
+              active={current_path === DELEGATE_MANAGEMENT}
+              collapsed={collapsed}
+              onClick={() => setShowSidePanel(false)}
+            />
+          ) : null}
+          {visibilityArray[5] ? (
             <ListItem
               text={"User Management"}
               DispIcon={SupervisedUserCircleIcon}
