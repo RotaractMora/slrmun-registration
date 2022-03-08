@@ -77,8 +77,8 @@ export const getUserRegistrationStatus = (
     // 5: Registered for a committee; Payment made, Admin approved
     userData.admin_approved &&
     userData.committee_id !== undefined &&
-    userData.country_id !== undefined &&
-    userData[paymentsFieldName]
+    userData.country_id !== undefined
+    // && userData[paymentsFieldName]
   )
     return [theme.palette.success.main, "You are all set!", 5];
 
