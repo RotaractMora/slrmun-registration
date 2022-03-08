@@ -124,7 +124,15 @@ const LoggedIn = ({ firebaseAuth }) => {
         }
       }
 
-      dataArr = Object.values(dataObj);
+      // order the dataObj
+      const orderedDataObj = Object.keys(dataObj)
+        .sort()
+        .reduce((obj, key) => {
+          obj[key] = dataObj[key];
+          return obj;
+        }, {});
+
+      dataArr = Object.values(orderedDataObj);
       setFetchedUsersData(dataArr);
     });
   };
