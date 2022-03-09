@@ -24,6 +24,14 @@ const DropDownSection = ({
   const classes = useStyles(theme);
 
   const injectingRequestsArr = stringObjectToArray(injectingRequests);
+  let diplayRequestCount = 0;
+  if (showRequestCounts) {
+    diplayRequestCount =
+      fetchedCountryList[selectedCountryId].req_count +
+      injectingRequestsArr[committeeIdToCommitteeNameMap[selectedCommitteeId]][
+        selectedCountryId
+      ];
+  }
 
   return (
     <div>
@@ -57,16 +65,13 @@ const DropDownSection = ({
           }
         />
       </div>
-      {fetchedCountryList ? (
+      {fetchedCountryList && showRequestCounts ? (
         fetchedCountryList[selectedCountryId] ? (
-          fetchedCountryList[selectedCountryId].req_count > 0 ? (
+          diplayRequestCount > 1 ? (
             <Typography variant="body2" className={classes.warning}>
               This country has already been requested by{" "}
-              <b>
-                {fetchedCountryList[selectedCountryId].req_count.toString()}
-              </b>{" "}
-              registrants. Make the registration fee and confirm your
-              participation soon.
+              <b>{diplayRequestCount}</b> registrants. Make the registration fee
+              and confirm your participation soon.
             </Typography>
           ) : null
         ) : null

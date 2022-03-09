@@ -71,12 +71,6 @@ const CommitteeSelection = ({
           let req_count = 0;
           if (country_obj.requests)
             req_count = Object.keys(country_obj.requests).length;
-          if (
-            country_key === fetchedUserData.country_id &&
-            committee_key === parseInt(fetchedUserData.committee_id)
-          ) {
-            req_count -= 1;
-          }
           local_country_obj[committee_key][country_key] = {
             text: country_obj.name,
             available: country_obj.availability,
