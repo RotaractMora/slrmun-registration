@@ -25,7 +25,8 @@ const DropDownSection = ({
 
   const injectingRequestsArr = stringObjectToArray(injectingRequests);
   let diplayRequestCount = 0;
-  if (showRequestCounts) {
+  console.log();
+  if (showRequestCounts && selectedCountryId && selectedCommitteeId) {
     diplayRequestCount =
       fetchedCountryList[selectedCountryId].req_count +
       injectingRequestsArr[committeeIdToCommitteeNameMap[selectedCommitteeId]][

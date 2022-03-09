@@ -133,7 +133,7 @@ const CommitteeSelection = ({
         const oldCountry =
           committeesData[fetchedCommitteeId].countries[fetchedCountryId];
 
-        // delete the requests
+        // delete the requests from the old country
         if (oldCountry.requests) {
           // finds the timestamps the user has has selected the country. This will have always one occerence if no error has occured
           const occurences = [];
@@ -145,7 +145,7 @@ const CommitteeSelection = ({
               }
             }
           }
-          // delete the occurences (most probably a single one) from the database
+          // delete the occurences (a single one if no errors/manual mutilations for the database had occured) from the database
           for (let i = 0; i < occurences.length; i++) {
             const timestamp = occurences[i];
             remove(child(oldCountryRef, "/requests/" + timestamp));
