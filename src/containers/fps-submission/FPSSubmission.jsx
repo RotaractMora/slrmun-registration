@@ -19,13 +19,11 @@ import { ref as refStorage } from "firebase/storage";
 
 import {
   FPS_DOC_NAME,
-  FPS_FIELD_NAME,
   FPS_UPLOAD_DIRECTORY,
   USERS_DOC_NAME,
 } from "../../constants/general";
 import { timeStampToString } from "../../functions/general";
 import { uploadFile } from "../../functions/api";
-import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(styles);
 
@@ -77,6 +75,17 @@ const FPSSubmission = ({
     );
   };
 
+  let lateSubmission = false;
+  let submissionClassName = "";
+  if (subUserTableData.file) {
+    if (subTableData.due_timestamp < subUserTableData.file.timestamp) {
+      submissionClassName = classes.red;
+      lateSubmission = true;
+    } else {
+      submissionClassName = classes.green;
+    }
+  }
+
   const fetchFPSData = () => {
     // fetch common submission data
     const commonFpsRef = refDatabase(firebaseDb, FPS_DOC_NAME);
@@ -122,16 +131,24 @@ const FPSSubmission = ({
       <TableContainer component={Paper} style={{ margin: 20 }}>
         <Table>
           <TableBody>
-            <TableRow>
+            <TableRow className={submissionClassName}>
               <TableCell>Submission Status</TableCell>
               <TableCell>
                 {subUserTableData.file
-                  ? "Submitted for grading"
+                  ? lateSubmission
+                    ? "Submission passed the due time"
+                    : "Submitted for grading"
                   : "Not Submitted"}
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Grading Status</TableCell>
+              <TableCell>
+                {subUserTableData.grade ? "Graded" : "Not graded"}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Marks</TableCell>
               <TableCell>
                 {subUserTableData.grade ? subUserTableData.grade : "Not graded"}
               </TableCell>
