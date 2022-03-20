@@ -57,6 +57,44 @@ const styles = {
   maxWidth300: {
     maxWidth: 300,
   },
+  zeroHeight: {
+    height: 0,
+    margin: 0,
+    padding: 0,
+    lineHeight: 0,
+  },
+  notesCell: {},
+  notesCellHidden: {
+    height: 0,
+    margin: 0,
+    padding: 0,
+    lineHeight: 0,
+    overflow: "hidden",
+    display: "none",
+  },
+  textArea: {
+    width: "100%",
+    outline: "none",
+    padding: 10,
+  },
+  textAreaHidden: {
+    height: 0,
+    margin: 0,
+    padding: 0,
+    lineHeight: 0,
+    overflow: "hidden",
+    display: "block",
+  },
+  expandButton: {
+    backgroundColor: (theme) => theme.palette.grey[400],
+    padding: "3px 10px",
+    borderRadius: 5,
+    cursor: "pointer",
+    transition: "0.1s",
+    "&:hover": {
+      boxShadow: (theme) => theme.shadows[2],
+    },
+  },
 };
 
 export default styles;

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useRef, useState } from "react";
 
 //styles
 import {
@@ -8,6 +8,7 @@ import {
   TableCell,
   Button,
   TextField,
+  TextareaAutosize,
 } from "@material-ui/core";
 import styles from "./styles";
 
@@ -34,6 +35,9 @@ const UserRow = ({
   const theme = useTheme();
   const classes = useStyles(theme);
 
+  const [notesExpanded, setNotesExpanded] = useState(false);
+  const textAreaRef = useRef();
+
   const handleSave = () => {
     const userRef = ref(
       firebaseDatabase,
@@ -42,11 +46,11 @@ const UserRow = ({
     // update fps
     if (userData.fps) {
       const fpsGrade = userData.fps.grade;
-      if (fetchedUserData.fps) {
-        if (userData.fps.grade !== fetchedUserData.fps.grade) {
+      if (fetchedUserData.fps && fpsGrade) {
+        if (fpsGrade !== fetchedUserData.fps.grade) {
           set(child(userRef, "fps/grade"), fpsGrade);
         }
-      } else {
+      } else if (fpsGrade) {
         set(child(userRef, "fps/grade"), fpsGrade);
       }
     }
@@ -54,23 +58,33 @@ const UserRow = ({
     // update final grade
     if (userData.conference) {
       const finalGrade = userData.conference.final_grade;
-      if (fetchedUserData.conference) {
-        if (
-          userData.conference.final_grade !==
-          fetchedUserData.conference.final_grade
-        ) {
+      if (fetchedUserData.conference && finalGrade) {
+        if (finalGrade !== fetchedUserData.conference.final_grade) {
           set(child(userRef, "conference/final_grade"), finalGrade);
         }
-      } else {
+      } else if (finalGrade) {
         set(child(userRef, "conference/final_grade"), finalGrade);
       }
     }
 
-    // update final grade
+    // update notes
+    if (userData.conference) {
+      const notes = userData.conference.notes;
+      if (notes !== undefined) {
+        if (fetchedUserData.conference) {
+          if (userData.conference.notes !== fetchedUserData.conference.notes) {
+            set(child(userRef, "conference/notes"), notes);
+          }
+        } else {
+          set(child(userRef, "conference/notes"), notes);
+        }
+      }
+    }
   };
 
   const handleCancel = () => {
     onChange(JSON.parse(JSON.stringify(fetchedUserData)));
+    textAreaRef.current.value = textAreaRef.current.value;
   };
 
   const onChangeHandler = (e) => {
@@ -82,6 +96,10 @@ const UserRow = ({
     } else if (e.target.id === "fps_grade") {
       if (!newUserData.fps) newUserData.fps = { grade: 0 };
       newUserData.fps.grade = e.target.value;
+      onChange(newUserData);
+    } else if (e.target.id === "notes") {
+      if (!newUserData.conference) newUserData.conference = { notes: 0 };
+      newUserData.conference.notes = e.target.value;
       onChange(newUserData);
     }
   };
@@ -101,6 +119,16 @@ const UserRow = ({
       fps_url = userData.fps.file.public_url;
     }
   }
+
+  let textareaClass = [classes.textArea, classes.textAreaHidden].join(" ");
+  let notesCellClassName = [classes.notesCell, classes.notesCellHidden].join(
+    " "
+  );
+  if (notesExpanded) {
+    notesCellClassName = classes.notesCell;
+    textareaClass = classes.textArea;
+  }
+
   return (
     <Fragment>
       <TableRow>
@@ -201,6 +229,27 @@ const UserRow = ({
           >
             Cancel
           </Button>
+        </TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell className={notesCellClassName} colSpan={6}>
+          <TextareaAutosize
+            id="notes"
+            className={textareaClass}
+            onChange={onChangeHandler}
+            value={userData.conference ? userData.conference.notes : null}
+            ref={textAreaRef}
+          />
+        </TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell className={classes.zeroHeight} colSpan={6} align="center">
+          <span
+            className={classes.expandButton}
+            onClick={() => setNotesExpanded(!notesExpanded)}
+          >
+            Notes
+          </span>
         </TableCell>
       </TableRow>
     </Fragment>
