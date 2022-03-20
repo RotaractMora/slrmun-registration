@@ -144,3 +144,16 @@ export const usersObjectToCSV = (usersData, committeesData) => {
   // console.log(returnArr);
   return returnArr;
 };
+
+export const categorizeCountryWithAvailability = (countries) => {
+  const reservedArr = [];
+  const availableArr = [];
+  for (const index in countries) {
+    if (Object.hasOwnProperty.call(countries, index)) {
+      const country = countries[index];
+      if (country.available) availableArr.push(country);
+      else reservedArr.push(country);
+    }
+  }
+  return [reservedArr, availableArr];
+};

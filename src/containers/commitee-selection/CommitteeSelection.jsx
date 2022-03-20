@@ -13,7 +13,10 @@ import ButtonPanel from "../../components/button-panel/ButtonPanel";
 import CommitteeRegistrationStatus from "../../components/committee-registration-status/CommitteeRegistrationStatus";
 import { AuthContext } from "../../firebase/Auth";
 import { COMMITTEES_DOC_NAME, USERS_DOC_NAME } from "../../constants/general";
-import { updateUserCountry } from "../../functions/user";
+import {
+  processCommitteesToDropDown,
+  updateUserCountry,
+} from "../../functions/user";
 
 const useStyles = makeStyles(styles);
 
@@ -43,44 +46,6 @@ const CommitteeSelection = ({
   const current_uid = currentUser.uid;
   const fetchedCommitteeId = fetchedUserData.committee_id;
   const fetchedCountryId = fetchedUserData.country_id;
-
-  const processCommitteesToDropDown = (committeesData) => {
-    const local_committee_obj = {};
-    const local_country_obj = {};
-    for (
-      let committee_key = 0;
-      committee_key < committeesData.length;
-      committee_key++
-    ) {
-      const committee_obj = committeesData[committee_key];
-
-      // completes the committee object
-      local_committee_obj[committee_key] = {
-        text: committee_obj.short_name,
-        imageUrl: committee_obj.imageUrl,
-        available: true,
-      };
-
-      // completes the country object
-      for (const country_key in committee_obj.countries) {
-        if (Object.hasOwnProperty.call(committee_obj.countries, country_key)) {
-          const country_obj = committee_obj.countries[country_key];
-          if (local_country_obj[committee_key] === undefined)
-            local_country_obj[committee_key] = {};
-          let req_count = 0;
-          if (country_obj.requests)
-            req_count = Object.keys(country_obj.requests).length;
-          local_country_obj[committee_key][country_key] = {
-            text: country_obj.name,
-            available: country_obj.availability,
-            imageUrl: country_obj.imageUrl,
-            req_count,
-          };
-        }
-      }
-    }
-    return [local_committee_obj, local_country_obj];
-  };
 
   const [local_committee_obj, local_country_obj] =
     processCommitteesToDropDown(committeesData);

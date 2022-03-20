@@ -33,6 +33,7 @@ import {
   getUserLevelAccordingToSwitches,
   getWhatsAppNumber,
 } from "../../../../functions/userManagement";
+import GroupedDropDown from "../../../../components/grouped-drop-down/GroupedDropDown";
 
 const useStyles = makeStyles(styles);
 
@@ -41,7 +42,9 @@ const UserRow = ({
   onChange,
   index,
   fetchedUserData,
+  countriesData,
   committeesData,
+  countryData,
   usersData,
 }) => {
   const theme = useTheme();
@@ -52,17 +55,6 @@ const UserRow = ({
 
   const chairSwitchRef = useRef();
   const adminSwitchRef = useRef();
-
-  let countryData = {};
-  if (
-    JSON.stringify(committeesData) !== JSON.stringify({}) &&
-    JSON.stringify(userData) !== JSON.stringify({}) &&
-    userData.committee_id &&
-    userData.country_id
-  ) {
-    countryData =
-      committeesData[userData.committee_id].countries[userData.country_id];
-  }
 
   const handleApprovalChange = (e) => {
     onChange({
@@ -173,7 +165,6 @@ const UserRow = ({
   const handleCancel = () => {
     onChange(fetchedUserData);
   };
-
   return (
     <Fragment>
       {showModal && (modalData[0].length > 0 || modalData[1].length > 0) ? (
@@ -287,22 +278,49 @@ const UserRow = ({
         </TableCell>
       </TableRow>
       <TableRow className={classes.admin_area_row}>
-        <TableCell className={classes.committeeCell}>
-          <Typography variant="body1">
-            {committeesData !== {} && userData.committee_id
-              ? committeesData[userData.committee_id].short_name
-              : "None"}
-            {" | "}
-            {committeesData !== {} &&
-            userData.committee_id &&
-            userData.country_id
-              ? committeesData[userData.committee_id].countries[
-                  userData.country_id
-                ].name
-              : "None"}
-            {" | "}
-            {userData.mun_experience}
-          </Typography>
+        <TableCell
+          className={classes.committeeCell}
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          {userData.committee_id ? (
+            <GroupedDropDown
+              selected={committeesData[userData.committee_id]}
+              groupLabel="Committee"
+              data={committeesData}
+              categorized={false}
+            />
+          ) : (
+            <GroupedDropDown
+              selected={{ text: "None", id: -1 }}
+              groupLabel="Committee"
+              data={committeesData}
+              categorized={false}
+            />
+          )}
+          {userData.committee_id ? (
+            <GroupedDropDown
+              selected={countryData}
+              groupLabel="Country"
+              data={countriesData}
+              categorized={true}
+            />
+          ) : (
+            <GroupedDropDown
+              selected={{ text: "None", id: -1 }}
+              groupLabel="Country"
+            />
+          )}
+          <span>{userData.mun_experience}</span>
+        </TableCell>
+        <TableCell>
+          {timeStampToString(userData.registered_timestamp, 2)}
+        </TableCell>
+        <TableCell>
           <FormControlLabel
             control={
               <Switch
@@ -314,9 +332,6 @@ const UserRow = ({
             }
             label="Approval"
           />
-        </TableCell>
-        <TableCell>
-          {timeStampToString(userData.registered_timestamp, 2)}
         </TableCell>
         <TableCell>
           <FormControlLabel
@@ -346,8 +361,6 @@ const UserRow = ({
             }
             label="Chairperson"
           />
-        </TableCell>
-        <TableCell>
           <FormControlLabel
             control={
               <Switch
