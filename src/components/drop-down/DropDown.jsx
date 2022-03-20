@@ -29,8 +29,8 @@ const DropDown = ({
   const [visibleList, setVisibleList] = useState({});
 
   // handler functions
-  const handleListItemClick = (key, available, isSelectedItem) => {
-    if (available || isSelectedItem) {
+  const handleListItemClick = (key, availability, isSelectedItem) => {
+    if (availability || isSelectedItem) {
       setSelectedId(key);
       setSelectedObj(list[key]);
       setExpanded(false);
@@ -121,7 +121,7 @@ const DropDown = ({
                 onClick={() =>
                   handleListItemClick(
                     arr[0],
-                    arr[1].available,
+                    arr[1].availability,
                     fetchedSelectedId == index
                   )
                 }

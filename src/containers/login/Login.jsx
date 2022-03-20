@@ -41,8 +41,9 @@ const Login = () => {
       })
       .catch((error) => {
         const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        if (errorCode === "auth/invalid-email") alert("Invalid email");
+        if (errorCode === "auth/user-not-found") alert("User not found");
+        if (errorCode === "auth/wrong-password") alert("Incorrect password");
       });
   };
 

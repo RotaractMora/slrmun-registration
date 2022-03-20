@@ -151,7 +151,7 @@ export const categorizeCountryWithAvailability = (countries) => {
   for (const index in countries) {
     if (Object.hasOwnProperty.call(countries, index)) {
       const country = countries[index];
-      if (country.available) availableArr.push(country);
+      if (country.availability) availableArr.push(country);
       else reservedArr.push(country);
     }
   }

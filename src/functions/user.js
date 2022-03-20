@@ -420,7 +420,7 @@ const updateUserCountryDirect = (
   ////////////////////////////////////////////////////////////////////
   // update the request list of the new country
   // update the request list and the availability of the old country
-  update(oldCountryRef, oldCountryUpdate);
+  if (oldCountryRef) update(oldCountryRef, oldCountryUpdate);
 
   // update the country data (reserve) if approved by the admin
   if (userData.admin_approved) {
@@ -449,7 +449,7 @@ export const processCommitteesToDropDown = (committeesData) => {
     local_committee_obj[committee_key] = {
       text: committee_obj.short_name,
       imageUrl: committee_obj.imageUrl,
-      available: true,
+      availability: true,
       id: committee_key,
     };
 
@@ -464,9 +464,10 @@ export const processCommitteesToDropDown = (committeesData) => {
           req_count = Object.keys(country_obj.requests).length;
         local_country_obj[committee_key][country_key] = {
           text: country_obj.name,
-          available: country_obj.availability,
+          availability: country_obj.availability,
           imageUrl: country_obj.imageUrl,
           id: country_key,
+          reserved_to: country_obj.reserved_to,
           req_count,
         };
       }

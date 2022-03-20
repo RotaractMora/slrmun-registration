@@ -37,8 +37,10 @@ const GroupedDropDown = ({ data, selected, groupLabel, categorized }) => {
             <ListSubheader>Selected</ListSubheader>
             <MenuItem value={selected.id}>{selected.text}</MenuItem>
             <ListSubheader>Available</ListSubheader>
-            {data.map((object) => (
-              <MenuItem value={object.id}>{object.text}</MenuItem>
+            {data.map((object, key) => (
+              <MenuItem key={key} value={object.id}>
+                {object.text}
+              </MenuItem>
             ))}
           </Select>
         )

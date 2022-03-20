@@ -17,7 +17,7 @@ const ListItem = ({
   const theme = useTheme();
   const classes = useStyles(theme);
   let textClass = classes.text;
-  if (!object.available && !isSelectedItem) {
+  if (!object.availability && !isSelectedItem) {
     textClass = [classes.text, classes.strike].join(" ");
   }
   return (

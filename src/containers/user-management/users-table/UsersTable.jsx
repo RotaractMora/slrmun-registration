@@ -48,7 +48,7 @@ const UsersTable = ({
       for (const countryId in committee) {
         if (Object.hasOwnProperty.call(committee, countryId)) {
           const country = committee[countryId];
-          if (country.available)
+          if (country.availability)
             categorizedCountries[committeeId].available.push({
               ...country,
               countryId,
