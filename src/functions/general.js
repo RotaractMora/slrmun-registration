@@ -27,10 +27,11 @@ export const timeStampToString = (timestamp, type) => {
       );
     } else if (type === 2) {
       const utc_str = date.toUTCString();
-      let lst = utc_str.split(" ");
-      lst = lst.slice(0, lst.length - 1);
-      lst[4] = lst[4].split(":").slice(0, 2).join(":");
-      return lst.join(" ");
+      // let lst = utc_str.split(" ");
+      // lst = lst.slice(0, lst.length - 1);
+      // lst[4] = lst[4].split(":").slice(0, 2).join(":");
+      // return lst.join(" ");
+      return utc_str;
     } else {
       return "Invalid type definition";
     }
