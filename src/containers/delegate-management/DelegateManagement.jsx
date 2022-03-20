@@ -10,31 +10,39 @@ import { filterVisibleUsersFromField } from "../../functions/userManagement";
 
 const useStyles = makeStyles(styles);
 
-const DelegateManagement = ({ committeesData, fetchedUserData }) => {
+const DelegateManagement = ({
+  firebaseDatabase,
+  committeesData,
+  fetchedUsersData,
+  userData,
+}) => {
   const theme = useTheme();
   const classes = useStyles(theme);
 
   const [visibleCommitteesArr, setvisibleCommitteesArr] = useState([
-    0, 1, 2, 3, 4,
-  ]); // TODO: enumerate these
-
+    userData.committee_id,
+  ]);
   const visibleUsers = filterVisibleUsersFromField(
-    fetchedUserData,
+    fetchedUsersData,
     visibleCommitteesArr,
     "committee_id"
   );
-  const [fetchedVisibleUsers, setFetchedVisibleUsers] = useState(visibleUsers);
-  const [usersData, setUsersData] = useState(visibleUsers);
+  const [fetchedVisibleUsers, setFetchedVisibleUsers] = useState(
+    JSON.parse(JSON.stringify(visibleUsers))
+  );
+  const [usersData, setUsersData] = useState(
+    JSON.parse(JSON.stringify(visibleUsers))
+  );
 
   useEffect(() => {
     const visibleUsers = filterVisibleUsersFromField(
-      fetchedUserData,
+      fetchedUsersData,
       visibleCommitteesArr,
-      "user_level"
+      "committee_id"
     );
-    setUsersData(visibleUsers);
-    setFetchedVisibleUsers(visibleUsers);
-  }, [fetchedUserData, visibleCommitteesArr]);
+    setUsersData(JSON.parse(JSON.stringify(visibleUsers)));
+    setFetchedVisibleUsers(JSON.parse(JSON.stringify(visibleUsers)));
+  }, [fetchedUsersData, visibleCommitteesArr]);
 
   return (
     <div className={classes.root}>
@@ -42,9 +50,10 @@ const DelegateManagement = ({ committeesData, fetchedUserData }) => {
         Delegate Management
       </Typography>
       <DelegateTable
+        firebaseDatabase={firebaseDatabase}
         usersData={usersData}
         setUsersData={setUsersData}
-        fetchedUserData={fetchedVisibleUsers}
+        fetchedUsersData={fetchedVisibleUsers}
         committeesData={committeesData}
       />
       <SwitchSection />

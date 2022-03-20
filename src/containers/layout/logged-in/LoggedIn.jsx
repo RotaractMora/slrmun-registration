@@ -225,7 +225,8 @@ const LoggedIn = ({ firebaseAuth }) => {
                 <DelegateManagement
                   firebaseDatabase={db}
                   committeesData={committeesData}
-                  fetchedUserData={fetchedDelegateUsersData}
+                  fetchedUsersData={fetchedDelegateUsersData}
+                  userData={userData}
                 />
               }
             />

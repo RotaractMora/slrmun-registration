@@ -16,25 +16,63 @@ import defaultUserIcon from "../../../../assets/images/default-user-icon.png";
 import whatsAppIcon from "../../../../assets/images/whatsapp-icon.png";
 
 // functions
-import { timeStampToString } from "../../../../functions/general";
 import { getWhatsAppNumber } from "../../../../functions/userManagement";
 import { getCommitteeAndCountryFromNumbers } from "../../../../functions/user";
+import { USERS_DOC_NAME } from "../../../../constants/general";
+import { child, ref, set } from "firebase/database";
 
 const useStyles = makeStyles(styles);
 
 const UserRow = ({
+  firebaseDatabase,
   userData,
   onChange,
   index,
   fetchedUserData,
   committeesData,
-  usersData,
 }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
 
-  const handleSave = () => {};
-  const handleCancel = () => {};
+  const handleSave = () => {
+    const userRef = ref(
+      firebaseDatabase,
+      USERS_DOC_NAME + "/" + userData.user_id
+    );
+    // update fps
+    if (userData.fps) {
+      const fpsGrade = userData.fps.grade;
+      if (fetchedUserData.fps) {
+        if (userData.fps.grade !== fetchedUserData.fps.grade) {
+          set(child(userRef, "fps/grade"), fpsGrade);
+        }
+      } else {
+        set(child(userRef, "fps/grade"), fpsGrade);
+      }
+    }
+
+    // update final grade
+    if (userData.conference) {
+      const finalGrade = userData.conference.final_grade;
+      if (fetchedUserData.conference) {
+        if (
+          userData.conference.final_grade !==
+          fetchedUserData.conference.final_grade
+        ) {
+          set(child(userRef, "conference/final_grade"), finalGrade);
+        }
+      } else {
+        set(child(userRef, "conference/final_grade"), finalGrade);
+      }
+    }
+
+    // update final grade
+  };
+
+  const handleCancel = () => {
+    onChange(JSON.parse(JSON.stringify(fetchedUserData)));
+  };
+
   const onChangeHandler = (e) => {
     const newUserData = userData;
     if (e.target.id === "final_grade") {
@@ -57,9 +95,11 @@ const UserRow = ({
   let fps_name = "No submissions yet";
   let fps_url;
   if (userData.fps) {
-    const storage_path_arr = userData.fps.file.storage_path.split("/");
-    fps_name = storage_path_arr.splice(storage_path_arr.length - 1, 1);
-    fps_url = userData.fps.file.public_url;
+    if (userData.fps.file) {
+      const storage_path_arr = userData.fps.file.storage_path.split("/");
+      fps_name = storage_path_arr.splice(storage_path_arr.length - 1, 1);
+      fps_url = userData.fps.file.public_url;
+    }
   }
   return (
     <Fragment>
@@ -133,7 +173,6 @@ const UserRow = ({
             size="small"
             margin="normal"
             value={userData.fps ? userData.fps.grade : 0}
-            defaultValue={userData.fps ? userData.fps.grade : 0}
             onChange={onChangeHandler}
           />
         </TableCell>
@@ -145,9 +184,6 @@ const UserRow = ({
             size="small"
             margin="normal"
             value={userData.conference ? userData.conference.final_grade : 0}
-            defaultValue={
-              userData.conference ? userData.conference.final_grade : 0
-            }
             onChange={onChangeHandler}
           />
         </TableCell>

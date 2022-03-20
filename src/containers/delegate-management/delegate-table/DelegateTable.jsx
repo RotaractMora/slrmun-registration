@@ -16,9 +16,10 @@ import UserRow from "./user-row/UserRow";
 const useStyles = makeStyles(styles);
 
 const DelegateTable = ({
+  firebaseDatabase,
   usersData,
   setUsersData,
-  fetchedUserData,
+  fetchedUsersData,
   committeesData,
 }) => {
   const theme = useTheme();
@@ -61,10 +62,13 @@ const DelegateTable = ({
           {usersData.map((userData, index) => (
             <UserRow
               key={index}
+              firebaseDatabase={firebaseDatabase}
               userData={userData}
               index={index}
               onChange={(userData) => handleOnChange(index, userData)}
-              fetchedUserData={fetchedUserData ? fetchedUserData[index] : null}
+              fetchedUserData={
+                fetchedUsersData ? fetchedUsersData[index] : null
+              }
               committeesData={committeesData}
               usersData={usersData}
             />
