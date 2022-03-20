@@ -237,7 +237,7 @@ const UserRow = ({
             id="notes"
             className={textareaClass}
             onChange={onChangeHandler}
-            value={userData.conference ? userData.conference.notes : null}
+            value={userData.conference ? userData.conference.notes : ""}
             ref={textAreaRef}
           />
         </TableCell>

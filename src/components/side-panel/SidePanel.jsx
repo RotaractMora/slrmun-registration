@@ -15,6 +15,7 @@ import {
   USER_MANAGEMENT,
   FPS_SUBMISSION,
   DELEGATE_MANAGEMENT,
+  SETTINGS,
 } from "../../constants/routes";
 
 // styles
@@ -26,6 +27,7 @@ import PaymentIcon from "@mui/icons-material/Payment";
 import ArticleIcon from "@mui/icons-material/Article";
 import GavelIcon from "@mui/icons-material/Gavel";
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
+import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import styles from "./styles";
 
@@ -147,6 +149,16 @@ const SidePanel = ({ cross, setShowSidePanel }) => {
               DispIcon={SupervisedUserCircleIcon}
               link={USER_MANAGEMENT}
               active={current_path === USER_MANAGEMENT}
+              collapsed={collapsed}
+              onClick={() => setShowSidePanel(false)}
+            />
+          ) : null}
+          {visibilityArray[6] ? (
+            <ListItem
+              text={"Settings"}
+              DispIcon={SettingsIcon}
+              link={SETTINGS}
+              active={current_path === SETTINGS}
               collapsed={collapsed}
               onClick={() => setShowSidePanel(false)}
             />

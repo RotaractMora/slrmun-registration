@@ -12,6 +12,7 @@ import {
   DELEGATE_MANAGEMENT,
   FPS_SUBMISSION,
   PAYMENTS,
+  SETTINGS,
   USER_MANAGEMENT,
   USER_PROFILE,
 } from "../constants/routes";
@@ -41,17 +42,17 @@ export const isSriLankan = (text) => {
 };
 
 // returns the tabs to show for a specific user level
-// array format = [PROFILE, COMMITTEE_SELECTION, PAYMENTS, FPS_SUBMISSION, DELEGATE_MANAGEMENT, USER_MANAGEMENT]
+// array format = [PROFILE, COMMITTEE_SELECTION, PAYMENTS, FPS_SUBMISSION, DELEGATE_MANAGEMENT, USER_MANAGEMENT, SETTINGS]
 export const getUserVisibilityArray = (userLevel) => {
   let visibilityArr = [];
   if (userLevel === GENERAL_USER_LEVEL) {
-    visibilityArr = [true, true, true, true, false, false];
+    visibilityArr = [true, true, true, true, false, false, false];
   } else if (userLevel === COMMITTEE_CHAIR_USER_LEVEL) {
-    visibilityArr = [true, false, false, false, true, false];
+    visibilityArr = [true, false, false, false, true, false, true];
   } else if (userLevel === ADMIN_USER_LEVEL) {
-    visibilityArr = [true, true, true, false, false, true];
+    visibilityArr = [true, true, true, false, false, true, true];
   } else if (userLevel === DEVELOPER_USER_LEVEL) {
-    visibilityArr = [true, true, true, true, true, true];
+    visibilityArr = [true, true, true, true, true, true, true];
   }
   return visibilityArr;
 };
@@ -64,6 +65,7 @@ export const getAllowedRoutes = (userLevel) => {
     FPS_SUBMISSION,
     DELEGATE_MANAGEMENT,
     USER_MANAGEMENT,
+    SETTINGS,
   ];
   const allowedRoutes = [];
   const visibilityArr = getUserVisibilityArray(userLevel);

@@ -12,6 +12,8 @@ export const FPS_FIELD_NAME = "fps";
 export const USERS_DOC_NAME = "users";
 export const COMMITTEES_DOC_NAME = "committees";
 export const FPS_DOC_NAME = "fps_submissions";
+export const SETTINGS_DOC_NAME = "settings";
+export const METADATA_DOC_NAME = "meta_data";
 
 export const GENERAL_USER_LEVEL = 0;
 export const COMMITTEE_CHAIR_USER_LEVEL = 1;

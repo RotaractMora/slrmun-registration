@@ -15,6 +15,7 @@ import {
   USER_MANAGEMENT,
   FPS_SUBMISSION,
   DELEGATE_MANAGEMENT,
+  SETTINGS,
 } from "../../../constants/routes";
 
 //styles
@@ -35,6 +36,7 @@ import {
   GENERAL_USER_LEVEL,
   GOOGLE_SHEET_GIDS,
   REQUEST_INJECTION_GOOGLE_SHEET_LINK,
+  SETTINGS_DOC_NAME,
   USERS_DOC_NAME,
 } from "../../../constants/general";
 
@@ -43,10 +45,11 @@ import { getUserVisibilityArray } from "../../../functions/user";
 import FPSSubmission from "../../fps-submission/FPSSubmission";
 import DelegateManagement from "../../delegate-management/DelegateManagement";
 import { filterVisibleUsersFromField } from "../../../functions/userManagement";
+import Settings from "../../settings/Settings";
 
 const useStyles = makeStyles(styles);
 
-const LoggedIn = ({ firebaseAuth }) => {
+const LoggedIn = ({ metaData }) => {
   //styling
   const theme = useTheme();
   const classes = useStyles(theme);
@@ -57,6 +60,8 @@ const LoggedIn = ({ firebaseAuth }) => {
   const [fetchedUserData, setFetchedUsersData] = useState([]);
   const [injectingRequests, setInjectingRequests] = useState({});
   const [showRequestCounts, setShowRequestCounts] = useState(false);
+  const [settings, setSettings] = useState({});
+  const [fetchedSettings, setFetchedSettings] = useState({});
 
   const [committeesData, setCommitteesData] = useState({});
 
@@ -67,7 +72,7 @@ const LoggedIn = ({ firebaseAuth }) => {
   const current_uid = currentUser.uid;
   const userRef = ref(db, USERS_DOC_NAME + "/" + current_uid);
   const committeesRef = ref(db, COMMITTEES_DOC_NAME);
-
+  const [settingsRef, setSettingsRef] = useState();
   // fetch request_injection Data
   // This data will take a relatively larger time to load.
   // Hence, if we update the new injecting data after showig the original request data, the users will see that the request counts change (hora wada maattu wenawa
@@ -91,6 +96,11 @@ const LoggedIn = ({ firebaseAuth }) => {
     // fetch user data
     onValue(userRef, (snapshot) => {
       const userData = snapshot.val();
+      const settingsRef = ref(
+        db,
+        SETTINGS_DOC_NAME + "/fps/" + userData.committee_id
+      );
+      setSettingsRef(settingsRef);
       setUserData({ ...userData, user_id: current_uid });
     });
 
@@ -107,6 +117,16 @@ const LoggedIn = ({ firebaseAuth }) => {
         setShowRequestCounts(true);
       }
     });
+  };
+
+  const settingsFetch = () => {
+    // fetch settings
+    if (settingsRef) {
+      onValue(settingsRef, (snapshot) => {
+        setSettings(snapshot.val());
+        setFetchedSettings(snapshot.val());
+      });
+    }
   };
 
   const loggedInFetch = () => {
@@ -145,6 +165,13 @@ const LoggedIn = ({ firebaseAuth }) => {
       initFetch();
     }
   }, []);
+  useEffect(() => {
+    if (userData) {
+      if (userData.user_level >= 1) {
+        settingsFetch();
+      }
+    }
+  }, [userData]);
   useEffect(() => {
     if (userData) {
       if (userData.user_level >= 1) {
@@ -239,6 +266,22 @@ const LoggedIn = ({ firebaseAuth }) => {
                   firebaseDatabase={db}
                   committeesData={committeesData}
                   fetchedUserData={fetchedUserData}
+                />
+              }
+            />
+          ) : null}
+          {visibilityArray[6] ? (
+            <Route
+              path={SETTINGS}
+              element={
+                <Settings
+                  firebaseDatabase={db}
+                  userData={userData}
+                  fetchedSettings={fetchedSettings}
+                  settings={settings}
+                  setSettings={setSettings}
+                  settingsRef={settingsRef}
+                  metaData={metaData}
                 />
               }
             />

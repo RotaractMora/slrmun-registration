@@ -8,3 +8,4 @@ export const PAYMENTS = BASE_URL + "/payments";
 export const FPS_SUBMISSION = BASE_URL + "/fps-submission";
 export const DELEGATE_MANAGEMENT = BASE_URL + "/delegates";
 export const USER_MANAGEMENT = BASE_URL + "/users";
+export const SETTINGS = BASE_URL + "/settings";
