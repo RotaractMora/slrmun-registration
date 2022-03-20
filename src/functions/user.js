@@ -7,6 +7,14 @@ import {
   GENERAL_USER_LEVEL,
   USERS_DOC_NAME,
 } from "../constants/general";
+import {
+  COMMITTEE_SELECTION,
+  DELEGATE_MANAGEMENT,
+  FPS_SUBMISSION,
+  PAYMENTS,
+  USER_MANAGEMENT,
+  USER_PROFILE,
+} from "../constants/routes";
 
 export const isSriLankan = (text) => {
   if (text) {
@@ -46,6 +54,25 @@ export const getUserVisibilityArray = (userLevel) => {
     visibilityArr = [true, true, true, true, true, true];
   }
   return visibilityArr;
+};
+
+export const getAllowedRoutes = (userLevel) => {
+  const availableRoutes = [
+    USER_PROFILE,
+    COMMITTEE_SELECTION,
+    PAYMENTS,
+    FPS_SUBMISSION,
+    DELEGATE_MANAGEMENT,
+    USER_MANAGEMENT,
+  ];
+  const allowedRoutes = [];
+  const visibilityArr = getUserVisibilityArray(userLevel);
+  for (let i = 0; i < visibilityArr.length; i++) {
+    const visibility = visibilityArr[i];
+    if (visibility) allowedRoutes.push(availableRoutes[i]);
+  }
+
+  return allowedRoutes;
 };
 
 export const getUserRegistrationStatus = (
