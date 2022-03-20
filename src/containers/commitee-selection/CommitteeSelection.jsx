@@ -13,6 +13,7 @@ import ButtonPanel from "../../components/button-panel/ButtonPanel";
 import CommitteeRegistrationStatus from "../../components/committee-registration-status/CommitteeRegistrationStatus";
 import { AuthContext } from "../../firebase/Auth";
 import { COMMITTEES_DOC_NAME, USERS_DOC_NAME } from "../../constants/general";
+import { updateUserCountry } from "../../functions/user";
 
 const useStyles = makeStyles(styles);
 
@@ -38,12 +39,10 @@ const CommitteeSelection = ({
   const [enableButtons, setEnableButtons] = useState(false);
   const [showBanner, setShowBanner] = useState(true);
 
-  // fetch data
   const { currentUser } = useContext(AuthContext);
   const current_uid = currentUser.uid;
   const fetchedCommitteeId = fetchedUserData.committee_id;
   const fetchedCountryId = fetchedUserData.country_id;
-  const userRef = ref(firebaseDb, USERS_DOC_NAME + "/" + current_uid);
 
   const processCommitteesToDropDown = (committeesData) => {
     const local_committee_obj = {};
@@ -99,83 +98,15 @@ const CommitteeSelection = ({
 
   // button panel functions
   const save = () => {
-    let oldCountryRef = undefined;
-    if (fetchedCountryId) {
-      oldCountryRef = ref(
-        firebaseDb,
-        COMMITTEES_DOC_NAME +
-          "/" +
-          fetchedCommitteeId +
-          "/countries/" +
-          fetchedCountryId
-      );
-    }
-    const newContryRef = ref(
+    updateUserCountry(
+      fetchedUserData,
+      fetchedCountryId,
+      fetchedCommitteeId,
       firebaseDb,
-      COMMITTEES_DOC_NAME +
-        "/" +
-        selectedCommitteeId +
-        "/countries/" +
-        selectedCountryId
+      selectedCommitteeId,
+      selectedCountryId,
+      committeesData
     );
-    // update the database
-    const newCountry =
-      committeesData[selectedCommitteeId].countries[selectedCountryId];
-    // checks if the country is still available (to handle simultaneos updates)
-    if (newCountry.availability === 1) {
-      // update the request list of the new country
-      const current_time = new Date().getTime();
-      update(child(newContryRef, "requests"), {
-        [current_time]: current_uid,
-      });
-      // update the request list and the availability of the old country
-      if (fetchedCountryId) {
-        const oldCountry =
-          committeesData[fetchedCommitteeId].countries[fetchedCountryId];
-
-        // delete the requests from the old country
-        if (oldCountry.requests) {
-          // finds the timestamps the user has has selected the country. This will have always one occerence if no error has occured
-          const occurences = [];
-          for (const timestamp in oldCountry.requests) {
-            if (Object.hasOwnProperty.call(oldCountry.requests, timestamp)) {
-              const uid = oldCountry.requests[timestamp];
-              if (uid === current_uid) {
-                occurences.push(timestamp);
-              }
-            }
-          }
-          // delete the occurences (a single one if no errors/manual mutilations for the database had occured) from the database
-          for (let i = 0; i < occurences.length; i++) {
-            const timestamp = occurences[i];
-            remove(child(oldCountryRef, "/requests/" + timestamp));
-          }
-        }
-
-        // make the country available if if was reserved to this fellow
-        if (oldCountry.reserved_to === current_uid) {
-          update(oldCountryRef, { reserved_to: "", availability: 1 });
-        }
-      }
-
-      // update list to update the user
-      const userUpdates = {
-        committee_id: selectedCommitteeId,
-        country_id: selectedCountryId,
-      };
-
-      // update the country data (reserve) if approved by the admin
-      if (fetchedUserData.admin_approved) {
-        update(newContryRef, {
-          availability: 0,
-          reserved_to: fetchedUserData.user_id,
-        });
-        userUpdates.country_reserved = true;
-      }
-
-      // updates the user
-      update(userRef, userUpdates);
-    }
   };
 
   const cancel = () => {

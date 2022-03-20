@@ -23,10 +23,15 @@ const DropDownSection = ({
   const theme = useTheme();
   const classes = useStyles(theme);
 
+  // used to manually inject requests from the linnked google sheet
   const injectingRequestsArr = stringObjectToArray(injectingRequests);
   let diplayRequestCount = 0;
-  console.log();
-  if (showRequestCounts && selectedCountryId && selectedCommitteeId) {
+  if (
+    fetchedCountryList &&
+    showRequestCounts &&
+    selectedCountryId &&
+    selectedCommitteeId
+  ) {
     diplayRequestCount =
       fetchedCountryList[selectedCountryId].req_count +
       injectingRequestsArr[committeeIdToCommitteeNameMap[selectedCommitteeId]][
