@@ -30,17 +30,14 @@ const useStyles = makeStyles(styles);
 const FPSSubmission = ({
   firebaseDb,
   firebaseStorage,
-  committee_id,
   fetchedUserData,
-  current_uid,
+  settings,
 }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
 
   const [showModal, setShowModal] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [subTableData, setSubTableData] = useState({});
-  const [subUserTableData, setUserSubTableData] = useState({});
 
   const fileUploadHandler = (e) => {
     let file = "";
@@ -77,51 +74,24 @@ const FPSSubmission = ({
 
   let lateSubmission = false;
   let submissionClassName = "";
-  if (subUserTableData.file) {
-    if (subTableData.due_timestamp < subUserTableData.file.timestamp) {
-      submissionClassName = classes.red;
-      lateSubmission = true;
-    } else {
-      submissionClassName = classes.green;
+  if (fetchedUserData.fps) {
+    if (fetchedUserData.fps.file) {
+      if (settings.due_timestamp < fetchedUserData.fps.file.timestamp) {
+        submissionClassName = classes.red;
+        lateSubmission = true;
+      } else {
+        submissionClassName = classes.green;
+      }
     }
   }
 
-  const fetchFPSData = () => {
-    // fetch common submission data
-    const commonFpsRef = refDatabase(firebaseDb, FPS_DOC_NAME);
-    onValue(commonFpsRef, (snapshot) => {
-      const commonFpsData = snapshot.val();
-      const submissionTableData = {
-        ...subTableData,
-        due_timestamp: commonFpsData.due_timestamps[committee_id],
-        accepting_submissions:
-          commonFpsData.accepting_submissions[committee_id],
-        accepting_submission_formats:
-          commonFpsData.accepting_submission_formats.join(" "),
-      };
-      setSubTableData(submissionTableData);
-    });
-
-    // fetch user specific submission data
-    const userSpecificFpsRef = refDatabase(
-      firebaseDb,
-      USERS_DOC_NAME + "/" + current_uid + "/" + "fps"
-    );
-    onValue(userSpecificFpsRef, (snapshot) => {
-      const userSpecificFpsData = snapshot.val();
-      if (userSpecificFpsData) setUserSubTableData(userSpecificFpsData);
-    });
-  };
-
-  useEffect(() => {
-    fetchFPSData();
-  }, []);
-
   let file_name = "";
-  if (subUserTableData.file) {
-    const storage_path = subUserTableData.file.storage_path;
-    const path_arr = storage_path.split("/");
-    file_name = path_arr[path_arr.length - 1];
+  if (fetchedUserData.fps) {
+    if (fetchedUserData.fps.file) {
+      const storage_path = fetchedUserData.fps.file.storage_path;
+      const path_arr = storage_path.split("/");
+      file_name = path_arr[path_arr.length - 1];
+    }
   }
   return (
     <div className={classes.root}>
@@ -134,52 +104,64 @@ const FPSSubmission = ({
             <TableRow className={submissionClassName}>
               <TableCell>Submission Status</TableCell>
               <TableCell>
-                {subUserTableData.file
-                  ? lateSubmission
-                    ? "Submission passed the due time"
-                    : "Submitted for grading"
-                  : "Not Submitted"}
+                {fetchedUserData.fps
+                  ? fetchedUserData.fps.file
+                    ? lateSubmission
+                      ? "Submission passed the due time"
+                      : "Submitted for grading"
+                    : "Not submitted"
+                  : "Not submitted"}
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Grading Status</TableCell>
               <TableCell>
-                {subUserTableData.grade ? "Graded" : "Not graded"}
+                {fetchedUserData.fps
+                  ? fetchedUserData.fps.grade !== undefined
+                    ? "Graded"
+                    : "Not graded"
+                  : "Not graded"}
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Marks</TableCell>
               <TableCell>
-                {subUserTableData.grade ? subUserTableData.grade : "Not graded"}
+                {fetchedUserData.fps
+                  ? fetchedUserData.fps.grade !== undefined
+                    ? fetchedUserData.fps.grade
+                    : "Not graded"
+                  : "Not graded"}
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Due Time</TableCell>
               <TableCell>
-                {subTableData.due_timestamp
-                  ? timeStampToString(subTableData.due_timestamp, 2)
+                {settings.due_timestamp
+                  ? timeStampToString(settings.due_timestamp, 2)
                   : null}
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Accepting Submissions</TableCell>
               <TableCell>
-                {subTableData.accepting_submissions ? "Yes" : "No"}
+                {settings.accepting_submissions ? "Yes" : "No"}
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Submission Time</TableCell>
               <TableCell>
-                {subUserTableData.file
-                  ? subUserTableData.file.timestamp
-                    ? timeStampToString(subUserTableData.file.timestamp, 2)
+                {fetchedUserData.fps
+                  ? fetchedUserData.fps.file
+                    ? fetchedUserData.fps.file.timestamp
+                      ? timeStampToString(fetchedUserData.fps.file.timestamp, 2)
+                      : "Not Submitted"
                     : "Not Submitted"
                   : "Not Submitted"}
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Accepted Submission Formats</TableCell>
-              <TableCell>{subTableData.accepting_submission_formats}</TableCell>
+              <TableCell>{settings.accepting_formats.join(" ")}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Final Submission</TableCell>
@@ -189,7 +171,7 @@ const FPSSubmission = ({
                 {file_name !== "" ? (
                   <Typography>
                     <a
-                      href={subUserTableData.file.public_url}
+                      href={fetchedUserData.fps.file.public_url}
                       target="_blank"
                       download={file_name}
                     >

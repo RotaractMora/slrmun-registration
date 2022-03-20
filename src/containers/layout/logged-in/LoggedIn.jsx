@@ -62,7 +62,7 @@ const LoggedIn = ({ metaData }) => {
   const [showRequestCounts, setShowRequestCounts] = useState(false);
   const [settings, setSettings] = useState({});
   const [fetchedSettings, setFetchedSettings] = useState({});
-
+  const [settingsRef, setSettingsRef] = useState();
   const [committeesData, setCommitteesData] = useState({});
 
   //firebase
@@ -72,7 +72,6 @@ const LoggedIn = ({ metaData }) => {
   const current_uid = currentUser.uid;
   const userRef = ref(db, USERS_DOC_NAME + "/" + current_uid);
   const committeesRef = ref(db, COMMITTEES_DOC_NAME);
-  const [settingsRef, setSettingsRef] = useState();
   // fetch request_injection Data
   // This data will take a relatively larger time to load.
   // Hence, if we update the new injecting data after showig the original request data, the users will see that the request counts change (hora wada maattu wenawa
@@ -101,6 +100,7 @@ const LoggedIn = ({ metaData }) => {
         SETTINGS_DOC_NAME + "/fps/" + userData.committee_id
       );
       setSettingsRef(settingsRef);
+
       setUserData({ ...userData, user_id: current_uid });
     });
 
@@ -157,6 +157,8 @@ const LoggedIn = ({ metaData }) => {
       dataArr = Object.values(orderedDataObj);
       setFetchedUsersData(dataArr);
     });
+
+    // fetch fps data
   };
 
   //state management
@@ -241,6 +243,7 @@ const LoggedIn = ({ metaData }) => {
                   committee_id={userData.committee_id}
                   fetchedUserData={userData}
                   current_uid={current_uid}
+                  settings={settings}
                 />
               }
             />
