@@ -15,7 +15,7 @@
 /push_data/serviceAccountKey.json
 
 # google apis
-/src/constants/secrets.js
+#/src/constants/secrets.js
 
 # misc
 .DS_Store
