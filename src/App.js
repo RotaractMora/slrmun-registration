@@ -11,6 +11,11 @@ import "./App.css";
 
 import { AuthProvider } from "./firebase/Auth";
 
+
+import React from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function App() {
   const bas_theme = createTheme();
   const styles = theme_config(bas_theme);
@@ -22,6 +27,7 @@ function App() {
           {/* for the date time pickers. You need to install the date-fns package from NPM using npm install --save date-fns */}
           <LocalizationProvider dateAdapter={DateAdapter}>
             <Layout />
+            <ToastContainer />
           </LocalizationProvider>
         </ThemeProvider>
       </Router>
