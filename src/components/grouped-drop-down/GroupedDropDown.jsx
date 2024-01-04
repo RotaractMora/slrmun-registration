@@ -7,17 +7,18 @@ import {
 } from "@material-ui/core";
 import React from "react";
 
-const GroupedDropDown = ({ data, selected, groupLabel, categorized }) => {
+const GroupedDropDown = ({ data, selected, groupLabel, categorized , onSelectionChange }) => {
   return (
     <FormControl sx={{ m: 1, minWidth: 120 }}>
       <InputLabel htmlFor="grouped-select">{groupLabel}</InputLabel>
 
       {data ? (
         categorized ? (
-          <Select
+          <Select 
             defaultValue={selected.id}
             id="grouped-select"
             label={groupLabel}
+            onChange={(e) => onSelectionChange(e.target.value)}
           >
             <ListSubheader>Selected</ListSubheader>
             <MenuItem value={selected.id}>{selected.text}</MenuItem>
@@ -33,7 +34,7 @@ const GroupedDropDown = ({ data, selected, groupLabel, categorized }) => {
             })}
           </Select>
         ) : (
-          <Select value={selected.id} id="grouped-select" label={groupLabel}>
+          <Select value={selected.id} id="grouped-select" label={groupLabel} onChange={(e) => onSelectionChange(e.target.value)}>
             <ListSubheader>Selected</ListSubheader>
             <MenuItem value={selected.id}>{selected.text}</MenuItem>
             <ListSubheader>Available</ListSubheader>
@@ -45,7 +46,7 @@ const GroupedDropDown = ({ data, selected, groupLabel, categorized }) => {
           </Select>
         )
       ) : (
-        <Select defaultValue={0} id="grouped-select" label={groupLabel}>
+        <Select defaultValue={0} id="grouped-select" label={groupLabel} onChange={(e) => onSelectionChange(e.target.value)}>
           <MenuItem value={0}>None</MenuItem>
         </Select>
       )}

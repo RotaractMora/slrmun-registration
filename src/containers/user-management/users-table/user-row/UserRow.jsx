@@ -96,7 +96,7 @@ const UserRow = ({
             }
           }
         }
-        if (paymentsList !== [] || requestedList !== []) {
+        if (paymentsList.length > 0 || requestedList.length > 0) {
           setShowModal(true);
           setModalData([paymentsList, requestedList]);
         }
@@ -258,8 +258,8 @@ const UserRow = ({
         <TableCell>{userData.email}</TableCell>
         <TableCell>
           <span className={classes.numberCell}>
-            <a target="_blank" href={getWhatsAppNumber(userData.mobile_number)}>
-              <img src={whatsAppIcon} />
+            <a target="_blank" href={getWhatsAppNumber(userData.mobile_number) } rel= "noopener noreferrer">
+              <img src={whatsAppIcon} alt = "whatsAppIcon"/>
             </a>
             {userData.mobile_number}
           </span>
@@ -293,6 +293,7 @@ const UserRow = ({
               groupLabel="Committee"
               data={committeesData}
               categorized={false}
+              onSelectionChange={(index) =>   onChange({ ...userData, committee_id: index,})} 
             />
           ) : (
             <GroupedDropDown
@@ -300,6 +301,7 @@ const UserRow = ({
               groupLabel="Committee"
               data={committeesData}
               categorized={false}
+              onSelectionChange={(index) =>   onChange({ ...userData, committee_id: index,})} 
             />
           )}
           {userData.committee_id ? (
@@ -308,11 +310,13 @@ const UserRow = ({
               groupLabel="Country"
               data={countriesData}
               categorized={true}
+              onSelectionChange={(index) =>   onChange({ ...userData, committee_id: index,})} 
             />
           ) : (
             <GroupedDropDown
               selected={{ text: "None", id: -1 }}
               groupLabel="Country"
+              onSelectionChange={(index) =>   onChange({ ...userData, committee_id: index,})} 
             />
           )}
           <span>{userData.mun_experience}</span>
