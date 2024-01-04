@@ -12,7 +12,7 @@
 /build
 
 # firebase service account
-/push_data/serviceAccountKey.json
+# /push_data/serviceAccountKey.json
 
 # google apis
 #/src/constants/secrets.js
