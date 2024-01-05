@@ -100,7 +100,7 @@ const FPSSubmission = ({
       </Typography>
       {/*This is edited */}
       <div>
-        <center><p>Ignore this page</p></center>
+        <center><p>You are not required to submit a Foreign Policy Statement for SLRMUN 24</p></center>
       </div>
       {/*<TableContainer component={Paper} style={{ margin: 20 }}>
         <Table>
