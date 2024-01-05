@@ -21,6 +21,8 @@ const styles = {
     maxWidth: "350px",
     textAlign: "justify",
   },
+
+
 };
 
 export default styles;
