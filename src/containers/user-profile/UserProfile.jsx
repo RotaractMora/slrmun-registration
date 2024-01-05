@@ -54,20 +54,34 @@ const UserProfile = ({ fetchedUserData, firebaseDb, firebaseStorage }) => {
     }
   };
   const save = () => {
-    update(userRef, userData);
+    try{
+      update(userRef, userData);
 
-    const notify = () =>toast.success('Successfully Saved!', {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      });
+      const notify = () =>toast.success('Successfully Updated!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
 
-    notify();
+      notify();
+    }
+    catch{
+      toast.warn('Error! Try Again', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+    };
 
 
   };
