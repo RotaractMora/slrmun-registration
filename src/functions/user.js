@@ -248,6 +248,25 @@ export const stringObjectToArray = (committeeObj) => {
   return returnObj;
 };
 
+export const updatePreferenceList = (
+  userData,
+  oldPreferenceList,
+  firebaseDb,
+  newPreferenceList) => {
+  console.log("updatePreferenceList", userData, oldPreferenceList, firebaseDb, newPreferenceList)
+  const userId = userData.user_id;
+  const userRef = ref(firebaseDb, USERS_DOC_NAME + "/" + userId);
+
+  // update the database
+  const userUpdates = {
+    preference_list: newPreferenceList,
+  };
+  update(userRef, userUpdates);
+
+  
+
+}
+
 export const updateUserCountry = (
   userData,
   oldCountryId,

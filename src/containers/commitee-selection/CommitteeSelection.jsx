@@ -17,6 +17,7 @@ import { COMMITTEES_DOC_NAME, USERS_DOC_NAME } from "../../constants/general";
 import {
   processCommitteesToDropDown,
   updateUserCountry,
+  updatePreferenceList,
 } from "../../functions/user";
 
 const useStyles = makeStyles(styles);
@@ -33,7 +34,7 @@ const CommitteeSelection = ({
   const classes = useStyles(theme);
 
   // states
-  const [preferenceList, setPreferenceList] = useState([0, 1, 2, 3, 4, 5]);
+
   const [fullCountryList, setFullCountryList] = useState({});
   const [selectedCommitteeId, setSelectedCommitteeId] = useState(
     fetchedUserData.committee_id
@@ -48,7 +49,9 @@ const CommitteeSelection = ({
   const current_uid = currentUser.uid;
   const fetchedCommitteeId = fetchedUserData.committee_id;
   const fetchedCountryId = fetchedUserData.country_id;
-
+  const fetchedPreferenceList = fetchedUserData.preference_list;
+  const [preferenceList, setPreferenceList] = useState(fetchedPreferenceList);
+  
   const [local_committee_obj, local_country_obj] =
     processCommitteesToDropDown(committeesData);
 
@@ -65,40 +68,71 @@ const CommitteeSelection = ({
 
   // button panel functions
   const save = () => {
-    updateUserCountry(
+    // updateUserCountry(
+    //   fetchedUserData,
+    //   fetchedCountryId,
+    //   fetchedCommitteeId,
+    //   firebaseDb,
+    //   selectedCommitteeId,
+    //   selectedCountryId,
+    //   committeesData
+    // );
+
+    updatePreferenceList(
       fetchedUserData,
-      fetchedCountryId,
-      fetchedCommitteeId,
+      fetchedPreferenceList,
       firebaseDb,
-      selectedCommitteeId,
-      selectedCountryId,
-      committeesData
+      preferenceList
     );
   };
 
   const cancel = () => {
-    setSelectedCommitteeId(fetchedCommitteeId);
-    setSelectedCountryId(fetchedCountryId);
+    // setSelectedCommitteeId(fetchedCommitteeId);
+    // setSelectedCountryId(fetchedCountryId);
+    setPreferenceList(fetchedPreferenceList);
   };
 
   // enability update function of the button panel
-  const updateEnability = (fetchedArr, selectedArr) => {
-    if (selectedCountryId) {
+  // const updateEnability = (fetchedArr, selectedArr) => {
+  //   if (selectedCountryId) {
+  //     setEnableButtons(
+  //       JSON.stringify(fetchedArr) !== JSON.stringify(selectedArr)
+  //     );
+  //   }
+  //   if (!selectedArr[0] && !selectedArr[1]) {
+  //     setEnableButtons(false);
+  //   }
+  // };
+
+  const updateEnability = (fetched, current) => {
+    console.log(fetched, current);
+    if (current) {
       setEnableButtons(
-        JSON.stringify(fetchedArr) !== JSON.stringify(selectedArr)
+        JSON.stringify(fetched) !== JSON.stringify(current)
       );
     }
-    if (!selectedArr[0] && !selectedArr[1]) {
+    else if (fetched) {
       setEnableButtons(false);
+    }
+    else {
+      setEnableButtons(true);
     }
   };
 
   const move = (index, dir) => {
     console.log(index, dir);
-    if (index - dir < 0 || index + dir >= preferenceList.length) return;
-    const newPreferenceList = [...preferenceList];
-    [newPreferenceList[index], newPreferenceList[index - dir]] = [newPreferenceList[index - dir], newPreferenceList[index]];
-    setPreferenceList(newPreferenceList);
+    if (!preferenceList || preferenceList.length === 0) {
+      const newPreferenceList = committeesData.map((comm, index) => index);
+      if (index - dir < 0 || index - dir >= newPreferenceList.length) return;
+      [newPreferenceList[index], newPreferenceList[index - dir]] = [newPreferenceList[index - dir], newPreferenceList[index]];
+      setPreferenceList(newPreferenceList);
+    }
+    else {
+      if (index - dir < 0 || index - dir >= preferenceList.length) return;
+      const newPreferenceList = [...preferenceList];
+      [newPreferenceList[index], newPreferenceList[index - dir]] = [newPreferenceList[index - dir], newPreferenceList[index]];
+      setPreferenceList(newPreferenceList);
+    }
   };
 
   ///////////////////////// useEffects/////////////////////////////
@@ -107,16 +141,26 @@ const CommitteeSelection = ({
     setSelectedCountryList(fullCountryList[selectedCommitteeId]);
   }, [selectedCommitteeId, fullCountryList]);
 
+  // useEffect(() => {
+  //   updateEnability(
+  //     [fetchedCommitteeId, fetchedCountryId],
+  //     [selectedCommitteeId, selectedCountryId]
+  //   );
+  // }, [
+  //   selectedCommitteeId,
+  //   selectedCountryId,
+  //   fetchedCommitteeId,
+  //   fetchedCountryId,
+  // ]);
+
   useEffect(() => {
     updateEnability(
-      [fetchedCommitteeId, fetchedCountryId],
-      [selectedCommitteeId, selectedCountryId]
+      fetchedPreferenceList,
+      preferenceList
     );
   }, [
-    selectedCommitteeId,
-    selectedCountryId,
-    fetchedCommitteeId,
-    fetchedCountryId,
+    preferenceList,
+    fetchedPreferenceList,
   ]);
 
 
@@ -155,7 +199,7 @@ const CommitteeSelection = ({
           showRequestCounts={showRequestCounts}
           injectingRequests={injectingRequests}
         /> */}
-        <PreferenceOrderSection preferenceList={preferenceList} move={move} />
+        <PreferenceOrderSection preferenceList={preferenceList} move={move} commList={committeesData}/>
         <ButtonPanel
           enabled={enableButtons}
           showMessage={!fetchedUserData.admin_approved}
