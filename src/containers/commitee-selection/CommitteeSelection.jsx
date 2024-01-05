@@ -109,6 +109,37 @@ const CommitteeSelection = ({
     fetchedCountryId,
   ]);
 
+
+  const [selectedPref1, setSelectedPref1] = useState('-');
+  const [selectedPref2, setSelectedPref2] = useState('-');
+  const [selectedPref3, setSelectedPref3] = useState('-');
+  const [selectedPref4, setSelectedPref4] = useState('-');
+  const [selectedPref5, setSelectedPref5] = useState('-');
+  const [selectedPref6, setSelectedPref6] = useState('-');
+
+  //Pref list validating
+  const prefList = ["-","-","-","-","-","-"];
+  function creatingPrefList(idx, val, prefList){
+    prefList.splice(idx, 1, val);
+  };
+  function validatingPrefList(prefList) {
+    const uniqList = new Set()
+    for(let i=0;i<prefList.length;i++){
+      if(prefList[i]==="-"){
+        continue
+      }
+      else if(uniqList.has(prefList[i])){
+        return true
+      } else{
+        uniqList.add(prefList[i]);
+      };
+    };
+    return false
+  };
+
+  
+
+
   return (
     <div className={classes.root}>
       <Typography variant="h1" className={classes.h1}>
@@ -132,6 +163,11 @@ const CommitteeSelection = ({
           depending on your MUN experience. You will be notified through your
           contact details if this occurs.
         </Typography>
+        
+        
+        
+        
+        {/*
         <DropDownSection
           fetchedCommitteeId={fetchedCommitteeId}
           fetchedCountryList={selectedCountryList}
@@ -144,6 +180,121 @@ const CommitteeSelection = ({
           showRequestCounts={showRequestCounts}
           injectingRequests={injectingRequests}
         />
+        */}
+
+        <form>
+          <div className={classes.container2}>
+            <div>
+              <Typography variant="h6">Enter your committee preferences</Typography>
+            </div>
+            <div className={classes.pref}>
+            <label>
+              01. UNGA 4 (United Nations General Assembly 4) :
+              <select name="unga4" defaultValue="-"
+              value={selectedPref1}
+              onChange={e => setSelectedPref1(e.target.value)}>
+                <option value="-">-</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+              </select>
+            </label>
+            </div>
+            <div className={classes.pref}>
+            <label>
+              02. UNSC (United Nations Security Council) :
+              <select name="unsc" defaultValue="-"
+              value={selectedPref2}
+              onChange={e => setSelectedPref2(e.target.value)}>
+                <option value="-">-</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+              </select>
+            </label>
+            </div>
+            <div className={classes.pref}>
+            <label>
+              03. UNHRC (Unit Nations Humans Rights Council) :
+              <select name="unhrc" defaultValue="-"
+              value={selectedPref3}
+              onChange={e => setSelectedPref3(e.target.value)}>
+                <option value="-">-</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+              </select>
+            </label>
+            </div>
+            <div className={classes.pref}>
+            <label>
+              04. UNEP (United Nations Environment Programme) :
+              <select name="unep" defaultValue="-"
+              value={selectedPref4}
+              onChange={e => setSelectedPref4(e.target.value)}>
+                <option value="-">-</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+              </select>
+            </label>
+            </div>
+            <div className={classes.pref}>
+            <label>
+              05. UNCSW (United Nations Commison on the status of women) :
+              <select name="uncsw" defaultValue="-"
+              value={selectedPref5}
+              onChange={e => setSelectedPref5(e.target.value)}>
+                <option value="-">-</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+              </select>
+            </label>
+            </div>
+            <div className={classes.pref}>
+            <label>
+              06. IPC (International Press Corps) :
+              <select name="ipc" defaultValue="-"
+              value={selectedPref6}
+              onChange={e => setSelectedPref6(e.target.value)}>
+                <option value="-">-</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+              </select>
+            </label>
+            </div>
+            {creatingPrefList(0,selectedPref1,prefList)}
+            {creatingPrefList(1,selectedPref2,prefList)}
+            {creatingPrefList(2,selectedPref3,prefList)}
+            {creatingPrefList(3,selectedPref4,prefList)}
+            {creatingPrefList(4,selectedPref5,prefList)}
+            {creatingPrefList(5,selectedPref6,prefList)}
+            {console.log(prefList)}
+            {console.log(validatingPrefList(prefList))}
+          </div>
+        </form>
+
+
         <ButtonPanel
           enabled={enableButtons}
           showMessage={!fetchedUserData.admin_approved}

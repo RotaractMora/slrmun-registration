@@ -21,6 +21,23 @@ const styles = {
     maxWidth: "350px",
     textAlign: "justify",
   },
+
+  pref: {
+    marginTop: 20
+  },
+
+
+  container2: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "left",
+    margin: "20px auto",
+    padding: "10px 30px",
+    width: "fit-content",
+    borderRadius: "20px",
+  }
+
+
 };
 
 export default styles;
