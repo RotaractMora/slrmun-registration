@@ -70,7 +70,7 @@ const Layout = () => {
     ) {
       renderElement = <LoggedIn metaData={metaData} />;
     } else {
-      renderElement = <Navigate to={COMMITTEE_SELECTION} />;
+      renderElement = <Navigate to={PAYMENTS} />;
     }
   } else {
     if ([USER_LOGIN, USER_REGISTRATION].includes(location.pathname)) {

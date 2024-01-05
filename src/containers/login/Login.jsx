@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
-import { USER_REGISTRATION, COMMITTEE_SELECTION } from "../../constants/routes";
+import { USER_REGISTRATION, COMMITTEE_SELECTION, PAYMENTS } from "../../constants/routes";
 
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import app from "../../firebase/base";
@@ -37,7 +37,7 @@ const Login = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        navigate(COMMITTEE_SELECTION);
+        navigate(PAYMENTS);
       })
       .catch((error) => {
         const errorCode = error.code;

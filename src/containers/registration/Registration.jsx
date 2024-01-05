@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
-import { COMMITTEE_SELECTION, USER_LOGIN } from "../../constants/routes";
+import { COMMITTEE_SELECTION, USER_LOGIN, PAYMENTS } from "../../constants/routes";
 
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
@@ -107,7 +107,7 @@ const Registration = () => {
           admin_approved: false,
         });
 
-        navigate(COMMITTEE_SELECTION);
+        navigate(PAYMENTS);
       })
       .catch((error) => {
         const errorCode = error.code;
