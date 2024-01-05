@@ -86,22 +86,19 @@ const UserDetailsForm = ({ userData, setUserData, getPassword }) => {
         value={userData.email ? userData.email : ""}
         onChange={(e) => setUserData({ ...userData, email: e.target.value })}
       />
-      <div className={classes.inputPair}>
+      <div>
         <TextField
           id="mobile_number"
           label="Mobile Number"
           required
-          InputProps={{
-            className: [classes.marginR, classes.input].join(" "),
-          }}
+          fullWidth
           variant="outlined"
           margin="normal"
           value={userData.mobile_number ? userData.mobile_number : ""}
-          onChange={(e) =>
-            setUserData({ ...userData, mobile_number: e.target.value })
-          }
+          onChange={(e) => setUserData({ ...userData, mobile_number: e.target.value })}
         />
-        <TextField
+      </div>
+        {/* <TextField
           id="mun_experience"
           label="MUN Experience (years)"
           required
@@ -117,8 +114,51 @@ const UserDetailsForm = ({ userData, setUserData, getPassword }) => {
           onChange={(e) =>
             setUserData({ ...userData, mun_experience: e.target.value })
           }
+        /> */}
+
+
+      <div className={classes.inputPair}>
+        <TextField
+          id="mun_experience"
+          label="No. of MUN Conferences"
+          required
+          InputProps={{
+            className: [classes.marginL, classes.input].join(" "),
+          }}
+          type="number"
+          variant="outlined"
+          margin="normal"
+          value={
+            userData.mun_experience ? parseInt(userData.mun_experience) : 0
+          }
+          onChange={(e) =>
+            setUserData({ ...userData, mun_experience: e.target.value })
+          }
+        />
+        <TextField
+          id="mun_awards"
+          label="MUN Awards"
+          required
+          InputProps={{
+            className: [classes.marginR, classes.input].join(" "),
+          }}
+          type="number"
+          variant="outlined"
+          margin="normal"
+          value={
+            userData.mun_awards ? parseInt(userData.mun_awards) : 0
+          }
+          onChange={(e) =>
+            setUserData({ ...userData, mun_awards: e.target.value })
+          }
         />
       </div>
+
+
+
+
+
+
       <div className={classes.root}>
         <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel component="legend">Current Status</FormLabel>

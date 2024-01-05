@@ -48,6 +48,7 @@ const Registration = () => {
     const email = e.target.email.value;
     const mobile_number = e.target.mobile_number.value;
     const mun_experience = e.target.mun_experience.value;
+    const mun_awards = e.target.mun_awards.value;
     const current_status = e.target.current_status.value;
     const institute = e.target.institute.value;
     const registered_timestamp = parseInt(Date.now());
@@ -93,6 +94,7 @@ const Registration = () => {
           mobile_number,
           mun_experience,
           current_status,
+          mun_awards,
           institute,
           registered_timestamp,
           residence_country,
