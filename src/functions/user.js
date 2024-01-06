@@ -131,8 +131,7 @@ export const getUserRegistrationStatus = (
   if (
     // 3: Not regitered for a committee; Payment made, Not admin approved
     !userData.admin_approved &&
-    userData.committee_id === undefined &&
-    userData.country_id === undefined &&
+    userData.  === undefined &&
     userData[paymentsFieldName]
   )
     return [
@@ -145,8 +144,7 @@ export const getUserRegistrationStatus = (
   if (
     // 2: Registered for a committee; Payment made, Not admin approved
     !userData.admin_approved &&
-    userData.committee_id !== undefined &&
-    userData.country_id !== undefined &&
+    userData.preference_list !== undefined &&
     userData[paymentsFieldName]
   )
     return [
