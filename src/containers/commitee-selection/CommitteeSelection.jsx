@@ -182,11 +182,11 @@ const CommitteeSelection = ({
             }
           />
         ) : null}
-        <Typography className={classes.body1} variant="body1">
+        {/* <Typography className={classes.body1} variant="body1">
           Please note that your selection might be changed by the admin
           depending on your MUN experience. You will be notified through your
           contact details if this occurs.
-        </Typography>
+        </Typography> */}
         {/* <DropDownSection
           fetchedCommitteeId={fetchedCommitteeId}
           fetchedCountryList={selectedCountryList}
@@ -200,8 +200,8 @@ const CommitteeSelection = ({
           injectingRequests={injectingRequests}
         /> */}
         <div>
-            <h3>Please request coommittees according to your preferences.</h3>
-            <p align="center">(Rank from most preferred to least preferred. Please use arrow keys to order.)</p>
+            <h3 align="center">Please rank coommittees according to your preference.</h3>
+            <p align="center">Order from most preferred to least preferred.<br/> Use ▲ and ▼ buttons to change order.</p>
         </div>
         <PreferenceOrderSection preferenceList={preferenceList} move={move} commList={committeesData}/>
         <ButtonPanel

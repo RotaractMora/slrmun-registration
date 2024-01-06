@@ -122,7 +122,8 @@ export const getUserRegistrationStatus = (
     userData[paymentsFieldName]
   )
     return [
-      theme.palette.yellow.main,
+      // theme.palette.yellow.main,
+      "#d1a600",
       "Please request the committees according to your preferences",
       4,
     ];
@@ -135,7 +136,8 @@ export const getUserRegistrationStatus = (
     userData[paymentsFieldName]
   )
     return [
-      theme.palette.yellow.main,
+      // theme.palette.yellow.main,
+      "#d1a600",
       "Please request the committees according to your preferences",
       3,
     ];
@@ -148,7 +150,8 @@ export const getUserRegistrationStatus = (
     userData[paymentsFieldName]
   )
     return [
-      theme.palette.yellow.main,
+      // theme.palette.yellow.main,
+      "#d1a600",
       "Please wait for admin approval to confirm your request",
       2,
     ];

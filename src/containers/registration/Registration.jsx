@@ -13,6 +13,8 @@ import {
   validatePassword,
 } from "../../functions/authentication";
 
+import { toast } from 'react-toastify';
+
 import { makeStyles, useTheme, Button, Typography } from "@material-ui/core";
 import styles from "./styles";
 
@@ -107,6 +109,17 @@ const Registration = () => {
           admin_approved: false,
         });
 
+        toast.success('Registered Successfully!', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
         navigate(PAYMENTS);
       })
       .catch((error) => {
@@ -114,7 +127,17 @@ const Registration = () => {
         const errorMessage = error.message;
         console.log(errorCode);
         if (errorCode === "auth/email-already-in-use") {
-          alert("Email already in use");
+          // alert("Email already in use");
+          toast.warn('Email already in use', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
         }
       });
   };

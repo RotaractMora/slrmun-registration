@@ -1,20 +1,28 @@
 import React from "react";
+import { useState } from "react";
+
 import styles from "./styles";
-import moveup from "../../../../assets/images/move_up.png";
-import movedown from "../../../../assets/images/move_down.png";
+
+// import moveup from "../../../../assets/images/move_up.png";
+// import movedown from "../../../../assets/images/move_down.png";
 
 const PreferenceItem = ({comm, index, move, commList}) => {
+
+    const [isHovered, setIsHovered] = useState([false, false]);
+
     return (       
-        <div>
-            {/* <p>{comm}</p>    {commList[comm].imageUrl}   */}
+        <div style={styles.flexRow}>
             <div style={styles.imgblock}>
-                <img src={commList[comm].imageUrl} alt={commList[comm].short_name} style={styles.logo}/>
-                <br/>
-                <div style={styles.cont}>{commList[comm].name}({commList[comm].short_name})</div>
+                <img src={commList[comm].imageUrl} alt={commList[comm].short_name} style={styles.logo} width={"120px"} height={"120px"}/>
             </div>
-            {/* <p>{commList[comm].imageUrl}</p> */}
-            <button onClick={() => move(index, +1)} style={styles.buttonL}><img src={moveup} style={styles.movebutton} alt="moveup"/></button>
-            <button onClick={() => move(index, -1)} style={styles.buttonR}><img src={movedown} style={styles.movebutton} alt="movedown"/></button>
+            <div style={styles.nameBlock}>
+                <p style={{fontSize: "1.3rem", fontWeight: 600, marginBottom: "0.2rem"}}>{commList[comm].short_name}</p>
+                <p style={{marginTop: "0.2rem"}}>{commList[comm].name}</p>
+            </div>
+            <div style={styles.buttonBlock}>
+                <button onClick={() => move(index, +1)} style={isHovered[0] ? styles.buttonHover : styles.button} onMouseEnter={() => setIsHovered([true, false])} onMouseLeave={() => setIsHovered([false, false])}>▲</button>
+                <button onClick={() => move(index, -1)} style={isHovered[1] ? styles.buttonHover : styles.button} onMouseEnter={() => setIsHovered([false, true])} onMouseLeave={() => setIsHovered([false, false])}>▼</button>
+            </div>
         </div>
     )
 }

@@ -27,7 +27,6 @@ function App() {
           {/* for the date time pickers. You need to install the date-fns package from NPM using npm install --save date-fns */}
           <LocalizationProvider dateAdapter={DateAdapter}>
             <Layout />
-            <ToastContainer />
           </LocalizationProvider>
         </ThemeProvider>
       </Router>
