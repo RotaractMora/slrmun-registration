@@ -123,7 +123,7 @@ export const getUserRegistrationStatus = (
   )
     return [
       theme.palette.yellow.main,
-      "Please register for a committee and a country",
+      "Please request the committees according to your preferences",
       4,
     ];
 
@@ -136,7 +136,7 @@ export const getUserRegistrationStatus = (
   )
     return [
       theme.palette.yellow.main,
-      "Please request a committee and a country",
+      "Please request the committees according to your preferences",
       3,
     ];
 
@@ -175,7 +175,7 @@ export const getUserRegistrationStatus = (
   )
     return [
       theme.palette.error.main,
-      "Please request a committee and a country",
+      "Please make the payment and request the committees according to your preferences",
       0,
     ];
 

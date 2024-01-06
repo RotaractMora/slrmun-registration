@@ -199,12 +199,16 @@ const CommitteeSelection = ({
           showRequestCounts={showRequestCounts}
           injectingRequests={injectingRequests}
         /> */}
+        <div>
+            <h3>Please request coommittees according to your preferences.</h3>
+            <p align="center">(Rank from most preferred to least preferred. Please use arrow keys to order.)</p>
+        </div>
         <PreferenceOrderSection preferenceList={preferenceList} move={move} commList={committeesData}/>
         <ButtonPanel
           enabled={enableButtons}
           showMessage={!fetchedUserData.admin_approved}
           message={
-            "Please make the payment and wait for admin approval to enable committee selection"
+            "Please make the payment and wait for admin approval to reserve your position"
           }
           onSave={save}
           onCancel={cancel}
