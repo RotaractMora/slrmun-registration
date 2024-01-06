@@ -116,13 +116,13 @@ const Payments = ({
         <div className={classes.breaker}></div>
         <CommitteeRegistrationStatus
           fetchedUserData={fetchedUserData}
-          countryData={
-            fetchedUserData.committee_id && fetchedUserData.country_id
-              ? committeesData[fetchedUserData.committee_id].countries[
-                  fetchedUserData.country_id
-                ]
-              : undefined
-          }
+          // countryData={
+          //   fetchedUserData.committee_id && fetchedUserData.country_id
+          //     ? committeesData[fetchedUserData.committee_id].countries[
+          //         fetchedUserData.country_id
+          //       ]
+          //     : undefined
+          // }
         />
       </div>
       {showModal ? (
