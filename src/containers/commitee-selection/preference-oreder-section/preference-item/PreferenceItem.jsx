@@ -6,7 +6,7 @@ import movedown from "../../../../assets/images/move_down.png";
 const PreferenceItem = ({comm, index, move, commList}) => {
     return (       
         <div>
-            {/* <p>{comm}</p>    {commList[comm].imageUrl}   */}
+            <p>{comm}</p>
             <div style={styles.imgblock}>
                 <img src={commList[comm].imageUrl} alt={commList[comm].short_name} style={styles.logo}/>
                 <br/>

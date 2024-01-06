@@ -5,7 +5,6 @@ const styles = {
     buttonR: {
         backgroundColor: "white",
         borderColor: "white",
-        marginRight: "0rem",
         marginLeft: "10px",
         marginTop: "20px"
     },
@@ -13,7 +12,7 @@ const styles = {
         backgroundColor: "white",
         borderColor: "white",
         marginRight: "10px",
-        marginLeft: "60%",
+        marginLeft: "10%",
         marginTop: "20px"
     },
     logo: {
