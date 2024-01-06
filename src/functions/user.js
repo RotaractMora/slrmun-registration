@@ -131,7 +131,7 @@ export const getUserRegistrationStatus = (
   if (
     // 3: Not regitered for a committee; Payment made, Not admin approved
     !userData.admin_approved &&
-    userData.  === undefined &&
+    userData.preference_list === undefined &&
     userData[paymentsFieldName]
   )
     return [
