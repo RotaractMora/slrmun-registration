@@ -200,7 +200,7 @@ const CommitteeSelection = ({
           injectingRequests={injectingRequests}
         /> */}
         <div>
-            <h3 align="center">Please rank coommittees according to your preference.</h3>
+            <h3 align="center">Please rank committees according to your preference.</h3>
             <p align="center">Order from most preferred to least preferred.<br/> Use ▲ and ▼ buttons to change order.</p>
         </div>
         <PreferenceOrderSection preferenceList={preferenceList} move={move} commList={committeesData}/>
