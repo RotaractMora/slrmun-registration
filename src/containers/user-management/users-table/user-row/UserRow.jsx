@@ -165,6 +165,54 @@ const UserRow = ({
   const handleCancel = () => {
     onChange(fetchedUserData);
   };
+
+
+  function prefOrder(arr){
+    if ( arr == undefined ){
+      return (
+        <div>
+            <select>
+              <option selected="selected" disabled>Preference Order</option>
+              <option disabled>Not yet selected</option>
+            </select>
+        </div>
+      );
+    } else {
+      const tempArr = []
+      for(let i=0;i<arr.length;i++){
+        if (arr[i]==0){
+          tempArr.push(`(${i+1}) UNGA4`);
+        } else if (arr[i]==1){
+          tempArr.push(`(${i+1}) UNSC`);
+        } else if (arr[i]==2){
+          tempArr.push(`(${i+1}) UNHRC`);
+        } else if (arr[i]==3){
+          tempArr.push(`(${i+1}) UNEP`);
+        } else if (arr[i]==4){
+          tempArr.push(`(${i+1}) UNCSW`);
+        } else if (arr[i]==5){
+          tempArr.push(`(${i+1}) IPC`);
+        }
+        //tempArr.push(" ");
+      }
+      return (
+        <div>
+          <select>
+            <option selected="selected" disabled>Preference Order</option>
+            <option disabled>{tempArr[0]}</option>
+            <option disabled>{tempArr[1]}</option>
+            <option disabled>{tempArr[2]}</option>
+            <option disabled>{tempArr[3]}</option>
+            <option disabled>{tempArr[4]}</option>
+            <option disabled>{tempArr[5]}</option>
+          </select>
+        </div>
+      );
+    }
+  }
+
+
+
   return (
     <Fragment>
       {showModal && (modalData[0].length > 0 || modalData[1].length > 0) ? (
@@ -255,7 +303,17 @@ const UserRow = ({
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell>{userData.email}</TableCell>
+        <TableCell
+          className={classes.committeeCell}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}>
+          {userData.email}
+          {<div>{prefOrder(userData.preference_list)}</div>}
+        </TableCell>
         <TableCell>
           <span className={classes.numberCell}>
             <a target="_blank" href={getWhatsAppNumber(userData.mobile_number) } rel= "noopener noreferrer">

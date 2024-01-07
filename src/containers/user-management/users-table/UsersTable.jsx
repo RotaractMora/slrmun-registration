@@ -74,7 +74,7 @@ const UsersTable = ({
           <TableRow className={classes.table_head}>
             <TableCell align="center">User</TableCell>
             <TableCell align="center">
-              <div>Email</div>
+              <div>Email&nbsp;|&nbsp;PrefOrder</div>
               <div className={classes.grayBg}>
                 Committee&nbsp;|&nbsp;Country&nbsp;|&nbsp;MUN XP
               </div>
