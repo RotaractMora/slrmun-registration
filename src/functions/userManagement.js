@@ -100,11 +100,11 @@ export const usersObjectToCSV = (usersData, committeesData) => {
     if (user.preference_list) {
       const com_list = ["UNGA4", "UNSC", "UNHRC", "UNEP", "UNCSW", "IPC"]
       user.preference_list = 
-        com_list[user.preference_list[0]]+" "+
-        com_list[user.preference_list[1]]+" "+
-        com_list[user.preference_list[2]]+" "+
-        com_list[user.preference_list[3]]+" "+
-        com_list[user.preference_list[4]]+" "+
+        com_list[user.preference_list[0]]+"; "+
+        com_list[user.preference_list[1]]+"; "+
+        com_list[user.preference_list[2]]+"; "+
+        com_list[user.preference_list[3]]+"; "+
+        com_list[user.preference_list[4]]+"; "+
         com_list[user.preference_list[5]];
     } else {
       user.preference_list = "";
