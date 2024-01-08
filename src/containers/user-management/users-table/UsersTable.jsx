@@ -74,10 +74,18 @@ const UsersTable = ({
           <TableRow className={classes.table_head}>
             <TableCell align="center">User</TableCell>
             <TableCell align="center">
-              <div>Email&nbsp;|&nbsp;PrefOrder</div>
+              <div>Email</div>
               <div className={classes.grayBg}>
                 Committee&nbsp;|&nbsp;Country&nbsp;|&nbsp;MUN XP
               </div>
+            </TableCell>
+            <TableCell align="center">
+              <div>Preference&nbsp;Order</div>
+              <div className={classes.grayBg}></div>
+            </TableCell>
+            <TableCell align="center">
+              <div>MUN&nbsp;Awards</div>
+              <div className={classes.grayBg}>MUN&nbsp;Experiance</div>
             </TableCell>
             <TableCell align="center">
               <div>Phone&nbsp;Number</div>

@@ -303,16 +303,15 @@ const UserRow = ({
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell
-          className={classes.committeeCell}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}>
+        <TableCell>
           {userData.email}
-          {<div>{prefOrder(userData.preference_list)}</div>}
+        </TableCell>
+        <TableCell>
+          {prefOrder(userData.preference_list)}
+        </TableCell>
+
+        <TableCell className={classes.maxWidth200} align="center">
+          {userData.mun_awards}
         </TableCell>
         <TableCell>
           <span className={classes.numberCell}>
@@ -378,6 +377,12 @@ const UserRow = ({
             />
           )}
           <span>{userData.mun_experience}</span>
+        </TableCell>
+        
+        <TableCell>
+        </TableCell>
+        <TableCell className={classes.maxWidth200} align="center">
+          {userData.mun_experience}
         </TableCell>
         <TableCell>
           {timeStampToString(userData.registered_timestamp, 2)}
