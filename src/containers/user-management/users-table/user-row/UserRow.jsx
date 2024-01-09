@@ -172,8 +172,8 @@ const UserRow = ({
       return (
         <div>
             <select>
-              <option selected="selected" disabled>Preference Order</option>
-              <option disabled>Not yet selected</option>
+              <option selected="selected" disabled value="preference_order">Preference Order</option>
+              <option disabled value="not_selected">Not yet selected</option>
             </select>
         </div>
       );
@@ -198,13 +198,13 @@ const UserRow = ({
       return (
         <div>
           <select>
-            <option selected="selected" disabled>Preference Order</option>
-            <option disabled>{tempArr[0]}</option>
-            <option disabled>{tempArr[1]}</option>
-            <option disabled>{tempArr[2]}</option>
-            <option disabled>{tempArr[3]}</option>
-            <option disabled>{tempArr[4]}</option>
-            <option disabled>{tempArr[5]}</option>
+            <option selected="selected" disabled value="preference_order">Preference Order</option>
+            <option disabled value={tempArr[0]}>{tempArr[0]}</option>
+            <option disabled value={tempArr[1]}>{tempArr[1]}</option>
+            <option disabled value={tempArr[2]}>{tempArr[2]}</option>
+            <option disabled value={tempArr[3]}>{tempArr[3]}</option>
+            <option disabled value={tempArr[4]}>{tempArr[4]}</option>
+            <option disabled value={tempArr[5]}>{tempArr[5]}</option>
           </select>
         </div>
       );
