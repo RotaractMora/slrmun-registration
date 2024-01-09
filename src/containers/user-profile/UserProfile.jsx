@@ -71,7 +71,7 @@ const UserProfile = ({ fetchedUserData, firebaseDb, firebaseStorage }) => {
       notify();
     }
     catch{
-      toast.warn('Error! Try Again', {
+      const note = () => toast.warn('Error! Try Again', {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -81,6 +81,7 @@ const UserProfile = ({ fetchedUserData, firebaseDb, firebaseStorage }) => {
         progress: undefined,
         theme: "light",
         });
+      note();
     };
 
 

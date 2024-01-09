@@ -20,6 +20,11 @@ import {
   updatePreferenceList,
 } from "../../functions/user";
 
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 const useStyles = makeStyles(styles);
 
 const CommitteeSelection = ({
@@ -78,12 +83,43 @@ const CommitteeSelection = ({
     //   committeesData
     // );
 
-    updatePreferenceList(
-      fetchedUserData,
-      fetchedPreferenceList,
-      firebaseDb,
-      preferenceList
-    );
+
+
+    try{
+      updatePreferenceList(
+        fetchedUserData,
+        fetchedPreferenceList,
+        firebaseDb,
+        preferenceList
+      );
+      const notify = () =>toast.success('Successfully Saved!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+
+      notify();
+    }
+    catch{
+      const note = () => toast.warn('Error! Try Again', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+      note();
+    }
+
+
   };
 
   const cancel = () => {
