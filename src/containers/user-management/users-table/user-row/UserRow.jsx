@@ -344,7 +344,7 @@ const UserRow = ({
             alignItems: "center",
           }}
         >
-          {userData.committee_id ? (
+          {(userData.committee_id != undefined) ? (
             <GroupedDropDown
               selected={committeesData[userData.committee_id]}
               groupLabel="Committee"
@@ -361,13 +361,13 @@ const UserRow = ({
               onSelectionChange={(index) =>   onChange({ ...userData, committee_id: index,})} 
             />
           )}
-          {userData.committee_id ? (
+          {(userData.committee_id != undefined)? (
             <GroupedDropDown
               selected={countryData}
               groupLabel="Country"
               data={countriesData}
               categorized={true}
-              onSelectionChange={(index) =>   onChange({ ...userData, committee_id: index,})} 
+              onSelectionChange={(index) =>   onChange({ ...userData, country_id: index,})} 
             />
           ) : (
             <GroupedDropDown

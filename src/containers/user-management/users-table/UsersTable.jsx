@@ -123,8 +123,8 @@ const UsersTable = ({
               committeesData={Object.values(processedCommittees)}
               countryData={
                 userData && processedCountries
-                  ? userData.committee_id &&
-                    userData.country_id &&
+                  ? (userData.committee_id!=undefined) &&
+                    (userData.country_id!=undefined) &&
                     processedCountries
                     ? processedCountries[userData.committee_id][
                         userData.country_id
