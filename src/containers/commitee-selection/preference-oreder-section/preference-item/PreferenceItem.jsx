@@ -6,7 +6,7 @@ import styles from "./styles";
 // import moveup from "../../../../assets/images/move_up.png";
 // import movedown from "../../../../assets/images/move_down.png";
 
-const PreferenceItem = ({comm, index, move, commList}) => {
+const PreferenceItem = ({comm, index, move, commList, reserved}) => {
 
     const [isHovered, setIsHovered] = useState([false, false]);
 
@@ -19,10 +19,13 @@ const PreferenceItem = ({comm, index, move, commList}) => {
                 <p style={{fontSize: "1.3rem", fontWeight: 600, marginBottom: "0.2rem"}}>{commList[comm].short_name}</p>
                 <p style={{marginTop: "0.2rem"}}>{commList[comm].name}</p>
             </div>
-            <div style={styles.buttonBlock}>
-                <button onClick={() => move(index, +1)} style={isHovered[0] ? styles.buttonHover : styles.button} onMouseEnter={() => setIsHovered([true, false])} onMouseLeave={() => setIsHovered([false, false])}>▲</button>
-                <button onClick={() => move(index, -1)} style={isHovered[1] ? styles.buttonHover : styles.button} onMouseEnter={() => setIsHovered([false, true])} onMouseLeave={() => setIsHovered([false, false])}>▼</button>
-            </div>
+            {(!reserved) ? (
+                <div style={styles.buttonBlock}> 
+                    <button onClick={() => move(index, +1)} style={isHovered[0] ? styles.buttonHover : styles.button} onMouseEnter={() => setIsHovered([true, false])} onMouseLeave={() => setIsHovered([false, false])}>▲</button>
+                    <button onClick={() => move(index, -1)} style={isHovered[1] ? styles.buttonHover : styles.button} onMouseEnter={() => setIsHovered([false, true])} onMouseLeave={() => setIsHovered([false, false])}>▼</button>
+                </div>
+            ): null}
+            
         </div>
     )
 }

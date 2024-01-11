@@ -56,6 +56,8 @@ const CommitteeSelection = ({
   const fetchedCountryId = fetchedUserData.country_id;
   const fetchedPreferenceList = fetchedUserData.preference_list;
   const [preferenceList, setPreferenceList] = useState(fetchedPreferenceList);
+
+  const fetchedCountryReserved = fetchedUserData.country_reserved;
   
   const [local_committee_obj, local_country_obj] =
     processCommitteesToDropDown(committeesData);
@@ -142,7 +144,10 @@ const CommitteeSelection = ({
 
   const updateEnability = (fetched, current) => {
     console.log(fetched, current);
-    if (current) {
+    if (fetchedCountryReserved) {
+      setEnableButtons(false);
+    }
+    else if (current) {
       setEnableButtons(
         JSON.stringify(fetched) !== JSON.stringify(current)
       );
@@ -218,6 +223,17 @@ const CommitteeSelection = ({
             }
           />
         ) : null}
+        {fetchedCountryReserved ?(
+          <div className={classes.reservation}>
+            <div>
+              <p align="center" style={{fontSize:"25px"}}>Reservation Details</p>
+            </div>
+            <div>
+              <p align="center">Reserved Committee is : <b>{committeesData[fetchedCommitteeId].name}</b></p>
+              <p align="center">Reserved Country is   : <b>{committeesData[fetchedCommitteeId].countries[fetchedCountryId].name}</b></p>
+            </div>
+          </div>
+        ) : null }
         {/* <Typography className={classes.body1} variant="body1">
           Please note that your selection might be changed by the admin
           depending on your MUN experience. You will be notified through your
@@ -239,7 +255,7 @@ const CommitteeSelection = ({
             <h3 align="center">Please rank committees according to your preference.</h3>
             <p align="center">Order from most preferred to least preferred.<br/> Use ▲ and ▼ buttons to change order.</p>
         </div>
-        <PreferenceOrderSection preferenceList={preferenceList} move={move} commList={committeesData}/>
+        <PreferenceOrderSection preferenceList={preferenceList} move={move} commList={committeesData} fetchedReserved={fetchedCountryReserved}/>
         <ButtonPanel
           enabled={enableButtons}
           showMessage={!fetchedUserData.admin_approved}

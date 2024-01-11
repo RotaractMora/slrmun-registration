@@ -21,7 +21,13 @@ const styles = {
     maxWidth: "350px",
     textAlign: "justify",
   },
-
+  reservation: {
+    //color: "white",
+    //backgroundColor: "#03a1fc",
+    padding: "25px",
+    borderRadius: "5px",
+    boxShadow: "4px 4px 4px gray",
+  },
 
 };
 
