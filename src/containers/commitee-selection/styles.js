@@ -23,10 +23,11 @@ const styles = {
   },
   reservation: {
     //color: "white",
-    //backgroundColor: "#03a1fc",
+    backgroundColor: "#b2bec3",
     padding: "25px",
     borderRadius: "5px",
     boxShadow: "4px 4px 4px gray",
+    paddingTop : "8px",
   },
 
 };

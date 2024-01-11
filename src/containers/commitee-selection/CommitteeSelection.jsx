@@ -226,7 +226,7 @@ const CommitteeSelection = ({
         {fetchedCountryReserved ?(
           <div className={classes.reservation}>
             <div>
-              <p align="center" style={{fontSize:"25px"}}>Reservation Details</p>
+              <p align="center" style={{fontSize:"25px"}}><u>Reservation Details</u></p>
             </div>
             <div>
               <p align="center">Reserved Committee is : <b>{committeesData[fetchedCommitteeId].name}</b></p>
