@@ -225,6 +225,7 @@ const UserDetailsForm = ({ userData, setUserData, getPassword }) => {
           id="residence_address"
           label="Residence Address"
           fullWidth
+          required
           variant="outlined"
           margin="normal"
           value={userData.residence_address ? userData.residence_address : ""}
