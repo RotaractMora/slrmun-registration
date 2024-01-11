@@ -265,27 +265,24 @@ const CommitteeSelection = ({
           onSave={save}
           onCancel={cancel}
         />
-        <div>
+        <div style={{maxWidth:"600px"}}>
           <h2 align="center">Topics for SLRMUN 24</h2>
-          <p>       UNSC - Discussing the need for an immediate ceasefire in the Gaza Strip with the objective of 
+          <p><b>UNSC</b> - Discussing the need for an immediate ceasefire in the Gaza Strip with the objective of 
                     ensuring safe, rapid and unhindered humanitarian access
           </p>
           
-          <p>          UNGA4 - Addressing the red sea crisis and formulating a multilateral solution to preempt its 
+          <p><b>UNGA4</b> - Addressing the red sea crisis and formulating a multilateral solution to preempt its 
                     escalation into a middle east conflict with emphasis on ensuring and maintaining 
                     regional stability
           </p>
-          <p>
-                    UNCSW -  Addressing sexual and gender based violence against refugees, returnees and internally 
+          <p><b>UNCSW</b> -  Addressing sexual and gender based violence against refugees, returnees and internally 
                     displaced women in conflict zones
           </p>
-          <p>
-                  UNHRC - Safeguarding journalists and media workers in conflict regions while concurrently 
+          <p><b>UNHRC</b> - Safeguarding journalists and media workers in conflict regions while concurrently 
                   upholding the principles of press freedom and the inherent rights of journalists
           </p>
 
-          <p>
-                  UNEP - Accelerating the transition to Net-Zero through innovative scientific solutions aimed at 
+          <p><b>UNEP</b> - Accelerating the transition to Net-Zero through innovative scientific solutions aimed at 
                   achieving sustainable energy practices and substantial reduction in emissions
           </p>
 
