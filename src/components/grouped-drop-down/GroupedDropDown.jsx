@@ -15,13 +15,14 @@ const GroupedDropDown = ({ data, selected, groupLabel, categorized , onSelection
       {data ? (
         categorized ? (
           <Select 
-            defaultValue={selected.id}
+            defaultValue={selected!=undefined? (selected.id):("0")}
             id="grouped-select"
             label={groupLabel}
             onChange={(e) => onSelectionChange(e.target.value)}
           >
             <ListSubheader>Selected</ListSubheader>
-            <MenuItem value={selected.id}>{selected.text}</MenuItem>
+            {selected!=undefined ? (<MenuItem value={selected.id}>{selected.text}</MenuItem>):(null)}
+            {/* <MenuItem value={selected.id}>{selected.text}</MenuItem> */}
             {Object.entries(data).map((group, key) => {
               return [
                 <ListSubheader key={key}>{group[0]}</ListSubheader>,
