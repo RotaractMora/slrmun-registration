@@ -271,15 +271,15 @@ const CommitteeSelection = ({
                     ensuring safe, rapid and unhindered humanitarian access
           </p>
           
-          <p><b>UNGA4</b> - Addressing the red sea crisis and formulating a multilateral solution to preempt its 
-                    escalation into a middle east conflict with emphasis on ensuring and maintaining 
-                    regional stability
+          <p><b>UNGA4</b> - Strategic Diplomacy in Resolving the Red Sea Crisis: Toward a Multilateral Framework for Sustaining 
+Middle East Stability
+
           </p>
           <p><b>UNCSW</b> -  Addressing sexual and gender based violence against refugees, returnees and internally 
                     displaced women in conflict zones
           </p>
-          <p><b>UNHRC</b> - Safeguarding journalists and media workers in conflict regions while concurrently 
-                  upholding the principles of press freedom and the inherent rights of journalists
+          <p><b>UNHRC</b> - Safeguarding Journalists and humanitarian workers in conflict zones: Upholding safety and rights in 
+accordance with International Humanitarian Law
           </p>
 
           <p><b>UNEP</b> - Accelerating the transition to Net-Zero through innovative scientific solutions aimed at 
