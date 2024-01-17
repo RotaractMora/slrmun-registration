@@ -230,7 +230,7 @@ const CommitteeSelection = ({
             </div>
             <div>
               <p align="center">Reserved Committee is : <b>{committeesData[fetchedCommitteeId].name}</b></p>
-              <p align="center">Reserved Country is   : <b>{committeesData[fetchedCommitteeId].countries[fetchedCountryId].name}</b></p>
+              <p align="center">Reserved Country/Agency is   : <b>{committeesData[fetchedCommitteeId].countries[fetchedCountryId].name}</b></p>
             </div>
           </div>
         ) : null }
