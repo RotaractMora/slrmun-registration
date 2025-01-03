@@ -21,6 +21,12 @@ import {
   USERS_DOC_NAME,
 } from "../../constants/general";
 
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+
 const useStyles = makeStyles(styles);
 
 const UserProfile = ({ fetchedUserData, firebaseDb, firebaseStorage }) => {
@@ -48,7 +54,37 @@ const UserProfile = ({ fetchedUserData, firebaseDb, firebaseStorage }) => {
     }
   };
   const save = () => {
-    update(userRef, userData);
+    try{
+      update(userRef, userData);
+
+      const notify = () =>toast.success('Successfully Updated!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+
+      notify();
+    }
+    catch{
+      const note = () => toast.warn('Error! Try Again', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+      note();
+    };
+
+
   };
   const cancel = () => {
     setUserData(fetchedUserData);

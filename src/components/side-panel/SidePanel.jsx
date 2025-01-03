@@ -103,22 +103,22 @@ const SidePanel = ({ cross, setShowSidePanel }) => {
               onClick={() => setShowSidePanel(false)}
             />
           ) : null}
-          {visibilityArray[1] ? (
-            <ListItem
-              text={"Committee Selection"}
-              DispIcon={AccountBalanceIcon}
-              link={COMMITTEE_SELECTION}
-              active={current_path === COMMITTEE_SELECTION}
-              collapsed={collapsed}
-              onClick={() => setShowSidePanel(false)}
-            />
-          ) : null}
           {visibilityArray[2] ? (
             <ListItem
               text={"Payments"}
               DispIcon={PaymentIcon}
               link={PAYMENTS}
               active={current_path === PAYMENTS}
+              collapsed={collapsed}
+              onClick={() => setShowSidePanel(false)}
+            />
+          ) : null}
+          {visibilityArray[1] ? (
+            <ListItem
+              text={"Committee Selection"}
+              DispIcon={AccountBalanceIcon}
+              link={COMMITTEE_SELECTION}
+              active={current_path === COMMITTEE_SELECTION}
               collapsed={collapsed}
               onClick={() => setShowSidePanel(false)}
             />

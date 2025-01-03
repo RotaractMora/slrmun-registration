@@ -15,7 +15,7 @@ const ForeignInstructions = () => {
         Payment Method
       </Typography>
       <Typography variant="body1">
-        Please deposit the USD 15 to the following bank account and upload a
+        Please deposit the USD 15.00 to the following bank account and upload a
         clear image of the transaction document to the below section. Please
         note that this cost do not include transfering charges and they must be
         beared by the registrant.
@@ -53,7 +53,7 @@ const ForeignInstructions = () => {
           </tr>
         </tbody>
       </table>
-      <OlderPayments />
+      {/* <OlderPayments /> */}
     </div>
   );
 };

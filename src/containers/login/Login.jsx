@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
-import { USER_REGISTRATION, COMMITTEE_SELECTION } from "../../constants/routes";
+import { USER_REGISTRATION, COMMITTEE_SELECTION, PAYMENTS } from "../../constants/routes";
 
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import app from "../../firebase/base";
@@ -14,6 +14,9 @@ import {
   Typography,
   Button,
 } from "@material-ui/core";
+
+import { toast } from 'react-toastify';
+
 import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
 import styles from "./styles";
 
@@ -37,13 +40,65 @@ const Login = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        navigate(COMMITTEE_SELECTION);
+        toast.success('Welcome back!', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        navigate(PAYMENTS);
       })
       .catch((error) => {
         const errorCode = error.code;
-        if (errorCode === "auth/invalid-email") alert("Invalid email");
-        if (errorCode === "auth/user-not-found") alert("User not found");
-        if (errorCode === "auth/wrong-password") alert("Incorrect password");
+        console.log(errorCode);
+        if (errorCode === "auth/invalid-email") 
+          toast.error('Invalid email', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        if (errorCode === "auth/user-not-found") 
+          toast.error('Invalid email', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        if (errorCode === "auth/wrong-password") 
+        toast.error('Check your email and passwod', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        if (errorCode === "auth/invalid-login-credentials") 
+        toast.error('Check your email and passwod', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       });
   };
 

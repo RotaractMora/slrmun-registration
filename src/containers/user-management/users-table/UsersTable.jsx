@@ -80,6 +80,14 @@ const UsersTable = ({
               </div>
             </TableCell>
             <TableCell align="center">
+              <div>Preference&nbsp;Order</div>
+              <div className={classes.grayBg}></div>
+            </TableCell>
+            <TableCell align="center">
+              <div>MUN&nbsp;Awards</div>
+              <div className={classes.grayBg}>MUN&nbsp;Experiance</div>
+            </TableCell>
+            <TableCell align="center">
               <div>Phone&nbsp;Number</div>
               <div className={classes.grayBg}>Registered time</div>
             </TableCell>
@@ -115,8 +123,8 @@ const UsersTable = ({
               committeesData={Object.values(processedCommittees)}
               countryData={
                 userData && processedCountries
-                  ? userData.committee_id &&
-                    userData.country_id &&
+                  ? (userData.committee_id!=undefined) &&
+                    (userData.country_id!=undefined) &&
                     processedCountries
                     ? processedCountries[userData.committee_id][
                         userData.country_id

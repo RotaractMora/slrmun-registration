@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
-import { COMMITTEE_SELECTION, USER_LOGIN } from "../../constants/routes";
+import { COMMITTEE_SELECTION, USER_LOGIN, PAYMENTS } from "../../constants/routes";
 
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
@@ -12,6 +12,8 @@ import {
   validateEmail,
   validatePassword,
 } from "../../functions/authentication";
+
+import { toast } from 'react-toastify';
 
 import { makeStyles, useTheme, Button, Typography } from "@material-ui/core";
 import styles from "./styles";
@@ -48,6 +50,7 @@ const Registration = () => {
     const email = e.target.email.value;
     const mobile_number = e.target.mobile_number.value;
     const mun_experience = e.target.mun_experience.value;
+    const mun_awards = e.target.mun_awards.value;
     const current_status = e.target.current_status.value;
     const institute = e.target.institute.value;
     const registered_timestamp = parseInt(Date.now());
@@ -93,6 +96,7 @@ const Registration = () => {
           mobile_number,
           mun_experience,
           current_status,
+          mun_awards,
           institute,
           registered_timestamp,
           residence_country,
@@ -105,14 +109,35 @@ const Registration = () => {
           admin_approved: false,
         });
 
-        navigate(COMMITTEE_SELECTION);
+        toast.success('Registered Successfully!', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        navigate(PAYMENTS);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode);
         if (errorCode === "auth/email-already-in-use") {
-          alert("Email already in use");
+          // alert("Email already in use");
+          toast.warn('Email already in use', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
         }
       });
   };

@@ -52,7 +52,7 @@ const LocalInstructions = () => {
           </tr>
         </tbody>
       </table>
-      <OlderPayments />
+      {/* <OlderPayments /> */}
     </div>
   );
 };

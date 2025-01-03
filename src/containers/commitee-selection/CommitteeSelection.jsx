@@ -8,6 +8,7 @@ import styles from "./styles";
 import { get, ref, update, remove, child } from "firebase/database";
 
 // components
+import PreferenceOrderSection from "./preference-oreder-section/PreferenceOrderSection";
 import DropDownSection from "./dropdown-section/DropDownSection";
 import ButtonPanel from "../../components/button-panel/ButtonPanel";
 import CommitteeRegistrationStatus from "../../components/committee-registration-status/CommitteeRegistrationStatus";
@@ -16,7 +17,13 @@ import { COMMITTEES_DOC_NAME, USERS_DOC_NAME } from "../../constants/general";
 import {
   processCommitteesToDropDown,
   updateUserCountry,
+  updatePreferenceList,
 } from "../../functions/user";
+
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const useStyles = makeStyles(styles);
 
@@ -32,6 +39,7 @@ const CommitteeSelection = ({
   const classes = useStyles(theme);
 
   // states
+
   const [fullCountryList, setFullCountryList] = useState({});
   const [selectedCommitteeId, setSelectedCommitteeId] = useState(
     fetchedUserData.committee_id
@@ -46,7 +54,11 @@ const CommitteeSelection = ({
   const current_uid = currentUser.uid;
   const fetchedCommitteeId = fetchedUserData.committee_id;
   const fetchedCountryId = fetchedUserData.country_id;
+  const fetchedPreferenceList = fetchedUserData.preference_list;
+  const [preferenceList, setPreferenceList] = useState(fetchedPreferenceList);
 
+  const fetchedCountryReserved = fetchedUserData.country_reserved;
+  
   const [local_committee_obj, local_country_obj] =
     processCommitteesToDropDown(committeesData);
 
@@ -63,31 +75,104 @@ const CommitteeSelection = ({
 
   // button panel functions
   const save = () => {
-    updateUserCountry(
-      fetchedUserData,
-      fetchedCountryId,
-      fetchedCommitteeId,
-      firebaseDb,
-      selectedCommitteeId,
-      selectedCountryId,
-      committeesData
-    );
+    // updateUserCountry(
+    //   fetchedUserData,
+    //   fetchedCountryId,
+    //   fetchedCommitteeId,
+    //   firebaseDb,
+    //   selectedCommitteeId,
+    //   selectedCountryId,
+    //   committeesData
+    // );
+
+
+
+    try{
+      updatePreferenceList(
+        fetchedUserData,
+        fetchedPreferenceList,
+        firebaseDb,
+        preferenceList
+      );
+      const notify = () =>toast.success('Successfully Saved!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+
+      notify();
+    }
+    catch{
+      const note = () => toast.warn('Error! Try Again', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+      note();
+    }
+
+
   };
 
   const cancel = () => {
-    setSelectedCommitteeId(fetchedCommitteeId);
-    setSelectedCountryId(fetchedCountryId);
+    // setSelectedCommitteeId(fetchedCommitteeId);
+    // setSelectedCountryId(fetchedCountryId);
+    setPreferenceList(fetchedPreferenceList);
   };
 
   // enability update function of the button panel
-  const updateEnability = (fetchedArr, selectedArr) => {
-    if (selectedCountryId) {
+  // const updateEnability = (fetchedArr, selectedArr) => {
+  //   if (selectedCountryId) {
+  //     setEnableButtons(
+  //       JSON.stringify(fetchedArr) !== JSON.stringify(selectedArr)
+  //     );
+  //   }
+  //   if (!selectedArr[0] && !selectedArr[1]) {
+  //     setEnableButtons(false);
+  //   }
+  // };
+
+  const updateEnability = (fetched, current) => {
+    console.log(fetched, current);
+    if (fetchedCountryReserved) {
+      setEnableButtons(false);
+    }
+    else if (current) {
       setEnableButtons(
-        JSON.stringify(fetchedArr) !== JSON.stringify(selectedArr)
+        JSON.stringify(fetched) !== JSON.stringify(current)
       );
     }
-    if (!selectedArr[0] && !selectedArr[1]) {
+    else if (fetched) {
       setEnableButtons(false);
+    }
+    else {
+      setEnableButtons(true);
+    }
+  };
+
+  const move = (index, dir) => {
+    console.log(index, dir);
+    if (!preferenceList || preferenceList.length === 0) {
+      const newPreferenceList = committeesData.map((comm, index) => index);
+      if (index - dir < 0 || index - dir >= newPreferenceList.length) return;
+      [newPreferenceList[index], newPreferenceList[index - dir]] = [newPreferenceList[index - dir], newPreferenceList[index]];
+      setPreferenceList(newPreferenceList);
+    }
+    else {
+      if (index - dir < 0 || index - dir >= preferenceList.length) return;
+      const newPreferenceList = [...preferenceList];
+      [newPreferenceList[index], newPreferenceList[index - dir]] = [newPreferenceList[index - dir], newPreferenceList[index]];
+      setPreferenceList(newPreferenceList);
     }
   };
 
@@ -97,17 +182,28 @@ const CommitteeSelection = ({
     setSelectedCountryList(fullCountryList[selectedCommitteeId]);
   }, [selectedCommitteeId, fullCountryList]);
 
+  // useEffect(() => {
+  //   updateEnability(
+  //     [fetchedCommitteeId, fetchedCountryId],
+  //     [selectedCommitteeId, selectedCountryId]
+  //   );
+  // }, [
+  //   selectedCommitteeId,
+  //   selectedCountryId,
+  //   fetchedCommitteeId,
+  //   fetchedCountryId,
+  // ]);
+
   useEffect(() => {
     updateEnability(
-      [fetchedCommitteeId, fetchedCountryId],
-      [selectedCommitteeId, selectedCountryId]
+      fetchedPreferenceList,
+      preferenceList
     );
   }, [
-    selectedCommitteeId,
-    selectedCountryId,
-    fetchedCommitteeId,
-    fetchedCountryId,
+    preferenceList,
+    fetchedPreferenceList,
   ]);
+
 
   return (
     <div className={classes.root}>
@@ -127,12 +223,23 @@ const CommitteeSelection = ({
             }
           />
         ) : null}
-        <Typography className={classes.body1} variant="body1">
+        {fetchedCountryReserved ?(
+          <div className={classes.reservation}>
+            <div>
+              <p align="center" style={{fontSize:"25px"}}><u>Reservation Details</u></p>
+            </div>
+            <div>
+              <p align="center">Reserved Committee is : <b>{committeesData[fetchedCommitteeId].name}</b></p>
+              <p align="center">Reserved Country/Agency is   : <b>{committeesData[fetchedCommitteeId].countries[fetchedCountryId].name}</b></p>
+            </div>
+          </div>
+        ) : null }
+        {/* <Typography className={classes.body1} variant="body1">
           Please note that your selection might be changed by the admin
           depending on your MUN experience. You will be notified through your
           contact details if this occurs.
-        </Typography>
-        <DropDownSection
+        </Typography> */}
+        {/* <DropDownSection
           fetchedCommitteeId={fetchedCommitteeId}
           fetchedCountryList={selectedCountryList}
           fetchedCommitteeList={fetchedCommitteeList}
@@ -143,16 +250,43 @@ const CommitteeSelection = ({
           fetchedCountryId={fetchedUserData.country_id}
           showRequestCounts={showRequestCounts}
           injectingRequests={injectingRequests}
-        />
+        /> */}
+        <div>
+            <h3 align="center">Please rank committees according to your preference.</h3>
+            <p align="center">Order from most preferred to least preferred.<br/> Use ▲ and ▼ buttons to change order.</p>
+        </div>
+        <PreferenceOrderSection preferenceList={preferenceList} move={move} commList={committeesData} fetchedReserved={fetchedCountryReserved}/>
         <ButtonPanel
           enabled={enableButtons}
           showMessage={!fetchedUserData.admin_approved}
           message={
-            "Please make the payment and wait for admin approval to enable committee selection"
+            "Please make the payment and wait for admin approval to reserve your position"
           }
           onSave={save}
           onCancel={cancel}
         />
+        <div style={{maxWidth:"600px"}}>
+          <h2 align="center">Topics for SLRMUN 24</h2>
+          <p><b>UNSC</b> - Discussing the need for an immediate ceasefire in the Gaza Strip with the objective of 
+                    ensuring safe, rapid and unhindered humanitarian access
+          </p>
+          
+          <p><b>UNGA4</b> - Strategic Diplomacy in Resolving the Red Sea Crisis: Toward a Multilateral Framework for Sustaining 
+Middle East Stability
+
+          </p>
+          <p><b>UNCSW</b> -  Addressing sexual and gender based violence against refugees, returnees and internally 
+                    displaced women in conflict zones
+          </p>
+          <p><b>UNHRC</b> - Safeguarding Journalists and humanitarian workers in conflict zones: Upholding safety and rights in 
+accordance with International Humanitarian Law
+          </p>
+
+          <p><b>UNEP</b> - Accelerating the transition to Net-Zero through innovative scientific solutions aimed at 
+                  achieving sustainable energy practices and substantial reduction in emissions
+          </p>
+
+        </div>
       </div>
     </div>
   );

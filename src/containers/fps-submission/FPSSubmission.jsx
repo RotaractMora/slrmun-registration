@@ -98,7 +98,11 @@ const FPSSubmission = ({
       <Typography variant="h1" className={classes.h1}>
         Foreign Policy Statement Submission
       </Typography>
-      <TableContainer component={Paper} style={{ margin: 20 }}>
+      {/*This is edited */}
+      <div>
+        <center><p>You are not required to submit a Foreign Policy Statement for SLRMUN 24</p></center>
+      </div>
+      {/*<TableContainer component={Paper} style={{ margin: 20 }}>
         <Table>
           <TableBody>
             <TableRow className={submissionClassName}>
@@ -190,14 +194,14 @@ const FPSSubmission = ({
             </TableRow>
           </TableBody>
         </Table>
-      </TableContainer>
+                </TableContainer>
       {showModal ? (
         <FileUploadModal
           onFileUpload={fileUploadHandler}
           closeModal={() => setShowModal(false)}
           progress={uploadProgress}
         />
-      ) : null}
+      ) : null} */}
     </div>
   );
 };

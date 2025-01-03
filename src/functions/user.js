@@ -122,33 +122,34 @@ export const getUserRegistrationStatus = (
     userData[paymentsFieldName]
   )
     return [
-      theme.palette.yellow.main,
-      "Please register for a committee and a country",
+      // theme.palette.yellow.main,
+      "#d1a600",
+      "Please request the committees according to your preferences",
       4,
     ];
 
   if (
     // 3: Not regitered for a committee; Payment made, Not admin approved
     !userData.admin_approved &&
-    userData.committee_id === undefined &&
-    userData.country_id === undefined &&
+    userData.preference_list === undefined &&
     userData[paymentsFieldName]
   )
     return [
-      theme.palette.yellow.main,
-      "Please request a committee and a country",
+      // theme.palette.yellow.main,
+      "#d1a600",
+      "Please request the committees according to your preferences",
       3,
     ];
 
   if (
     // 2: Registered for a committee; Payment made, Not admin approved
     !userData.admin_approved &&
-    userData.committee_id !== undefined &&
-    userData.country_id !== undefined &&
+    userData.preference_list !== undefined &&
     userData[paymentsFieldName]
   )
     return [
-      theme.palette.yellow.main,
+      // theme.palette.yellow.main,
+      "#d1a600",
       "Please wait for admin approval to confirm your request",
       2,
     ];
@@ -175,7 +176,7 @@ export const getUserRegistrationStatus = (
   )
     return [
       theme.palette.error.main,
-      "Please request a committee and a country",
+      "Please make the payment and request the committees according to your preferences",
       0,
     ];
 
@@ -247,6 +248,25 @@ export const stringObjectToArray = (committeeObj) => {
   }
   return returnObj;
 };
+
+export const updatePreferenceList = (
+  userData,
+  oldPreferenceList,
+  firebaseDb,
+  newPreferenceList) => {
+  console.log("updatePreferenceList", userData, oldPreferenceList, firebaseDb, newPreferenceList)
+  const userId = userData.user_id;
+  const userRef = ref(firebaseDb, USERS_DOC_NAME + "/" + userId);
+
+  // update the database
+  const userUpdates = {
+    preference_list: newPreferenceList,
+  };
+  update(userRef, userUpdates);
+
+  
+
+}
 
 export const updateUserCountry = (
   userData,

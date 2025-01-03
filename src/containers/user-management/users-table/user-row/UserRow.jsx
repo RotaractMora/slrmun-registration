@@ -96,7 +96,7 @@ const UserRow = ({
             }
           }
         }
-        if (paymentsList !== [] || requestedList !== []) {
+        if (paymentsList.length > 0 || requestedList.length > 0) {
           setShowModal(true);
           setModalData([paymentsList, requestedList]);
         }
@@ -165,6 +165,54 @@ const UserRow = ({
   const handleCancel = () => {
     onChange(fetchedUserData);
   };
+
+
+  function prefOrder(arr){
+    if ( arr == undefined ){
+      return (
+        <div>
+            <select defaultValue={"preference_order"}>
+              <option disabled value="preference_order">--Preference Order--</option>
+              <option disabled value="not_selected">Not yet selected</option>
+            </select>
+        </div>
+      );
+    } else {
+      const tempArr = []
+      for(let i=0;i<arr.length;i++){
+        if (arr[i]==0){
+          tempArr.push(`(${i+1}) UNGA4`);
+        } else if (arr[i]==1){
+          tempArr.push(`(${i+1}) UNSC`);
+        } else if (arr[i]==2){
+          tempArr.push(`(${i+1}) UNHRC`);
+        } else if (arr[i]==3){
+          tempArr.push(`(${i+1}) UNEP`);
+        } else if (arr[i]==4){
+          tempArr.push(`(${i+1}) UNCSW`);
+        } else if (arr[i]==5){
+          tempArr.push(`(${i+1}) IPC`);
+        }
+        //tempArr.push(" ");
+      }
+      return (
+        <div>
+          <select defaultValue={"preference_order"}>
+            <option disabled value="preference_order">--Preference Order--</option>
+            <option disabled value={tempArr[0]}>{tempArr[0]}</option>
+            <option disabled value={tempArr[1]}>{tempArr[1]}</option>
+            <option disabled value={tempArr[2]}>{tempArr[2]}</option>
+            <option disabled value={tempArr[3]}>{tempArr[3]}</option>
+            <option disabled value={tempArr[4]}>{tempArr[4]}</option>
+            <option disabled value={tempArr[5]}>{tempArr[5]}</option>
+          </select>
+        </div>
+      );
+    }
+  }
+
+
+
   return (
     <Fragment>
       {showModal && (modalData[0].length > 0 || modalData[1].length > 0) ? (
@@ -255,11 +303,20 @@ const UserRow = ({
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell>{userData.email}</TableCell>
+        <TableCell>
+          {userData.email}
+        </TableCell>
+        <TableCell>
+          {prefOrder(userData.preference_list)}
+        </TableCell>
+
+        <TableCell className={classes.maxWidth200} align="center">
+          {userData.mun_awards}
+        </TableCell>
         <TableCell>
           <span className={classes.numberCell}>
-            <a target="_blank" href={getWhatsAppNumber(userData.mobile_number)}>
-              <img src={whatsAppIcon} />
+            <a target="_blank" href={getWhatsAppNumber(userData.mobile_number) } rel= "noopener noreferrer">
+              <img src={whatsAppIcon} alt = "whatsAppIcon"/>
             </a>
             {userData.mobile_number}
           </span>
@@ -287,12 +344,13 @@ const UserRow = ({
             alignItems: "center",
           }}
         >
-          {userData.committee_id ? (
+          {(userData.committee_id != undefined) ? (
             <GroupedDropDown
               selected={committeesData[userData.committee_id]}
               groupLabel="Committee"
               data={committeesData}
               categorized={false}
+              onSelectionChange={(index) =>   onChange({ ...userData, committee_id: index,})} 
             />
           ) : (
             <GroupedDropDown
@@ -300,22 +358,31 @@ const UserRow = ({
               groupLabel="Committee"
               data={committeesData}
               categorized={false}
+              onSelectionChange={(index) =>   onChange({ ...userData, committee_id: index,})} 
             />
           )}
-          {userData.committee_id ? (
+          {(userData.committee_id != undefined)? (
             <GroupedDropDown
               selected={countryData}
               groupLabel="Country"
               data={countriesData}
               categorized={true}
+              onSelectionChange={(index) =>   onChange({ ...userData, country_id: index,})} 
             />
           ) : (
             <GroupedDropDown
               selected={{ text: "None", id: -1 }}
               groupLabel="Country"
+              onSelectionChange={(index) =>   onChange({ ...userData, committee_id: index,})} 
             />
           )}
           <span>{userData.mun_experience}</span>
+        </TableCell>
+        
+        <TableCell>
+        </TableCell>
+        <TableCell className={classes.maxWidth200} align="center">
+          {userData.mun_experience}
         </TableCell>
         <TableCell>
           {timeStampToString(userData.registered_timestamp, 2)}
