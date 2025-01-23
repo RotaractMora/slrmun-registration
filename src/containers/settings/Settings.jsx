@@ -66,6 +66,7 @@ const Settings = ({
       <Typography variant="h1" className={classes.h1}>
         Settings
       </Typography>
+      <div className={classes.container}>
       <Typography variant="h2">Foreign Policy Statements</Typography>
       <table>
         <tbody>
@@ -146,6 +147,7 @@ const Settings = ({
           Cancel
         </Button>
       </div>
+    </div>
     </div>
   );
 };
