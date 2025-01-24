@@ -1,137 +1,111 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import { makeStyles, useTheme, Typography, Button } from "@material-ui/core";
 import UploadIcon from "@mui/icons-material/Upload";
 import styles from "./styles";
-
-import { compressAndUpload } from "../../functions/api";
-import { isSriLankan } from "../../functions/user";
 
 import LocalInstructions from "./local-instructions/LocalInstructions";
 import ForeignInstructions from "./foreign-instructions/ForeignInstructions";
 import CommitteeRegistrationStatus from "../../components/committee-registration-status/CommitteeRegistrationStatus";
 import FileUploadModal from "../../components/file-upload-modal/FileUploadModal";
 
-import {
-  PAYMENTS_FIELD_NAME,
-  PAYMENTS_UPLOAD_DIRECTORY,
-} from "../../constants/general";
-
-import { ref as refStorage } from "firebase/storage";
-import { ref as refDatabase } from "firebase/database";
+import { isSriLankan } from "../../functions/user";
 
 const useStyles = makeStyles(styles);
 
-const Payments = ({
-  fetchedUserData,
-  firebaseDb,
-  firebaseStorage,
-  committeesData,
-}) => {
+const Payments = ({ fetchedUserData }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
 
-  // state
   const [showModal, setShowModal] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadSuccess, setUploadSuccess] = useState(false); // State to track upload success
 
-  // handlers
-  const fileUploadHandler = (e) => {
-    let image = "";
-    if (e.target.files)
-      // buton click
-      image = e.target.files[0];
-    else if (e.dataTransfer)
-      // drop files
-      image = e.dataTransfer.files[0];
+  const fileUploadHandler = async (e) => {
+    try {
+      const image = e.target.files?.[0] || e.dataTransfer?.files?.[0];
+      if (!image) throw new Error("No file selected");
 
-    const upload_path =
-      PAYMENTS_UPLOAD_DIRECTORY +
-      "/" +
-      fetchedUserData.user_id +
-      "/" +
-      image.name;
-    const uploadRef = refStorage(firebaseStorage, upload_path);
-    const updateRef = refDatabase(
-      firebaseDb,
-      "users/" + fetchedUserData.user_id
-    );
-    const updateData = {};
-    // if the image file is too large (>1MB), compress the image and then upload
-    const uploadFieldName = PAYMENTS_FIELD_NAME;
+      // Prepare the file to send to the backend
+      const formData = new FormData();
+      formData.append("file", image);
 
-    compressAndUpload(
-      image,
-      fetchedUserData,
-      firebaseStorage,
-      setUploadProgress,
-      setShowModal,
-      PAYMENTS_UPLOAD_DIRECTORY,
-      [],
-      uploadFieldName,
-      uploadRef,
-      updateRef,
-      updateData
-    );
+      // Send the file to the backend
+      const response = await fetch("http://localhost:5000/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        console.error("Response Error:", await response.text());
+        throw new Error("File upload failed");
+      }
+
+      const result = await response.json();
+      console.log("File uploaded successfully:", result);
+
+      setUploadProgress(100); // Update progress
+      setUploadSuccess(true); // Mark upload as successful
+      setShowModal(false); // Close the modal after success
+    } catch (error) {
+      console.error("File upload error:", error.message || error);
+      setUploadProgress(0); // Reset progress on failure
+      setUploadSuccess(false); // Ensure success status is reset
+    }
   };
 
-  // rendering components
-  let instructions = <LocalInstructions />;
-  if (!isSriLankan(fetchedUserData.residence_country)) {
-    instructions = <ForeignInstructions />;
-  }
+  const renderUploadButton = () =>
+    fetchedUserData.payment_slip && uploadSuccess ? (
+      <div className={classes.uploaded_image_container}>
+        <img
+          className={classes.bank_slip_img}
+          src={fetchedUserData.payment_slip.public_url}
+          alt="transaction-document"
+        />
+        <Typography variant="body2" color="primary">
+          Upload successful!
+        </Typography>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={() => setShowModal(true)}
+        >
+          Change Image
+        </Button>
+      </div>
+    ) : (
+      <Button
+        variant="contained"
+        color="primary"
+        startIcon={<UploadIcon />}
+        onClick={() => setShowModal(true)}
+      >
+        {uploadSuccess ? "Change Image" : "Upload Image"}
+      </Button>
+    );
+
   return (
     <div className={classes.root}>
       <Typography variant="h1" className={classes.h1}>
         Payments
       </Typography>
       <div className={classes.container}>
-        {instructions}
-        <div className={classes.breaker}></div>
-        {fetchedUserData.payment_slip ? (
-          <div className={classes.uploaded_image_container}>
-            <img
-              className={classes.bank_slip_img}
-              src={fetchedUserData.payment_slip.public_url}
-              alt="transaction-document"
-            />
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={() => setShowModal(true)}
-            >
-              Change Image
-            </Button>
-          </div>
+        {isSriLankan(fetchedUserData.residence_country) ? (
+          <LocalInstructions />
         ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<UploadIcon />}
-            onClick={() => setShowModal(true)}
-          >
-            Upload Image
-          </Button>
+          <ForeignInstructions />
         )}
         <div className={classes.breaker}></div>
-        <CommitteeRegistrationStatus
-          fetchedUserData={fetchedUserData}
-          // countryData={
-          //   fetchedUserData.committee_id && fetchedUserData.country_id
-          //     ? committeesData[fetchedUserData.committee_id].countries[
-          //         fetchedUserData.country_id
-          //       ]
-          //     : undefined
-          // }
-        />
+        {renderUploadButton()}
+        <div className={classes.breaker}></div>
+        <CommitteeRegistrationStatus fetchedUserData={fetchedUserData} />
       </div>
-      {showModal ? (
+      {showModal && (
         <FileUploadModal
           onFileUpload={fileUploadHandler}
           closeModal={() => setShowModal(false)}
           progress={uploadProgress}
         />
-      ) : null}
+      )}
     </div>
   );
 };
