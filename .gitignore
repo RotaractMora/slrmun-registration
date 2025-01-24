@@ -27,3 +27,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+#API
+server\slrmun25-a94fd871a461.json
