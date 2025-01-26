@@ -20,7 +20,7 @@ const LocalInstructions = () => {
           <br />
           <strong>Late Registrations: 2500 LKR</strong>
           <br />
-        Please deposit the relevant amount to the following bank account and upload a clear
+        Please deposit the relevant amount to the following bank account. Rename the image with your email and upload a clear
         image of the transaction document to the below section
       </Typography>
       <table className={classes.table}>
