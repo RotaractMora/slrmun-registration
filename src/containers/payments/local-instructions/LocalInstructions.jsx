@@ -1,6 +1,6 @@
 import React from "react";
 
-import OlderPayments from "../older-payments/OlderPayments";
+//import OlderPayments from "../older-payments/OlderPayments";
 
 import { makeStyles, useTheme, Typography } from "@material-ui/core";
 import styles from "./styles";
@@ -16,7 +16,11 @@ const LocalInstructions = () => {
         Payment Method
       </Typography>
       <Typography variant="body1">
-        Please deposit LKR 2500 to the following bank account and upload a clear
+          <strong>Early Bird: 2000 LKR</strong>
+          <br />
+          <strong>Late Registrations: 2500 LKR</strong>
+          <br />
+        Please deposit the relevant amount to the following bank account and upload a clear
         image of the transaction document to the below section
       </Typography>
       <table className={classes.table}>
