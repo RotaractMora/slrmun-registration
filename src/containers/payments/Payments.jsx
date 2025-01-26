@@ -28,6 +28,7 @@ const Payments = ({ fetchedUserData }) => {
       // Prepare the file to send to the backend
       const formData = new FormData();
       formData.append("file", image);
+      formData.append("email", fetchedUserData.email);
 
       // Send the file to the backend
       const response = await fetch("http://localhost:5000/upload", {
