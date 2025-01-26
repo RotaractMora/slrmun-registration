@@ -31,7 +31,7 @@ const Payments = ({ fetchedUserData }) => {
       formData.append("email", fetchedUserData.email);
 
       // Send the file to the backend
-      const response = await fetch("http://localhost:5000/upload", {
+      const response = await fetch("http://152.42.185.12:5000/upload", {
         method: "POST",
         body: formData,
       });
