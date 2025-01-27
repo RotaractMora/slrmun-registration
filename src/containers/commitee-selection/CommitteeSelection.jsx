@@ -265,7 +265,7 @@ const CommitteeSelection = ({
           onSave={save}
           onCancel={cancel}
         />
-        <div style={{maxWidth:"600px"}}>
+        {/* <div style={{maxWidth:"600px"}}>
           <h2 align="center">Topics for SLRMUN 24</h2>
           <p><b>UNSC</b> - Discussing the need for an immediate ceasefire in the Gaza Strip with the objective of 
                     ensuring safe, rapid and unhindered humanitarian access
@@ -286,7 +286,7 @@ accordance with International Humanitarian Law
                   achieving sustainable energy practices and substantial reduction in emissions
           </p>
 
-        </div>
+        </div> */}
       </div>
     </div>
   );
