@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import { makeStyles, useTheme, Typography, Button } from "@material-ui/core";
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 import UploadIcon from "@mui/icons-material/Upload";
 import styles from "./styles";
 
@@ -19,6 +21,7 @@ const Payments = ({ fetchedUserData }) => {
   const [showModal, setShowModal] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadSuccess, setUploadSuccess] = useState(false); // State to track upload success
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
 
   const fileUploadHandler = async (e) => {
     try {
@@ -47,6 +50,8 @@ const Payments = ({ fetchedUserData }) => {
       setUploadProgress(100); // Update progress
       setUploadSuccess(true); // Mark upload as successful
       setShowModal(false); // Close the modal after success
+      setConfirmationOpen(true);
+
     } catch (error) {
       console.error("File upload error:", error.message || error);
       setUploadProgress(0); // Reset progress on failure
@@ -107,6 +112,20 @@ const Payments = ({ fetchedUserData }) => {
           progress={uploadProgress}
         />
       )}
+      <Snackbar
+            open={confirmationOpen}
+            autoHideDuration={6000}
+            onClose={() => setConfirmationOpen(false)}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          >
+            <Alert
+              onClose={() => setConfirmationOpen(false)}
+              severity="success"
+              sx={{ width: '100%' }}
+            >
+              File uploaded successfully!
+          </Alert>
+      </Snackbar>
     </div>
   );
 };
